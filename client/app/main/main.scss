@@ -1,0 +1,209 @@
+.container-main {
+    width: 100%;
+    border-top: 3px solid $color-primary-blue;
+    font-family: $font-stack-sansserif-1;
+    background-color: $color-primary-darkdarkblue;
+    height: 100%;
+    position: fixed;
+}
+
+.logo-lg {
+    text-align: center;
+    font-family: $font-stack-slabserif;
+    font-weight: bold;
+    font-size: 32px;
+    color: $color-primary-blue;
+    margin: 70px 0 5px 0;
+}
+
+.subheader {
+    text-align: center;
+    font-family: $font-stack-sansserif-1;
+    font-size: 16px;
+    color: #BDC3C7;
+    padding-left: 200px;
+    margin: 5px 0 50px 0;
+}
+
+.login {
+    width:400px;
+    height:86px;
+    background-color: $color-primary-darkdarkblue;                       
+    position: relative;
+    float:left;
+    margin:25px 5px;
+    padding: 0 20px;
+    text-align:left;
+    zoom:1;
+
+    input[type="text"], input[type="password"] {
+        color: $color-primary-gray;
+        background-color: $color-primary-tanwhite;
+        border:1px solid $color-primary-blue;
+        outline:none;
+        padding: 3px;
+        width: 35%;
+    }
+    input[type="text"]:focus, input[type="password"]:focus {
+        border-bottom:3px solid $color-primary-blue;
+    }
+    .submit {
+        padding: 6px;
+        color: white;
+        background-color: $color-primary-blue;
+        cursor: default;
+        @include transition(background-color, 500ms, ease-out);
+    }
+    .submit:hover, .submit:focus, .submit:active {
+        color: $color-primary-blue;
+        background-color: white;
+        border-bottom:1px solid $color-primary-blue;
+        cursor: pointer;
+    }
+}
+
+.container-hex {
+    width:700px;
+    height:100%;
+    position:relative;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+/* HEXAGON STARTS HERE */
+.hex {
+    width:150px;
+    height:86px;
+    background-color: $color-primary-tanwhite;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;           
+    -webkit-background-size: auto 173px;                            
+    -moz-background-size: auto 173px;                           
+    -ms-background-size: auto 173px;                            
+    -o-background-size: auto 173px;                         
+    position: relative;
+    float:left;
+    margin:25px 5px;
+    text-align:center;
+
+    a {
+        display:block;
+        width: 100%;
+        height:100%;
+        text-indent:-9999em;
+        position:absolute;
+        top:0;
+        left:0;
+    }
+
+    .corner-1, .corner-2 {
+        position: absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background: inherit;                                
+        z-index:-2;                     
+        overflow:hidden;
+        -webkit-backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        -ms-backface-visibility: hidden;
+        -o-backface-visibility: hidden;         
+        backface-visibility: hidden;            
+    }
+
+    .corner-1 {
+        z-index:-1;
+        -webkit-transform: rotate(60deg);
+        -moz-transform: rotate(60deg);
+        -ms-transform: rotate(60deg);
+        -o-transform: rotate(60deg);
+        transform: rotate(60deg);
+    }
+
+    .corner-2 {
+        -webkit-transform: rotate(-60deg);
+        -moz-transform: rotate(-60deg);
+        -ms-transform: rotate(-60deg);
+        -o-transform: rotate(-60deg);
+        transform: rotate(-60deg);
+    }
+
+    .corner-1:before, .corner-2:before {
+        width: 173px;
+        height: 173px;
+        content: '';
+        position: absolute;
+        background: inherit;
+        top:0;
+        left: 0;
+        z-index: 1;
+        background: inherit;
+        background-repeat:no-repeat;
+        -webkit-backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        -ms-backface-visibility: hidden;
+        -o-backface-visibility: hidden; 
+        backface-visibility: hidden;                  
+    }           
+
+
+    .corner-1:before {
+        -webkit-transform: rotate(-60deg) translate(-87px, 0px);
+        -moz-transform: rotate(-60deg) translate(-87px, 0px);
+        -ms-transform: rotate(-60deg) translate(-87px, 0px);
+        -o-transform: rotate(-60deg) translate(-87px, 0px);
+        transform: rotate(-60deg) translate(-87px, 0px);    
+        -webkit-transform-origin: 0 0;
+        -moz-transform-origin: 0 0;
+        -ms-transform-origin: 0 0;
+        -o-transform-origin: 0 0;
+        transform-origin: 0 0;
+    }           
+
+    .corner-2:before {
+        -webkit-transform: rotate(60deg) translate(-45px, -12px);
+        -moz-transform: rotate(60deg) translate(-45px, -12px);
+        -ms-transform: rotate(60deg) translate(-45px, -12px);
+        -o-transform: rotate(60deg) translate(-45px, -12px);
+        transform: rotate(60deg) translate(-45px, -12px);   
+        bottom:0;
+    }       
+
+    /* Custom styles*/
+    .inner {       
+        color: $color-primary-tanwhite;
+        margin-top: 30px;
+    }
+}
+        
+.hex.hex-gap {
+    margin-left: 86px;
+}
+.hex.hex-1 {
+    background: $color-primary-blue;
+}
+.hex.hex-2 {
+    background: $color-primary-yellow url(http://loremicon.com/i/flat/64/magnifyingglass) center no-repeat;
+}
+.hex.hex-3 {
+    background: $color-primary-green url(http://loremicon.com/i/flat/64/barchart) center no-repeat;
+}
+.hex.hex-4 {
+    font-family: $font-stack-slabserif;
+    background-color: white;
+    background-image: url(../assets/images/main-hex-4.jpg);
+}
+.hex.hex-4:hover > .inner {
+    text-decoration: underline;
+}
+.hex.hex-blank {
+    background: $color-primary-darkdarkblue;
+}
+
+/* animations */
+.anim-delay-1 {
+    animation-delay: 0.2s;
+    -moz-animation-delay: 0.2s;
+    -webkit-animation-delay: 0.2s;
+}

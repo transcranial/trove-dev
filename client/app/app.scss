@@ -1,0 +1,58 @@
+$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
+$fa-font-path: "/bower_components/font-awesome/fonts";
+
+@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
+@import 'font-awesome/scss/font-awesome';
+
+/**
+ * App-wide Styles
+ */
+
+@mixin transition($transition-property, $transition-time, $method) {
+    -webkit-transition: $transition-property $transition-time $method;
+    -moz-transition: $transition-property $transition-time $method;
+    -ms-transition: $transition-property $transition-time $method;
+    -o-transition: $transition-property $transition-time $method;
+    transition: $transition-property $transition-time $method;
+}
+
+@mixin unselectable() {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.browsehappy {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+
+$font-stack-slabserif: cutive, sans-serif;
+$font-stack-sansserif-1: maven-pro, sans-serif;
+$font-stack-sansserif-2: jura, sans-serif;
+
+$color-primary-blue: #81CFE0;
+$color-transparent-blue: rgba(129, 207, 224, 0.92);
+$color-primary-gray: #95A5A6;
+$color-primary-yellow: #F5D76E;
+$color-primary-green: #68C3A3;
+$color-primary-darkblue: #2C3E50;
+$color-primary-darkdarkblue: #22313F;
+$color-primary-tanwhite: #F2F1EF;
+$color-primary-orange: #F2784B;
+$color-transparent-orange: rgba(242, 120, 75, 0.92);
+
+.dashboard-content-wrapper {
+    width: 100%;
+}
+
+// Component styles are injected through grunt
+// injector
+@import 'main/main.scss';
+@import 'rotation/rotation.scss';
+// endinjector

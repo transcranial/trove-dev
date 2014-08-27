@@ -1,0 +1,46 @@
+<div class="container-fluid">
+    <div id="dashboard-header" class="row">
+        <div id="logo"><i class="fa fa-cubes"></i> TROVE</div>
+        <div id="badges" ng-click="badgesListShow()"><i class="fa fa-trophy"></i> Badges</div>
+        <div id="user">
+            Welcome, <span id="name">{{ data.name }}</span> | <span id="logout">logout</span>
+        </div>
+    </div>
+    <div id="rotation-view" class="dashboard-content-wrapper">
+        <div id="rotation-carousel" class="row">
+            <slick ng-transclude settings="slickConfig" control="slickHandle">
+                <div class="rotation-block" ng-click="setVisibleRotation($index)" ng-class="{'currentRotation': $index==visibleRotationIndex, 'rotation-block-selectable': $index<=currentRotationIndex}" ng-repeat="rot in data.rotations" ng-show="rotationsLoaded">
+                    <span class="rotation-block-name">{{rot.rotationName}}</span><br>
+                    <span class="rotation-block-date">{{rot.rotationDates}}</span>
+                </div>
+            </slick>
+        </div>
+        <div id="rotation-goals" class="row">
+            <modality-goal modality="CT"></modality-goal>
+            <modality-goal modality="DX"></modality-goal>
+            <modality-goal modality="MRI"></modality-goal>
+            <modality-goal modality="FLUORO"></modality-goal>
+            <modality-goal modality="US"></modality-goal>
+            <modality-goal modality="NM"></modality-goal>
+        </div>
+        <div id="rotation-summary" class="row">
+            <modality-pie-chart id="rotation-summary-pie"></modality-pie-chart>
+            <weekly-numbers-chart id="rotation-summary-numbers"></weekly-numbers-chart>
+        </div>
+    </div>
+    <div id="studiesList" class="row animated fadeInUp" ng-if="studiesListShowBoolean" ng-class="{'fadeOutDown': studiesListFadeOutBoolean}">
+        <span id="studiesListClose" class="panelCloseButton" ng-click="studiesListClose()"></span>
+        <span id="studiesListMore" ng-show="studiesListMore"><i class="fa fa-4x fa-angle-double-down"></i></span>
+        <div id="studiesListItems">
+            <div ng-repeat="study in studiesList" class="studiesListItem">
+                <div class="examDesc">[ {{study.modality}} ] {{study.exam_name}}</div>
+                <div class="examWordCount">Word Count: {{study.word_count}}</div>
+                <div class="examTime">Transcribed Time: {{study.transcribed_time*1000 | date: 'short'}}</div>
+            </div>
+        </div>
+    </div>
+    <div id="badgesList" class="row animated fadeInDown" ng-if="badgesListShowBoolean" ng-class="{'fadeOutUp': badgesListFadeOutBoolean}">
+        <span id="badgesListClose" class="panelCloseButton" ng-click="badgesListClose()"></span>
+        <div id="badgesListHeader">My Badges</div>
+    </div>
+</div>
