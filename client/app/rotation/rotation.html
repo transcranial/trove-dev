@@ -2,6 +2,7 @@
     <div id="dashboard-header" class="row">
         <div id="logo"><i class="fa fa-cubes"></i> TROVE</div>
         <div id="badges" ng-click="badgesListShow()"><i class="fa fa-trophy"></i> Badges</div>
+        <div id="minnies" ng-model="minnies">{{minnies | number}} minnies</div>
         <div id="user">
             Welcome, <span id="name">{{ data.name }}</span> | <span id="logout">logout</span>
         </div>
@@ -17,7 +18,7 @@
         </div>
         <div id="rotation-goals" class="row">
             <modality-goal modality="CT"></modality-goal>
-            <modality-goal modality="DX"></modality-goal>
+            <modality-goal modality="XR"></modality-goal>
             <modality-goal modality="MRI"></modality-goal>
             <modality-goal modality="FLUORO"></modality-goal>
             <modality-goal modality="US"></modality-goal>
@@ -41,6 +42,13 @@
     </div>
     <div id="badgesList" class="row animated fadeInDown" ng-if="badgesListShowBoolean" ng-class="{'fadeOutUp': badgesListFadeOutBoolean}">
         <span id="badgesListClose" class="panelCloseButton" ng-click="badgesListClose()"></span>
-        <div id="badgesListHeader">My Badges</div>
+        <div id="badgesListItems">        <div id="badgesListHeader">My Badges</div>
+            <div ng-repeat="badge in badges" class="badge">
+                <div class="badgeIcon"><img ng-src="{{badge.iconURL}}" /></div>
+                <div class="badgeDesc">{{badge.desc}}</div>
+                <div class="badgeDate">{{badge.dateAchieved | date: 'medium'}}</div>
+            </div>
+            <div></div>
+        </div>
     </div>
 </div>

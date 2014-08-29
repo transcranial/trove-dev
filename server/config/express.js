@@ -5,12 +5,14 @@
 'use strict';
 
 var express = require('express');
+var passport = require('passport');
 var favicon = require('static-favicon');
 var morgan = require('morgan');
 var compression = require('compression');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
+var cookieSession = require('cookie-session');
 var errorHandler = require('errorhandler');
 var path = require('path');
 var config = require('./environment');
@@ -23,6 +25,12 @@ module.exports = function(app) {
   app.set('view engine', 'html');
   app.use(compression());
   app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(cookieSession({
+      keys: ['secret1', 'secret2']
+  }));
+  app.use(passport.initialize());
+  app.use(passport.session());
+  //app.use(require('../xsrf'));
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(cookieParser());

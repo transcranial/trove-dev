@@ -1,7 +1,9 @@
 <div class="container-main container-fluid">
 
   <div class="logo-lg animated fadeInLeft"><i class="fa fa-cubes"></i> TROVE</div>
-  <div class="subheader animated fadeInRight">Radiology Resident Dashboard</div>
+  <div class="subheader animated fadeInRight">Radiology Resident Dashboard
+      <span class="errormsg" ng-model="errormsg">{{errormsg}}</span>
+  </div>
 
   <div class="container-hex">
     
@@ -13,8 +15,8 @@
     
     <div class="login animated zoomIn anim-delay-1">   
       <form ng-submit="login()">
-        <input type="text" name="username" placeholder="username" />&nbsp;
-        <input type="password" name="password" placeholder="password" />&nbsp;
+        <input type="text" name="username" placeholder="username" ng-model="username" />&nbsp;
+        <input type="password" name="password" placeholder="password" ng-model="password" />&nbsp;
         <span class="submit" ng-click="login()">Log In</span>
         <input type="submit" hidden>
       </form>

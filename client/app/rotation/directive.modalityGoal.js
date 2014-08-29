@@ -24,7 +24,11 @@ app.directive('modalityGoal', function ($window, $http, $interval) {
                 modality = attrs.modality;
 
                 year = scope.data.rotations[scope.visibleRotationIndex].year;
-                goal = scope.data.goals[scope.data.rotations[scope.visibleRotationIndex].rotationName][year - 1][modality];
+                if (scope.data.goals[scope.data.rotations[scope.visibleRotationIndex].rotationName]) {
+                    goal = scope.data.goals[scope.data.rotations[scope.visibleRotationIndex].rotationName][year - 1][modality];
+                } else {
+                    goal = 0;
+                }   
 
                 if (goal === 0) {
                     if (donutChart) {
@@ -65,7 +69,7 @@ app.directive('modalityGoal', function ($window, $http, $interval) {
                             .ease('cubic-out')
                             .attrTween('d', arcTween);
                         donutChart.selectAll('.donut-chart-number')
-                            .text(Math.round((percentGoalMet + percentGoalExceeded) * 100) + '%');
+                            .text(Math.round((percentGoalMet + percentGoalExceeded) * 100) + '% (goal ' + goal + ')');
 
                     } else {
 
@@ -105,7 +109,7 @@ app.directive('modalityGoal', function ($window, $http, $interval) {
                             .attr('dx', '0.15em')
                             .attr('class', 'donut-chart-number')
                             .attr('text-anchor', 'middle')
-                            .text(Math.round((percentGoalMet + percentGoalExceeded) * 100) + '%');
+                            .text(Math.round((percentGoalMet + percentGoalExceeded) * 100) + '% (goal ' + goal + ')');
                     }
 
                 }

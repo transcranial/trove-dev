@@ -8,7 +8,7 @@ app.directive('modalityPieChart', function ($window, $http, $interval, $q) {
         restrict: 'E',
         link: function (scope, elem, attrs) {
 
-            var modalities = ['CT', 'DX', 'MRI', 'FLUORO', 'US', 'NM'];
+            var modalities = ['CT', 'XR', 'MRI', 'FLUORO', 'US', 'NM'];
 
             // pie chart
 

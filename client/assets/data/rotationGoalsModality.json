@@ -1,62 +1,62 @@
 {
     "Peds": [
-        {"CT": 2, "DX": 50, "MRI": 0, "FLUORO": 10, "US": 25, "NM": 0},
-        {"CT": 2, "DX": 50, "MRI": 2, "FLUORO": 10, "US": 25, "NM": 0},
-        {"CT": 2, "DX": 50, "MRI": 2, "FLUORO": 10, "US": 25, "NM": 0},
-        {"CT": 2, "DX": 50, "MRI": 2, "FLUORO": 10, "US": 25, "NM": 0}
+        {"CT": 2, "XR": 50, "MRI": 0, "FLUORO": 10, "US": 25, "NM": 0},
+        {"CT": 2, "XR": 50, "MRI": 2, "FLUORO": 10, "US": 25, "NM": 0},
+        {"CT": 2, "XR": 50, "MRI": 2, "FLUORO": 10, "US": 25, "NM": 0},
+        {"CT": 2, "XR": 50, "MRI": 2, "FLUORO": 10, "US": 25, "NM": 0}
     ],
     "Nucs": [
-        {"CT": 0, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 35},
-        {"CT": 0, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 39},
-        {"CT": 0, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 39},
-        {"CT": 0, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 39}
+        {"CT": 0, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 35},
+        {"CT": 0, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 39},
+        {"CT": 0, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 39},
+        {"CT": 0, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 39}
     ],
     "ER Days": [
-        {"CT": 60, "DX": 0, "MRI": 15, "FLUORO": 0, "US": 15, "NM": 0},
-        {"CT": 60, "DX": 0, "MRI": 15, "FLUORO": 0, "US": 15, "NM": 0},
-        {"CT": 60, "DX": 0, "MRI": 15, "FLUORO": 0, "US": 15, "NM": 0},
-        {"CT": 60, "DX": 0, "MRI": 15, "FLUORO": 0, "US": 15, "NM": 0}
+        {"CT": 60, "XR": 0, "MRI": 15, "FLUORO": 0, "US": 15, "NM": 0},
+        {"CT": 60, "XR": 0, "MRI": 15, "FLUORO": 0, "US": 15, "NM": 0},
+        {"CT": 60, "XR": 0, "MRI": 15, "FLUORO": 0, "US": 15, "NM": 0},
+        {"CT": 60, "XR": 0, "MRI": 15, "FLUORO": 0, "US": 15, "NM": 0}
     ],
     "ER Nights": [
-        {"CT": 120, "DX": 0, "MRI": 30, "FLUORO": 0, "US": 50, "NM": 0},
-        {"CT": 120, "DX": 0, "MRI": 30, "FLUORO": 0, "US": 50, "NM": 0},
-        {"CT": 120, "DX": 0, "MRI": 30, "FLUORO": 0, "US": 50, "NM": 0},
-        {"CT": 120, "DX": 0, "MRI": 30, "FLUORO": 0, "US": 50, "NM": 0}
+        {"CT": 120, "XR": 0, "MRI": 30, "FLUORO": 0, "US": 50, "NM": 0},
+        {"CT": 120, "XR": 0, "MRI": 30, "FLUORO": 0, "US": 50, "NM": 0},
+        {"CT": 120, "XR": 0, "MRI": 30, "FLUORO": 0, "US": 50, "NM": 0},
+        {"CT": 120, "XR": 0, "MRI": 30, "FLUORO": 0, "US": 50, "NM": 0}
     ],
     "NYP Bone": [
-        {"CT": 3, "DX": 150, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 3, "DX": 150, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 3, "DX": 150, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 3, "DX": 150, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0}
+        {"CT": 3, "XR": 150, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 3, "XR": 150, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 3, "XR": 150, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 3, "XR": 150, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0}
     ],
     "NYP Chest Inpt": [
-        {"CT": 35, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 35, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 35, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 35, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0}
+        {"CT": 35, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 35, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 35, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 35, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0}
     ],
     "NYP Body CT": [
-        {"CT": 15, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 20, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 20, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 20, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0}
+        {"CT": 15, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 20, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 20, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 20, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0}
     ],
     "NYP GI-GU": [
-        {"CT": 0, "DX": 40, "MRI": 0, "FLUORO": 41, "US": 0, "NM": 0},
-        {"CT": 0, "DX": 40, "MRI": 0, "FLUORO": 41, "US": 0, "NM": 0},
-        {"CT": 0, "DX": 40, "MRI": 0, "FLUORO": 41, "US": 0, "NM": 0},
-        {"CT": 0, "DX": 40, "MRI": 0, "FLUORO": 41, "US": 0, "NM": 0}
+        {"CT": 0, "XR": 40, "MRI": 0, "FLUORO": 41, "US": 0, "NM": 0},
+        {"CT": 0, "XR": 40, "MRI": 0, "FLUORO": 41, "US": 0, "NM": 0},
+        {"CT": 0, "XR": 40, "MRI": 0, "FLUORO": 41, "US": 0, "NM": 0},
+        {"CT": 0, "XR": 40, "MRI": 0, "FLUORO": 41, "US": 0, "NM": 0}
     ],
     "NYP Body US": [
-        {"CT": 0, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 55, "NM": 0},
-        {"CT": 0, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 55, "NM": 0},
-        {"CT": 0, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 55, "NM": 0},
-        {"CT": 0, "DX": 0, "MRI": 0, "FLUORO": 0, "US": 55, "NM": 0}
+        {"CT": 0, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 55, "NM": 0},
+        {"CT": 0, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 55, "NM": 0},
+        {"CT": 0, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 55, "NM": 0},
+        {"CT": 0, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 55, "NM": 0}
     ],
     "Neuro": [
-        {"CT": 35, "DX": 5, "MRI": 5, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 25, "DX": 5, "MRI": 25, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 25, "DX": 5, "MRI": 40, "FLUORO": 1, "US": 0, "NM": 0},
-        {"CT": 25, "DX": 0, "MRI": 40, "FLUORO": 1, "US": 0, "NM": 0}
+        {"CT": 35, "XR": 5, "MRI": 5, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 25, "XR": 5, "MRI": 25, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 25, "XR": 5, "MRI": 40, "FLUORO": 1, "US": 0, "NM": 0},
+        {"CT": 25, "XR": 0, "MRI": 40, "FLUORO": 1, "US": 0, "NM": 0}
     ]
 }
