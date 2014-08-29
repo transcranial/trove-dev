@@ -12,16 +12,16 @@ function ProxyStrategy(url) {
 	LocalStrategy.call(this, { usernameField: 'username'}, this.verifyUser.bind(this));
 
 	passport.serializeUser(function(user,done) {
-		console.log('in serializeUser');
-		console.log(user);
+		//console.log('in serializeUser');
+		//console.log(user);
 		// store/serialize the user._id in the session cookie
 		done(null, user._id);
 	});
 
 	// deserialize user from cookie
 	passport.deserializeUser(function(id, done) {
-		console.log('in deserialize user');
-		console.log(id);
+		//console.log('in deserialize user');
+		//console.log(id);
 		var options = {
 			uri: 'https://10.177.152.33/getUserById',
 			//hostname: '67.244.2.107',
@@ -80,14 +80,14 @@ ProxyStrategy.prototype.verifyUser = function(username, password, done) {
 		// auth server. We now serve our own 401 if user is 'null' from the
 		// proxy
 		if (res.statusCode == 401) {
-			console.log('401 luls');
+			//console.log('401 luls');
 			//error = {error:401};
 		}
 
-		console.log('in verifyUser');
+		//console.log('in verifyUser');
 		var user = res.body
-		console.log(error);
-		console.log(user);
+		//console.log(error);
+		//console.log(user);
 		done(error, user);
 	}); 
 
