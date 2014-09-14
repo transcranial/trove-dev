@@ -5,7 +5,7 @@
 'use strict';
 
 var express = require('express');
-var passport = require('passport');
+//var passport = require('passport');
 var favicon = require('static-favicon');
 var morgan = require('morgan');
 var compression = require('compression');
@@ -28,8 +28,8 @@ module.exports = function(app) {
   app.use(cookieSession({
       keys: ['secret1', 'secret2']
   }));
-  app.use(passport.initialize());
-  app.use(passport.session());
+  //app.use(passport.initialize());
+  //app.use(passport.session());
   //app.use(require('../xsrf'));
   app.use(bodyParser.json());
   app.use(methodOverride());
