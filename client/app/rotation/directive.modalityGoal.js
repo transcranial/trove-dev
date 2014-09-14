@@ -28,7 +28,7 @@ app.directive('modalityGoal', function ($window, $http, $interval) {
                     goal = scope.data.goals[scope.data.rotations[scope.visibleRotationIndex].rotationName][year - 1][modality];
                 } else {
                     goal = 0;
-                }   
+                }
 
                 if (goal === 0) {
                     if (donutChart) {
@@ -63,15 +63,11 @@ app.directive('modalityGoal', function ($window, $http, $interval) {
 
                     if (donutChart) {
 
-                        donutGroup = donutGroup.each(function (d) { this._current = d; }).data(donutPie([percentGoalMet, 1 - percentGoalMet]));
-                        donutGroup.transition()
-                            .duration(1200)
-                            .ease('cubic-out')
-                            .attrTween('d', arcTween);
-                        donutChart.selectAll('.donut-chart-number')
-                            .text(Math.round((percentGoalMet + percentGoalExceeded) * 100) + '% (goal ' + goal + ')');
+                        d3.select(elem[0]).select('svg').remove();
+                        donutChart = null;
+                        donutGroup = null;
 
-                    } else {
+                    }
 
                         donutChart = d3.select(elem[0])
                             .append('svg')
@@ -85,12 +81,12 @@ app.directive('modalityGoal', function ($window, $http, $interval) {
                             .data(donutPie([0, 1]))
                             .enter().append('path')
                             .attr('d', donutArc)
-                            .style('fill', function (d, i) { 
+                            .style('fill', function (d, i) {
                                 if (i===0) {
                                     return scope.colors[modality];
                                 } else {
                                     return '#F2F1EF';
-                                } 
+                                }
                             });
                         donutGroup = donutGroup.each(function (d) { this._current = d; }).data(donutPie([percentGoalMet, 1 - percentGoalMet]));
                         donutGroup.transition()
@@ -99,28 +95,91 @@ app.directive('modalityGoal', function ($window, $http, $interval) {
                             .ease('cubic-in-out')
                             .attrTween('d', arcTween);
 
+                        // donutChart.append('text')
+                        //     .attr('dy', '-1.5em')
+                        //     .attr('dx', '0.15em')
+                        //     .attr('class', 'donut-chart-number')
+                        //     .attr('text-anchor', 'middle')
+                        //     // .text(Math.round((percentGoalMet + percentGoalExceeded) * 100) + '% (' + numStudiesWeeklyTotal + '/' + goal + ')');
+                        //     .text(Math.round((percentGoalMet + percentGoalExceeded) * 100));
+
                         donutChart.append('text')
-                            .attr('dy', '.35em')
+                            .attr('dy', '0.0em')
                             .attr('class', 'donut-chart-label')
                             .attr('text-anchor', 'middle')
                             .text(modality);
                         donutChart.append('text')
-                            .attr('dy', '1.5em')
+                            .attr('dy', '1.3em')
                             .attr('dx', '0.15em')
                             .attr('class', 'donut-chart-number')
                             .attr('text-anchor', 'middle')
-                            .text(Math.round((percentGoalMet + percentGoalExceeded) * 100) + '% (goal ' + goal + ')');
-                    }
+                            .text(Math.round((percentGoalMet + percentGoalExceeded) * 100) + '% (' + numStudiesWeeklyTotal + '/' + goal + ')');
+                            // .text('(' + numStudiesWeeklyTotal + '/' + goal + ')');
+
 
                 }
+
+
+                //     if (donutChart) {
+                //
+                //         donutGroup = donutGroup.each(function (d) { this._current = d; }).data(donutPie([percentGoalMet, 1 - percentGoalMet]));
+                //         donutGroup.transition()
+                //             .duration(1200)
+                //             .ease('cubic-out')
+                //             .attrTween('d', arcTween);
+                //         donutChart.selectAll('.donut-chart-number')
+                //             .text(Math.round((percentGoalMet + percentGoalExceeded) * 100) + '% (' + numStudiesWeeklyTotal + '/' + goal + ')');
+                //
+                //     } else {
+                //
+                //         donutChart = d3.select(elem[0])
+                //             .append('svg')
+                //             .attr('id', 'donutChart' + modality)
+                //             .attr('width', widthDonut + marginLeft + marginRight)
+                //             .attr('height', height + marginTop + marginBottom)
+                //             .append('g')
+                //             .attr('transform', 'translate(' + (outerRadius + marginLeft) + ',' + (outerRadius + marginTop) + ')');
+                //
+                //         donutGroup = donutChart.selectAll('path')
+                //             .data(donutPie([0, 1]))
+                //             .enter().append('path')
+                //             .attr('d', donutArc)
+                //             .style('fill', function (d, i) {
+                //                 if (i===0) {
+                //                     return scope.colors[modality];
+                //                 } else {
+                //                     return '#F2F1EF';
+                //                 }
+                //             });
+                //         donutGroup = donutGroup.each(function (d) { this._current = d; }).data(donutPie([percentGoalMet, 1 - percentGoalMet]));
+                //         donutGroup.transition()
+                //             .duration(1200)
+                //             .delay(500)
+                //             .ease('cubic-in-out')
+                //             .attrTween('d', arcTween);
+                //
+                //         donutChart.append('text')
+                //             .attr('dy', '.35em')
+                //             .attr('class', 'donut-chart-label')
+                //             .attr('text-anchor', 'middle')
+                //             .text(modality);
+                //         donutChart.append('text')
+                //             .attr('dy', '1.5em')
+                //             .attr('dx', '0.15em')
+                //             .attr('class', 'donut-chart-number')
+                //             .attr('text-anchor', 'middle')
+                //             .text(Math.round((percentGoalMet + percentGoalExceeded) * 100) + '% (' + numStudiesWeeklyTotal + '/' + goal + ')');
+                //     }
+                //
+                // }
 
                 scope.modalityGoalLoaded = true;
 
             }
 
-            scope.$watch('visibleRotationIndex', function () { 
+            scope.$watch('visibleRotationIndex', function () {
                 var checkDataLoaded = $interval(function () {
-                    if (scope.data.rotations && scope.data.goals) { 
+                    if (scope.data.rotations && scope.data.goals) {
                         var dateRange = scope.data.rotations[scope.visibleRotationIndex].rotationDates;
                         $http.get('/api/studies/' + scope.currentUser.userId + '/' + attrs.modality + '/' + dateRange.split('-')[0].replace(/\//g,'-') + '/' + dateRange.split('-')[1].replace(/\//g,'-') + '/count').success(function (count) {
                                 numStudiesWeeklyTotal = count;
