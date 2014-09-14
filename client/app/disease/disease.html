@@ -1,0 +1,49 @@
+<div>
+	<style>
+		.bullet { font: 10px sans-serif; }
+		.bullet .marker { stroke: #000; stroke-width: 2px; }
+		.bullet .tick line { stroke: #666; stroke-width: .5px; }
+		.bullet .range.s0 { fill: #eee; }
+		.bullet .range.s1 { fill: #ddd; }
+		.bullet .range.s2 { fill: #ccc; }
+		.bullet .measure.s0 { fill: lightsteelblue; }
+		.bullet .measure.s1 { fill: steelblue; }
+		.bullet .title { font-size: 14px; font-weight: bold; }
+		.bullet .subtitle { fill: #999; }
+		.selectedRotation {background: #81CFE0}
+	</style>
+	<div id="dashboard-header" class="row">
+        <div id="logo" class="animated fadeInLeft"><i class="fa fa-cubes"></i> TROVE</div>
+        <div id="user">
+            Welcome, <span id="name">{{ data.name }}</span> | <span id="logout">logout</span>
+        </div>
+    </div>
+    <div class="container-fluid">
+    	<div class="col-md-3 animated fadeInLeft">
+    		<div class="col-md-12 panel" ng-class="getSelected('BODY CT')" ng-click="updateChart('BODY CT')">
+	    		<h1>Body CT</h1>
+	    	</div>
+    		<div class="col-md-12 panel" ng-class="getSelected('GI')" ng-click="updateChart('GI')">
+	    		<h1>GI</h1>
+	    	</div>
+    		<div class="col-md-12 panel" ng-class="getSelected('NEURO')" ng-click="updateChart('NEURO')">
+	    		<h1>Neuro</h1>
+	    	</div>
+    		<div class="col-md-12 panel" ng-class="getSelected('PEDS')" ng-click="updateChart('PEDS')">
+	    		<h1>Peds</h1>
+	    	</div>
+    		<div class="col-md-12 panel" ng-class="getSelected('NUCS')" ng-click="updateChart('NUCS')">
+	    		<h1>Nucs</h1>
+	    	</div>
+    		<div class="col-md-12 panel" ng-class="getSelected('CHEST INPT')" ng-click="updateChart('CHEST INPT')">
+	    		<h1>Chest</h1>
+	    	</div>
+    		<div class="col-md-12 panel" ng-class="getSelected('BONE')" ng-click="updateChart('BONE')">
+	    		<h1>Bone</h1>
+	    	</div>
+    	</div>
+    	<div class="col-md-9 well animated fadeInRight">
+			<bullet-Chart directive-data="data"></bullet-Chart>
+		</div>
+	</div>
+</div>
