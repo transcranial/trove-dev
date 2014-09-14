@@ -7,8 +7,14 @@ app.controller('MainCtrl', function ($rootScope, $scope, $location, $http) {
     $scope.errormsg = "";
 
     $scope.login = function() {
+        $http.get('/api/users/lic9093/info').success(function (user) {
+            $rootScope.currentUser = user;
+            $location.path('/dashboard/rotation');
+
+        });
+        /*
         $http({
-            method: 'POST', 
+            method: 'POST',
             url: '/auth/login',
             data: {
                 username: $scope.username,
@@ -20,11 +26,12 @@ app.controller('MainCtrl', function ($rootScope, $scope, $location, $http) {
 
                 $rootScope.currentUser = user;
                 $location.path('/dashboard/rotation');
-                
+
             });
         }).error(function (error) {
             $scope.errormsg = "Error loggin in.";
         });
+        */
     };
-    
+
 });

@@ -7,13 +7,12 @@ app.directive('modalityGoal', function ($window, $http, $interval) {
     return {
         restrict: 'E',
         link: function (scope, elem, attrs) {
-
-            var widthDonut = $window.innerHeight / 4,
-                height = $window.innerHeight / 4,
-                marginTop = 20,
+            var marginTop = 20,
                 marginBottom = 20,
                 marginLeft = $window.innerWidth / 20,
                 marginRight = $window.innerWidth / 20,
+                widthDonut = Math.min($window.innerHeight / 4, $window.innerWidth / 4 - marginLeft - marginRight - 20),
+                height = Math.min($window.innerHeight / 4, $window.innerWidth / 4 - marginLeft - marginRight - 20),
                 outerRadius = height / 2,
                 innerRadius = 3 * outerRadius / 4;
 

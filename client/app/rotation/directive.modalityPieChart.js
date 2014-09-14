@@ -74,7 +74,7 @@ app.directive('modalityPieChart', function ($window, $http, $interval, $q) {
 
                 pieGroup.append('text')
                     .attr('transform', function (d, i) { return 'translate(' + (radius+10) + ',' + (i*20-radius) + ')'; })
-                    /*.attr('transform', function (d) { 
+                    /*.attr('transform', function (d) {
                         var c = pieArc.centroid(d),
                             x = c[0],
                             y = c[1],
@@ -83,6 +83,8 @@ app.directive('modalityPieChart', function ($window, $http, $interval, $q) {
                     })*/
                     .attr('class', 'pie-graph-label')
                     .attr('text-anchor', 'left')
+                    .attr('dx', '1.8em')
+                    .attr('dy', '-2.2em')
                     /*.attr('text-anchor', function (d) {
                         return (d.endAngle + d.startAngle)/2 > Math.PI ? 'end' : 'start';
                     })*/
@@ -91,7 +93,7 @@ app.directive('modalityPieChart', function ($window, $http, $interval, $q) {
 
                 pieGroup.append('text')
                     /*.attr('transform', function (d) { return 'translate(' + pieArc.centroid(d) + ')'; })*/
-                    .attr('transform', function (d) { 
+                    .attr('transform', function (d) {
                         var c = pieArc.centroid(d),
                             x = c[0],
                             y = c[1],
@@ -111,9 +113,9 @@ app.directive('modalityPieChart', function ($window, $http, $interval, $q) {
 
             }
 
-            scope.$watch('visibleRotationIndex', function () { 
+            scope.$watch('visibleRotationIndex', function () {
                 var checkDataLoaded = $interval(function () {
-                    if (scope.data.rotations) { 
+                    if (scope.data.rotations) {
                         var dateRange = scope.data.rotations[scope.visibleRotationIndex].rotationDates;
                         $q.all(modalities.map(function (modality) {
                             return $http.get('/api/studies/' + scope.currentUser.userId + '/' + modality + '/' + dateRange.split('-')[0].replace(/\//g,'-') + '/' + dateRange.split('-')[1].replace(/\//g,'-') + '/count');
@@ -129,7 +131,7 @@ app.directive('modalityPieChart', function ($window, $http, $interval, $q) {
                                     });
                                 }
                             }
-                            createPie(); 
+                            createPie();
                         });
                         $interval.cancel(checkDataLoaded);
                     }
