@@ -1,7 +1,7 @@
 'use strict';
 
 var Study = require('./study.model');
-var User = require('./../users/user.model')
+var User = require('./../user/user.model')
 
 // Get all studies on a single date, by currentUser
 exports.allStudiesOnDate = function(req, res) {
