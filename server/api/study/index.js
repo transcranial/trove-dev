@@ -14,4 +14,6 @@ router.get('/:user/:modality/:date/count', controller.modalityStudiesOnDateCount
 router.get('/:user/:modality/:startDate/:endDate', controller.modalityStudiesBetweenDates);
 router.get('/:user/:modality/:startDate/:endDate/count', controller.modalityStudiesBetweenDatesCount);
 
+router.post('/processHL7JSON', controller.processHL7JSON);
+
 module.exports = router;
