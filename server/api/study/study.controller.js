@@ -6,7 +6,7 @@ var User = require('./../users/user.model')
 // Get all studies on a single date, by currentUser
 exports.allStudiesOnDate = function(req, res) {
     Study.find({ 
-        radiologist: req.params.user,
+        assistant_radiologist: req.params.user,
         transcribed_time: { 
             $gte: (new Date(req.params.date).valueOf()) / 1000,
             $lt: (new Date(req.params.date).valueOf()) / 1000 + 86400
@@ -21,7 +21,7 @@ exports.allStudiesOnDate = function(req, res) {
 // Get all studies between two dates, by currentUser
 exports.allStudiesBetweenDates = function(req, res) {
     Study.find({ 
-        radiologist: req.params.user,
+        assistant_radiologist: req.params.user,
         transcribed_time: { 
             $gte: (new Date(req.params.startDate).valueOf()) / 1000,
             $lt: (new Date(req.params.endDate).valueOf()) / 1000 + 86400
@@ -36,7 +36,7 @@ exports.allStudiesBetweenDates = function(req, res) {
 // Get studies for specified modality on a single date, by currentUser
 exports.modalityStudiesOnDate = function(req, res) {
     Study.find({ 
-        radiologist: req.params.user,
+        assistant_radiologist: req.params.user,
         transcribed_time: { 
             $gte: (new Date(req.params.date).valueOf()) / 1000,
             $lt: (new Date(req.params.date).valueOf()) / 1000 + 86400
@@ -52,7 +52,7 @@ exports.modalityStudiesOnDate = function(req, res) {
 // Get studies for specified modality between two dates, by currentUser
 exports.modalityStudiesBetweenDates = function(req, res) {
     Study.find({ 
-        radiologist: req.params.user,
+        assistant_radiologist: req.params.user,
         transcribed_time: { 
             $gte: (new Date(req.params.startDate).valueOf()) / 1000,
             $lt: (new Date(req.params.endDate).valueOf()) / 1000 + 86400
@@ -68,7 +68,7 @@ exports.modalityStudiesBetweenDates = function(req, res) {
 // Get count of all studies on a single date, by currentUser
 exports.allStudiesOnDateCount = function(req, res) {
     Study.count({ 
-        radiologist: req.params.user,
+        assistant_radiologist: req.params.user,
         transcribed_time: { 
             $gte: (new Date(req.params.date).valueOf()) / 1000,
             $lt: (new Date(req.params.date).valueOf()) / 1000 + 86400
@@ -83,7 +83,7 @@ exports.allStudiesOnDateCount = function(req, res) {
 // Get count of all studies between two dates, by currentUser
 exports.allStudiesBetweenDatesCount = function(req, res) {
     Study.count({ 
-        radiologist: req.params.user,
+        assistant_radiologist: req.params.user,
         transcribed_time: { 
             $gte: (new Date(req.params.startDate).valueOf()) / 1000,
             $lt: (new Date(req.params.endDate).valueOf()) / 1000 + 86400
@@ -98,7 +98,7 @@ exports.allStudiesBetweenDatesCount = function(req, res) {
 // Get count of studies for specified modality on a single date, by currentUser
 exports.modalityStudiesOnDateCount = function(req, res) {
     Study.count({ 
-        radiologist: req.params.user,
+        assistant_radiologist: req.params.user,
         transcribed_time: { 
             $gte: (new Date(req.params.date).valueOf()) / 1000,
             $lt: (new Date(req.params.date).valueOf()) / 1000 + 86400
@@ -114,7 +114,7 @@ exports.modalityStudiesOnDateCount = function(req, res) {
 // Get count of studies for specified modality between two dates, by currentUser
 exports.modalityStudiesBetweenDatesCount = function(req, res) {
     Study.count({ 
-        radiologist: req.params.user,
+        assistant_radiologist: req.params.user,
         transcribed_time: { 
             $gte: (new Date(req.params.startDate).valueOf()) / 1000,
             $lt: (new Date(req.params.endDate).valueOf()) / 1000 + 86400
