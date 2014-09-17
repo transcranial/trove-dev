@@ -62,9 +62,11 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
 
     // rotation carousel handles (which will be populated by directive)
     $scope.slickHandle = {
+        
     };
 
     $scope.data = {
+
     };
 
     // get number of studies for rotation
@@ -83,7 +85,6 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
 
         $scope.data.residentStudies = {
             'dateRange': dateRange,
-
         };
     }
 

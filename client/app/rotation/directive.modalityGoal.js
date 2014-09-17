@@ -68,31 +68,31 @@ app.directive('modalityGoal', function ($window, $http, $interval) {
 
                     }
 
-                        donutChart = d3.select(elem[0])
-                            .append('svg')
-                            .attr('id', 'donutChart' + modality)
-                            .attr('width', widthDonut + marginLeft + marginRight)
-                            .attr('height', height + marginTop + marginBottom)
-                            .append('g')
-                            .attr('transform', 'translate(' + (outerRadius + marginLeft) + ',' + (outerRadius + marginTop) + ')');
+                    donutChart = d3.select(elem[0])
+                        .append('svg')
+                        .attr('id', 'donutChart' + modality)
+                        .attr('width', widthDonut + marginLeft + marginRight)
+                        .attr('height', height + marginTop + marginBottom)
+                        .append('g')
+                        .attr('transform', 'translate(' + (outerRadius + marginLeft) + ',' + (outerRadius + marginTop) + ')');
 
-                        donutGroup = donutChart.selectAll('path')
-                            .data(donutPie([0, 1]))
-                            .enter().append('path')
-                            .attr('d', donutArc)
-                            .style('fill', function (d, i) {
-                                if (i===0) {
-                                    return scope.colors[modality];
-                                } else {
-                                    return '#F2F1EF';
-                                }
-                            });
-                        donutGroup = donutGroup.each(function (d) { this._current = d; }).data(donutPie([percentGoalMet, 1 - percentGoalMet]));
-                        donutGroup.transition()
-                            .duration(1200)
-                            .delay(500)
-                            .ease('cubic-in-out')
-                            .attrTween('d', arcTween);
+                    donutGroup = donutChart.selectAll('path')
+                        .data(donutPie([0, 1]))
+                        .enter().append('path')
+                        .attr('d', donutArc)
+                        .style('fill', function (d, i) {
+                            if (i===0) {
+                                return scope.colors[modality];
+                            } else {
+                                return '#F2F1EF';
+                            }
+                        });
+                    donutGroup = donutGroup.each(function (d) { this._current = d; }).data(donutPie([percentGoalMet, 1 - percentGoalMet]));
+                    donutGroup.transition()
+                        .duration(1200)
+                        .delay(500)
+                        .ease('cubic-in-out')
+                        .attrTween('d', arcTween);
 
                         // donutChart.append('text')
                         //     .attr('dy', '-1.5em')
@@ -102,18 +102,18 @@ app.directive('modalityGoal', function ($window, $http, $interval) {
                         //     // .text(Math.round((percentGoalMet + percentGoalExceeded) * 100) + '% (' + numStudiesWeeklyTotal + '/' + goal + ')');
                         //     .text(Math.round((percentGoalMet + percentGoalExceeded) * 100));
 
-                        donutChart.append('text')
-                            .attr('dy', '0.0em')
-                            .attr('class', 'donut-chart-label')
-                            .attr('text-anchor', 'middle')
-                            .text(modality);
-                        donutChart.append('text')
-                            .attr('dy', '1.3em')
-                            .attr('dx', '0.15em')
-                            .attr('class', 'donut-chart-number')
-                            .attr('text-anchor', 'middle')
-                            .text(Math.round((percentGoalMet + percentGoalExceeded) * 100) + '% (' + numStudiesWeeklyTotal + '/' + goal + ')');
-                            // .text('(' + numStudiesWeeklyTotal + '/' + goal + ')');
+                    donutChart.append('text')
+                        .attr('dy', '0.0em')
+                        .attr('class', 'donut-chart-label')
+                        .attr('text-anchor', 'middle')
+                        .text(modality);
+                    donutChart.append('text')
+                        .attr('dy', '1.3em')
+                        .attr('dx', '0.15em')
+                        .attr('class', 'donut-chart-number')
+                        .attr('text-anchor', 'middle')
+                        .text(Math.round((percentGoalMet + percentGoalExceeded) * 100) + '% (' + numStudiesWeeklyTotal + '/' + goal + ')');
+                        // .text('(' + numStudiesWeeklyTotal + '/' + goal + ')');
 
 
                 }

@@ -3,13 +3,22 @@
 var Study = require('./study.model');
 var User = require('./../user/user.model')
 
+var alternateModalityMapper = {
+    'XR':/DX|XR/i,
+    'FLUORO':/GI|GU|FLUORO/i
+}
+
+function getModality(modality) {
+    return alternateModalityMapper[modality] || new RegExp(".*"+modality+".*");
+}
+
 // Get all studies on a single date, by currentUser
 exports.allStudiesOnDate = function(req, res) {
     Study.find({ 
         assistant_radiologist: req.params.user,
         transcribed_time: { 
-            $gte: (new Date(req.params.date).valueOf()) / 1000,
-            $lt: (new Date(req.params.date).valueOf()) / 1000 + 86400
+            $gte: (new Date(req.params.date).getTime()),
+            $lt: (new Date(req.params.date).getTime()) + 86400000
         }
     }, null, {sort: {transcribed_time: 1}}, function (err, studies) {
         if(err) { return handleError(res, err); }
@@ -20,11 +29,12 @@ exports.allStudiesOnDate = function(req, res) {
 
 // Get all studies between two dates, by currentUser
 exports.allStudiesBetweenDates = function(req, res) {
+
     Study.find({ 
         assistant_radiologist: req.params.user,
         transcribed_time: { 
-            $gte: (new Date(req.params.startDate).valueOf()) / 1000,
-            $lt: (new Date(req.params.endDate).valueOf()) / 1000 + 86400
+            $gte: (new Date(req.params.startDate).getTime()),
+            $lt: (new Date(req.params.endDate).getTime()) + 86400000
         }
     }, function (err, studies) {
         if(err) { return handleError(res, err); }
@@ -38,10 +48,10 @@ exports.modalityStudiesOnDate = function(req, res) {
     Study.find({ 
         assistant_radiologist: req.params.user,
         transcribed_time: { 
-            $gte: (new Date(req.params.date).valueOf()) / 1000,
-            $lt: (new Date(req.params.date).valueOf()) / 1000 + 86400
+            $gte: (new Date(req.params.date).getTime()),
+            $lt: (new Date(req.params.date).getTime()) + 86400000
         },
-        modality: req.params.modality
+        modality: getModality(req.params.modality)
     }, null, {sort: {transcribed_time: 1}}, function (err, studies) {
         if(err) { return handleError(res, err); }
         if(!studies) { return res.send(404); }
@@ -54,10 +64,10 @@ exports.modalityStudiesBetweenDates = function(req, res) {
     Study.find({ 
         assistant_radiologist: req.params.user,
         transcribed_time: { 
-            $gte: (new Date(req.params.startDate).valueOf()) / 1000,
-            $lt: (new Date(req.params.endDate).valueOf()) / 1000 + 86400
+            $gte: (new Date(req.params.startDate).getTime()),
+            $lt: (new Date(req.params.endDate).getTime()) + 86400000
         },
-        modality: req.params.modality
+        modality: getModality(req.params.modality)
     }, function (err, studies) {
         if(err) { return handleError(res, err); }
         if(!studies) { return res.send(404); }
@@ -70,8 +80,8 @@ exports.allStudiesOnDateCount = function(req, res) {
     Study.count({ 
         assistant_radiologist: req.params.user,
         transcribed_time: { 
-            $gte: (new Date(req.params.date).valueOf()) / 1000,
-            $lt: (new Date(req.params.date).valueOf()) / 1000 + 86400
+            $gte: (new Date(req.params.date).getTime()),
+            $lt: (new Date(req.params.date).getTime()) + 86400000
         }
     }, function (err, count) {
         if(err) { return handleError(res, err); }
@@ -85,8 +95,8 @@ exports.allStudiesBetweenDatesCount = function(req, res) {
     Study.count({ 
         assistant_radiologist: req.params.user,
         transcribed_time: { 
-            $gte: (new Date(req.params.startDate).valueOf()) / 1000,
-            $lt: (new Date(req.params.endDate).valueOf()) / 1000 + 86400
+            $gte: (new Date(req.params.startDate).getTime()),
+            $lt: (new Date(req.params.endDate).getTime()) + 86400000
         }
     }, function (err, count) {
         if(err) { return handleError(res, err); }
@@ -100,10 +110,10 @@ exports.modalityStudiesOnDateCount = function(req, res) {
     Study.count({ 
         assistant_radiologist: req.params.user,
         transcribed_time: { 
-            $gte: (new Date(req.params.date).valueOf()) / 1000,
-            $lt: (new Date(req.params.date).valueOf()) / 1000 + 86400
+            $gte: (new Date(req.params.date).getTime()),
+            $lt: (new Date(req.params.date).getTime()) + 86400000
         },
-        modality: req.params.modality
+        modality: getModality(req.params.modality)
     }, function (err, count) {
         if(err) { return handleError(res, err); }
         if(!count) { return res.json(0) }
@@ -116,10 +126,10 @@ exports.modalityStudiesBetweenDatesCount = function(req, res) {
     Study.count({ 
         assistant_radiologist: req.params.user,
         transcribed_time: { 
-            $gte: (new Date(req.params.startDate).valueOf()) / 1000,
-            $lt: (new Date(req.params.endDate).valueOf()) / 1000 + 86400
+            $gte: (new Date(req.params.startDate).getTime()),
+            $lt: (new Date(req.params.endDate).getTime()) + 86400000
         },
-        modality: req.params.modality
+        modality: getModality(req.params.modality)
     }, function (err, count) {
         if(err) { return handleError(res, err); }
         if(!count) { return res.json(0) }
@@ -167,24 +177,20 @@ exports.processHL7JSON = function(req, res) {
     }
 
     function populateStudy(study,request_body) {
-        study['modality']            = request_body['modality'];
-        study['service_description'] = request_body['service_description'];
-        study['service_code']        = request_body['service_code'];
-        study['report']              = request_body['report'];
-        study['accession']           = request_body['accession'].replace(/-\d+/,"");
-        study['service_code']        = request_body['service_code'];
-        study['exam_name']           = request_body['service_description'];
+        study['modality']            = request_body['modality'].trim();
+        study['service_description'] = request_body['service_description'].trim();
+        study['service_code']        = request_body['service_code'].trim();
+        study['report']              = request_body['report'].trim();
+        study['accession']           = request_body['accession'].replace(/-\d+/,"").trim();
+        study['service_code']        = request_body['service_code'].trim();
+        study['exam_name']           = request_body['service_description'].trim();
     }
-    console.log('In processHL7JSON');
-    console.log(req.body);
 
     var temp_radiologist_string = getRadiologist(req.body['radiologist']);
     var temp_assistant_radiologist_string = getRadiologist(req.body['assistant_radiologist']);
     var result_status = req.body['result_status'];
 
     var current_study = null;
-
-    console.log('######STUDY######');
 
     Study.findOne({
         accession:req.body.accession.replace(/-\d+/,""),
@@ -193,15 +199,15 @@ exports.processHL7JSON = function(req, res) {
 
         if(study) { 
             current_study = study;
-            // populateStudy will technically overwrite old values with the current
-            populateStudy(current_study, req.body);
         } else {
             current_study = new Study();
-            // populateStudy will assign values as specified from the req.body
-            populateStudy(current_study, req.body);
             // arbitrarily assigning radiologists to 0 for now
             current_study['radiologist'] = 0;
         }
+
+        // populateStudy will technically overwrite old values with the current
+        // populateStudy will assign values as specified from the req.body
+        populateStudy(current_study, req.body);
 
         if (!temp_assistant_radiologist_string && req.body['report']) { 
             temp_assistant_radiologist_string = parseAssistantRadiologistFromReport(req.body['report']);
@@ -218,9 +224,7 @@ exports.processHL7JSON = function(req, res) {
         User.findOne({ 
             full_name : temp_assistant_radiologist_string 
         }, function(err, user) {
-            console.log(temp_assistant_radiologist_string);
-            console.log(user);
-             // assuming all users exist already
+            // assuming all users exist already
             // if they do not currently exist in the db, they are assigned the id of 0
             if (user) {
                 console.log('resident found');

@@ -196,8 +196,9 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
                 }, 50);
             });
 
+            // this is it
             scope.$watch('visibleRotationIndex', function () { 
-
+                
                 var modalityPieChartLoadedCheck = $interval(function () {
                     if (scope.modalityPieChartLoaded) {
                         weeklyNumbers = [0, 0, 0, 0, 0, 0, 0];
