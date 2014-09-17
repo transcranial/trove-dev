@@ -236,7 +236,7 @@ exports.processHL7JSON = function(req, res) {
             }
 
             if (req.body['scheduled_time']) {
-                var scheduled_date = convertHL7DateJavascriptDate(req.body['scheduled_time']);
+                var scheduled_date = convertHL7DateToJavascriptDate(req.body['scheduled_time']);
                 current_study['scheduled_date'] = scheduled_date;
                 current_study['scheduled_time'] = scheduled_date.getTime();
             }
