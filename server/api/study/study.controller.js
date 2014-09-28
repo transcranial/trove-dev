@@ -1,16 +1,9 @@
 'use strict';
 
 var Study = require('./study.model');
-var User = require('./../user/user.model')
+var User = require('./../user/user.model');
 
-var alternateModalityMapper = {
-    'XR':/DX|XR/i,
-    'FLUORO':/GI|GU|FLUORO/i
-}
-
-function getModality(modality) {
-    return alternateModalityMapper[modality] || new RegExp(".*"+modality+".*");
-}
+var modalityMapper = require('./../modalityMapper');
 
 // Get all studies on a single date, by currentUser
 exports.allStudiesOnDate = function(req, res) {
@@ -51,7 +44,7 @@ exports.modalityStudiesOnDate = function(req, res) {
             $gte: (new Date(req.params.date).getTime()),
             $lt: (new Date(req.params.date).getTime()) + 86400000
         },
-        modality: getModality(req.params.modality)
+        modality: modalityMapper.map(req.params.modality)
     }, null, {sort: {transcribed_time: 1}}, function (err, studies) {
         if(err) { return handleError(res, err); }
         if(!studies) { return res.send(404); }
@@ -67,7 +60,7 @@ exports.modalityStudiesBetweenDates = function(req, res) {
             $gte: (new Date(req.params.startDate).getTime()),
             $lt: (new Date(req.params.endDate).getTime()) + 86400000
         },
-        modality: getModality(req.params.modality)
+        modality: modalityMapper.map(req.params.modality)
     }, function (err, studies) {
         if(err) { return handleError(res, err); }
         if(!studies) { return res.send(404); }
@@ -113,7 +106,7 @@ exports.modalityStudiesOnDateCount = function(req, res) {
             $gte: (new Date(req.params.date).getTime()),
             $lt: (new Date(req.params.date).getTime()) + 86400000
         },
-        modality: getModality(req.params.modality)
+        modality: modalityMapper.map(req.params.modality)
     }, function (err, count) {
         if(err) { return handleError(res, err); }
         if(!count) { return res.json(0) }
@@ -129,7 +122,7 @@ exports.modalityStudiesBetweenDatesCount = function(req, res) {
             $gte: (new Date(req.params.startDate).getTime()),
             $lt: (new Date(req.params.endDate).getTime()) + 86400000
         },
-        modality: getModality(req.params.modality)
+        modality: modalityMapper.map(req.params.modality)
     }, function (err, count) {
         if(err) { return handleError(res, err); }
         if(!count) { return res.json(0) }

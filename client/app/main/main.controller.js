@@ -8,7 +8,7 @@ app.controller('MainCtrl', function ($rootScope, $scope, $location, $http) {
 
     $scope.login = function() {
         //shm2024
-        /*
+/*
         $http.get('/api/users/lic9093/info').success(function (user) {
             console.log(user);
             $rootScope.currentUser = user;

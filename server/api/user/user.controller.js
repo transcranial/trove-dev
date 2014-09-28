@@ -21,7 +21,7 @@ exports.getMinnies = function(req, res) {
         if(err) { return handleError(res, err); }
         if(!user) { return res.send(404); }
         return Study.find({
-            radiologist: user.userId
+            assistant_radiologist: user.userId
         }, 'word_count', function (err, studies) {
             var minnies = 0;
             for (var i=0; i<studies.length; i++) {
@@ -44,8 +44,9 @@ exports.updateBadges = function(req, res) {
         if(err) { return handleError(res, err); }
         if(!user) { return res.send(404); }
 
-        badges.modalityNumberBadges(user);
-        return true;
+        var success = true;
+        success = success && badges.modalityNumberBadges(user);
+        return res.json(success);
     });
 };
 

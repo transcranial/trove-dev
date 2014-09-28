@@ -9,22 +9,32 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
     }
     $scope.currentUser = $rootScope.currentUser;
 
-    // get # minnies every some interval
+    // get # minnies
     $scope.minnies = 0;
-    $http.get('/api/users/' + $scope.currentUser.username + '/minnies').success(function (minnies) {
-        $scope.minnies = minnies;
-    });
-    $interval(function () {
+    $http.get('/api/users/' + $scope.currentUser.username + '/minnies').success(
+        function (minnies) {
+            $scope.minnies = minnies;
+        }
+    );
+    /*$interval(function () {
         $http.get('/api/users/' + $scope.currentUser.username + '/minnies').success(function (minnies) {
             $scope.minnies = minnies;
         });
-    }, 600000);
+    }, 600000);*/
 
     // update badges
-    $http.get('/api/users/' + $scope.currentUser.username + '/badges/update').success(function () {});
-    $interval(function () {
+    $http.get('/api/users/' + $scope.currentUser.username + '/badges/update').success(
+        function (successBoolean) { 
+            if (successBoolean) {
+                console.log("User badges updated successfully.");
+            } else {
+                console.log("Error in updating user badges.");
+            }
+        }
+    );
+    /*$interval(function () {
         $http.get('/api/users/' + $scope.currentUser.username + '/badges/update').success(function () {});
-    }, 600000);
+    }, 600000);*/
 
     // colors used for modality indicator (CT, XR, MRI, FLUORO, US, NM)
     // blue, yellow, green, red, purple, orange
@@ -172,7 +182,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
         $timeout(function () {
             $scope.studiesListShowBoolean = false;
             $scope.studiesListFadeOutBoolean = false;
-            $scope.apply();
+            $scope.$apply();
         }, 1000);
     };
 
@@ -183,14 +193,14 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
             $scope.badges = badges;
         });
         $scope.badgesListShowBoolean = true;
-        $scope.apply();
+        $scope.$apply();
     };
     $scope.badgesListClose = function () {
         $scope.badgesListFadeOutBoolean = true;
         $timeout(function () {
             $scope.badgesListShowBoolean = false;
             $scope.badgesListFadeOutBoolean = false;
-            $scope.apply();
+            $scope.$apply();
         }, 1000);
     };
     

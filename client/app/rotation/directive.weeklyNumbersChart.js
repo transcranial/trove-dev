@@ -14,6 +14,7 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
 
             var numbersChartLoadDelay = $interval(function () {
                 if (scope.modalityPieChartLoaded) {
+                    $interval.cancel(numbersChartLoadDelay);
 
                     marginNumbersChart = {top: 60, right: 20, bottom: 60, left: 50};
                     widthNumbersChart = $window.innerWidth - document.getElementById('rotation-summary-pie').clientWidth - marginNumbersChart.left - marginNumbersChart.right - 50
@@ -26,6 +27,7 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
                     for (var i=0; i<7; i++) {
                         startDate = new Date(dateRange.split('-')[0]);
                         tempDate = parseDate(new Date(startDate.setDate(startDate.getDate() + i)).toDateString());
+
                         weeklyNumbersZero.push({
                             'date': tempDate,
                             'number': 0
@@ -103,7 +105,6 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
                             scope.$apply();
                         });
                     
-                    $interval.cancel(numbersChartLoadDelay);
                 }
             }, 50);
 
@@ -169,6 +170,7 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
 
                 var modalityPieChartLoadedCheck = $interval(function () {
                     if (scope.modalityPieChartLoaded) {
+                        $interval.cancel(modalityPieChartLoadedCheck);
                         weeklyNumbers = [0, 0, 0, 0, 0, 0, 0];
                         dateRange = scope.data.rotations[scope.visibleRotationIndex].rotationDates;
                         var dates = [];
@@ -191,7 +193,6 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
 
                             updateNumbersChart(false); 
                         });
-                        $interval.cancel(modalityPieChartLoadedCheck);
                     }
                 }, 50);
             });
@@ -201,6 +202,7 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
                 
                 var modalityPieChartLoadedCheck = $interval(function () {
                     if (scope.modalityPieChartLoaded) {
+                        $interval.cancel(modalityPieChartLoadedCheck);
                         weeklyNumbers = [0, 0, 0, 0, 0, 0, 0];
                         dateRange = scope.data.rotations[scope.visibleRotationIndex].rotationDates;
                         var dates = [];
@@ -223,7 +225,6 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
 
                             updateNumbersChart(true); 
                         });
-                        $interval.cancel(modalityPieChartLoadedCheck);
                     }
                 }, 50);
             });
