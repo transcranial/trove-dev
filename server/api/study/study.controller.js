@@ -278,25 +278,17 @@ exports.processHL7JSON = function(req, res) {
             current_study = study;
         } else {
             current_study = new Study();
-            // arbitrarily assigning radiologists to 0 for now
-            current_study['radiologist'] = 0;
         }
 
-        // populateStudy will technically overwrite old values with the current
-        // populateStudy will assign values as specified from the req.body
-        populateStudy(current_study, req.body);
-
+        // need to check if these match -- the report rad name and the name stored in the hl7_json
         if (!temp_assistant_radiologist_string && req.body['report']) { 
             temp_assistant_radiologist_string = parseAssistantRadiologistFromReport(req.body['report']);
-            console.log('temp assistant radiologist string second pass');
-            console.log(temp_assistant_radiologist_string);
         }
 
         // Adding this to retroactively populate studies for users who have not been yet added to the db
         current_study['retro_assistant_radiologist'] = temp_assistant_radiologist_string;
         current_study['retro_radiologist'] = temp_radiologist_string;
         current_study['word_count'] = getWordCount(req.body['report']);
-        console.log(current_study['word_count']);
 
         User.findOne({ 
             full_name : temp_assistant_radiologist_string 
@@ -305,12 +297,33 @@ exports.processHL7JSON = function(req, res) {
             // if they do not currently exist in the db, they are assigned the id of 0
             if (user) {
                 console.log('resident found');
-                console.log(user);
                 current_study['assistant_radiologist'] = user['userId'];
             } else {
                 console.log('no resident found for accession' + req.body.accession.replace(/-\d+/,""));
-                current_study['assistant_radiologist'] = 0;
+                // current_study['assistant_radiologist'] = 0;
             }
+
+            // This is an incorrect assumption for loading data from James-mirth
+            // Things will populate and save in an asynchronous manner
+            // populateStudy will technically overwrite old values with the current
+            // populateStudy will assign values as specified from the req.body
+            // current_study['hl7_json_history'].push(JSON.stringify(req.body));
+
+            if (req.body['result_time']) {
+                var current_result_date = convertHL7DateToJavascriptDate(req.body['result_time']);
+                var current_result_time = current_result_date.getTime();
+                if ((current_study['last_result_time'] || 0) < current_result_time) {
+                    current_study['last_result_date'] = current_result_date;
+                    current_study['last_result_time'] = current_result_time;
+                    console.log('update all values?');
+                    // overwrite old values since the message is newer than the last stored update
+                    // this method will most likely never be called more than once each time this route is fired,
+                    // although it is shown to be called to populate a newly created study
+                    populateStudy(current_study, req.body);
+
+                   
+                }
+            }    
 
             if (req.body['scheduled_time']) {
                 var scheduled_date = convertHL7DateToJavascriptDate(req.body['scheduled_time']);
@@ -324,10 +337,22 @@ exports.processHL7JSON = function(req, res) {
                 current_study['completed_time'] = completed_date.getTime();
             }
 
+            // TODO: Workout better logic regarding how these get updated. As it is, a finalized json could come in before
+            // a transcribed json
             if (result_status == 'P') {
                 var transcribed_date = convertHL7DateToJavascriptDate(req.body['result_time']);
+                current_study['transcribed_report'] = req.body['report'];
                 current_study['transcribed_date'] = transcribed_date;
                 current_study['transcribed_time'] = transcribed_date.getTime();
+                current_study['transcribed_word_count'] = current_study['word_count'];
+            }
+
+            if (result_status == 'F') {
+                var finalized_date = convertHL7DateToJavascriptDate(req.body['result_time']);
+                current_study['finalized_report'] = req.body['report'];
+                current_study['finalized_date'] = finalized_date;
+                current_study['finalized_time'] = finalized_date.getTime();
+                current_study['finalized_word_count'] = current_study['word_count'];
             }
 
             current_study.save();
