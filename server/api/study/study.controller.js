@@ -3,130 +3,214 @@
 var Study = require('./study.model');
 var User = require('./../user/user.model');
 
+var Memcached = require('memcached');
+var memcached = new Memcached('localhost:11211');
+
 var modalityMapper = require('./../modalityMapper');
+
+function getTodayDateFormatted() {
+    var today = new Date();
+    return (today.getMonth()+1) + '-' + today.getDate() + '-' + today.getFullYear();
+}
 
 // Get all studies on a single date, by currentUser
 exports.allStudiesOnDate = function(req, res) {
-    Study.find({ 
-        assistant_radiologist: req.params.user,
-        transcribed_time: { 
-            $gte: (new Date(req.params.date).getTime()),
-            $lt: (new Date(req.params.date).getTime()) + 86400000
-        }
-    }, null, {sort: {transcribed_time: 1}}, function (err, studies) {
+    var cache_string = req.params.user + '/ALL/' + req.params.date;
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.date).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
-        if(!studies) { return res.send(404); }
-        return res.json(studies);
+        if (!data) {
+            Study.find({ 
+                assistant_radiologist: req.params.user,
+                transcribed_time: { 
+                    $gte: (new Date(req.params.date).getTime()),
+                    $lt: (new Date(req.params.date).getTime()) + 86400000
+                }
+            }, null, {sort: {transcribed_time: 1}}, function (err, studies) {
+                if(err) { return handleError(res, err); }
+                if(!studies) { return res.send(404); }
+                memcached.set(cache_string, studies, lifetime, function (err) { });
+                return res.json(studies);
+            });
+        } else {
+            return res.json(data);
+        }
     });
 };
 
 // Get all studies between two dates, by currentUser
 exports.allStudiesBetweenDates = function(req, res) {
-
-    Study.find({ 
-        assistant_radiologist: req.params.user,
-        transcribed_time: { 
-            $gte: (new Date(req.params.startDate).getTime()),
-            $lt: (new Date(req.params.endDate).getTime()) + 86400000
-        }
-    }, function (err, studies) {
+    var cache_string = req.params.user + '/ALL/' + req.params.startDate + '/' + req.params.endDate;
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.startDate).getTime() || new Date(getTodayDateFormatted()).getTime() === new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
-        if(!studies) { return res.send(404); }
-        return res.json(studies);
+        if (!data) {
+            Study.find({ 
+                assistant_radiologist: req.params.user,
+                transcribed_time: { 
+                    $gte: (new Date(req.params.startDate).getTime()),
+                    $lt: (new Date(req.params.endDate).getTime()) + 86400000
+                }
+            }, function (err, studies) {
+                if(err) { return handleError(res, err); }
+                if(!studies) { return res.send(404); }
+                memcached.set(cache_string, studies, lifetime, function (err) { });
+                return res.json(studies);
+            });
+        } else {
+            return res.json(data);
+        }
     });
 };
 
 // Get studies for specified modality on a single date, by currentUser
 exports.modalityStudiesOnDate = function(req, res) {
-    Study.find({ 
-        assistant_radiologist: req.params.user,
-        transcribed_time: { 
-            $gte: (new Date(req.params.date).getTime()),
-            $lt: (new Date(req.params.date).getTime()) + 86400000
-        },
-        modality: modalityMapper.map(req.params.modality)
-    }, null, {sort: {transcribed_time: 1}}, function (err, studies) {
+    var cache_string = req.params.user + '/' + req.params.modality + '/' + req.params.date;
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.date).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
-        if(!studies) { return res.send(404); }
-        return res.json(studies);
+        if (!data) {
+            Study.find({ 
+                assistant_radiologist: req.params.user,
+                transcribed_time: { 
+                    $gte: (new Date(req.params.date).getTime()),
+                    $lt: (new Date(req.params.date).getTime()) + 86400000
+                },
+                modality: modalityMapper.map(req.params.modality)
+            }, null, {sort: {transcribed_time: 1}}, function (err, studies) {
+                if(err) { return handleError(res, err); }
+                if(!studies) { return res.send(404); }
+                memcached.set(cache_string, studies, lifetime, function (err) { });
+                return res.json(studies);
+            });
+        } else {
+            return res.json(data);
+        }
     });
 };
 
 // Get studies for specified modality between two dates, by currentUser
 exports.modalityStudiesBetweenDates = function(req, res) {
-    Study.find({ 
-        assistant_radiologist: req.params.user,
-        transcribed_time: { 
-            $gte: (new Date(req.params.startDate).getTime()),
-            $lt: (new Date(req.params.endDate).getTime()) + 86400000
-        },
-        modality: modalityMapper.map(req.params.modality)
-    }, function (err, studies) {
+    var cache_string = req.params.user + '/' + req.params.modality + '/' + req.params.startDate + '/' + req.params.endDate;
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.startDate).getTime() || new Date(getTodayDateFormatted()).getTime() === new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
-        if(!studies) { return res.send(404); }
-        return res.json(studies);
+        if (!data) {
+            Study.find({ 
+                assistant_radiologist: req.params.user,
+                transcribed_time: { 
+                    $gte: (new Date(req.params.startDate).getTime()),
+                    $lt: (new Date(req.params.endDate).getTime()) + 86400000
+                },
+                modality: modalityMapper.map(req.params.modality)
+            }, function (err, studies) {
+                if(err) { return handleError(res, err); }
+                if(!studies) { return res.send(404); }
+                memcached.set(cache_string, studies, lifetime, function (err) { });
+                return res.json(studies);
+            });
+        } else {
+            return res.json(data);
+        }
     });
 };
 
 // Get count of all studies on a single date, by currentUser
 exports.allStudiesOnDateCount = function(req, res) {
-    Study.count({ 
-        assistant_radiologist: req.params.user,
-        transcribed_time: { 
-            $gte: (new Date(req.params.date).getTime()),
-            $lt: (new Date(req.params.date).getTime()) + 86400000
+    var cache_string = req.params.user + '/ALL/' + req.params.date + '/count';
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.date).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    return memcached.get(cache_string, function (err, data) {
+        if (err) { return handleError(res, err); }
+        if (typeof data === "undefined") {
+            Study.count({ 
+                assistant_radiologist: req.params.user,
+                transcribed_time: { 
+                    $gte: (new Date(req.params.date).getTime()),
+                    $lt: (new Date(req.params.date).getTime()) + 86400000
+                }
+            }, function (err, count) {
+                if (err) { return handleError(res, err); }
+                if (typeof count === "undefined") { count = 0; }
+                memcached.set(cache_string, count, lifetime, function (err) { });
+                return res.json(count);
+            });
+        } else {
+            return res.json(data);
         }
-    }, function (err, count) {
-        if(err) { return handleError(res, err); }
-        if(!count) { return res.json(0) }
-        return res.json(count);
     });
 };
 
 // Get count of all studies between two dates, by currentUser
 exports.allStudiesBetweenDatesCount = function(req, res) {
-    Study.count({ 
-        assistant_radiologist: req.params.user,
-        transcribed_time: { 
-            $gte: (new Date(req.params.startDate).getTime()),
-            $lt: (new Date(req.params.endDate).getTime()) + 86400000
+    var cache_string = req.params.user + '/ALL/' + req.params.startDate + '/' + req.params.endDate + '/count';
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.startDate).getTime() || new Date(getTodayDateFormatted()).getTime() === new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    return memcached.get(cache_string, function (err, data) {
+        if (typeof data === "undefined") {
+            Study.count({ 
+                assistant_radiologist: req.params.user,
+                transcribed_time: { 
+                    $gte: (new Date(req.params.startDate).getTime()),
+                    $lt: (new Date(req.params.endDate).getTime()) + 86400000
+                }
+            }, function (err, count) {
+                if(err) { return handleError(res, err); }
+                if (typeof count === "undefined") { count = 0; }
+                memcached.set(cache_string, count, lifetime, function (err) { });
+                return res.json(count);
+            });
+        } else {
+            return res.json(data);
         }
-    }, function (err, count) {
-        if(err) { return handleError(res, err); }
-        if(!count) { return res.json(0) }
-        return res.json(count);
     });
 };
 
 // Get count of studies for specified modality on a single date, by currentUser
 exports.modalityStudiesOnDateCount = function(req, res) {
-    Study.count({ 
-        assistant_radiologist: req.params.user,
-        transcribed_time: { 
-            $gte: (new Date(req.params.date).getTime()),
-            $lt: (new Date(req.params.date).getTime()) + 86400000
-        },
-        modality: modalityMapper.map(req.params.modality)
-    }, function (err, count) {
-        if(err) { return handleError(res, err); }
-        if(!count) { return res.json(0) }
-        return res.json(count);
+    var cache_string = req.params.user + '/' + req.params.modality + '/' + req.params.date + '/count';
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.date).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    return memcached.get(cache_string, function (err, data) {
+        if (typeof data === "undefined") {
+            Study.count({ 
+                assistant_radiologist: req.params.user,
+                transcribed_time: { 
+                    $gte: (new Date(req.params.date).getTime()),
+                    $lt: (new Date(req.params.date).getTime()) + 86400000
+                },
+                modality: modalityMapper.map(req.params.modality)
+            }, function (err, count) {
+                if(err) { return handleError(res, err); }
+                if (typeof count === "undefined") { count = 0; }
+                memcached.set(cache_string, count, lifetime, function (err) { });
+                return res.json(count);
+            });
+        } else {
+            return res.json(data);
+        }
     });
 };
 
 // Get count of studies for specified modality between two dates, by currentUser
 exports.modalityStudiesBetweenDatesCount = function(req, res) {
-    Study.count({ 
-        assistant_radiologist: req.params.user,
-        transcribed_time: { 
-            $gte: (new Date(req.params.startDate).getTime()),
-            $lt: (new Date(req.params.endDate).getTime()) + 86400000
-        },
-        modality: modalityMapper.map(req.params.modality)
-    }, function (err, count) {
-        if(err) { return handleError(res, err); }
-        if(!count) { return res.json(0) }
-        return res.json(count);
+    var cache_string = req.params.user + '/' + req.params.modality + '/' + req.params.startDate + '/' + req.params.endDate + '/count';
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.startDate).getTime() || new Date(getTodayDateFormatted()).getTime() === new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    return memcached.get(cache_string, function (err, data) {
+        if (typeof data === "undefined") {
+            Study.count({ 
+                assistant_radiologist: req.params.user,
+                transcribed_time: { 
+                    $gte: (new Date(req.params.startDate).getTime()),
+                    $lt: (new Date(req.params.endDate).getTime()) + 86400000
+                },
+                modality: modalityMapper.map(req.params.modality)
+            }, function (err, count) {
+                if(err) { return handleError(res, err); }
+                if (typeof count === "undefined") { count = 0; }
+                memcached.set(cache_string, count, lifetime, function (err) { });
+                return res.json(count);
+            });
+        } else {
+            return res.json(data);
+        }
     });
 };
 

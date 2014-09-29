@@ -16,11 +16,6 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
             $scope.minnies = minnies;
         }
     );
-    /*$interval(function () {
-        $http.get('/api/users/' + $scope.currentUser.username + '/minnies').success(function (minnies) {
-            $scope.minnies = minnies;
-        });
-    }, 600000);*/
 
     // update badges
     $http.get('/api/users/' + $scope.currentUser.username + '/badges/update').success(
@@ -32,9 +27,6 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
             }
         }
     );
-    /*$interval(function () {
-        $http.get('/api/users/' + $scope.currentUser.username + '/badges/update').success(function () {});
-    }, 600000);*/
 
     // colors used for modality indicator (CT, XR, MRI, FLUORO, US, NM)
     // blue, yellow, green, red, purple, orange
