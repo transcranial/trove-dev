@@ -36,6 +36,13 @@
             <div ng-repeat="study in studiesList" class="studiesListItem">
                 <div class="examDesc">[ {{study.modality}} ] {{study.exam_name}}</div>
                 <div class="examTime">Transcribed Time: {{study.transcribed_time | date: 'short'}}</div>
+                <div class="diseaseLabels">Disease Labels: None</div>
+                <div class="showReportButton">
+                    <span ng-hide="showReportWithEditsBoolean[$index] || showReportBoolean[$index]" ng-click="showReportWithEditsBoolean[$index] = true">Show report with edits</span>
+                    <span ng-hide="showReportWithEditsBoolean[$index] || showReportBoolean[$index]" ng-click="showReportBoolean[$index] = true">Show finalized report</span>
+                    <span ng-show="showReportBoolean[$index] || showReportWithEditsBoolean[$index]" ng-click="showReportBoolean[$index] = false; showReportWithEditsBoolean[$index] = false;">Hide report</span></div>
+                <div class="studyReport" ng-show="showReportWithEditsBoolean[$index]" ng-bind-html="study.transcribed_report|diff:study.report"></div>
+                <div class="studyReport" ng-show="showReportBoolean[$index]" ng-bind-html="study.report"></div>
             </div>
         </div>
     </div>

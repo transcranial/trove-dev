@@ -94,10 +94,16 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
                                 .attr('stroke-width', '0px');
                             numbersChart.selectAll('.number-label').remove();
                         })
-                        .on('click', function (d) {
+                        .on('click', function (d) { 
                             scope.studiesListShowBoolean = true;
                             $http.get('/api/studies/' + scope.currentUser.userId + '/' + scope.modalitySelected + '/' + d3.time.format('%m-%d-%Y')(d.date)).success(function (studiesList) {
                                 scope.studiesList = studiesList;
+                                scope.showReportBoolean = [];
+                                scope.showReportWithEditsBoolean = [];
+                                for (var i = 0; i < studiesList.length; i++) {
+                                    scope.showReportBoolean[i] = false;
+                                    scope.showReportWithEditsBoolean[i] = false;
+                                } 
                                 $timeout(function () {
                                     scope.studiesListMore = document.getElementById('studiesListItems').scrollHeight > $window.innerHeight;
                                 }, 100);

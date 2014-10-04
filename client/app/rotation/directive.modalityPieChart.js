@@ -14,7 +14,7 @@ app.directive('modalityPieChart', function ($window, $http, $interval, $q) {
 
             var widthPieChart = $window.innerHeight / 4,
                 heightPieChart = $window.innerHeight / 4,
-                marginPieChart = {top: 60, bottom: 60, left: 40, right: 100},
+                marginPieChart = {top: 60, bottom: 60, left: 40, right: 120},
                 radius = heightPieChart / 2,
                 labelRadius = radius + 20;
 

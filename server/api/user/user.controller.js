@@ -21,11 +21,11 @@ exports.getMinnies = function(req, res) {
         if(err) { return handleError(res, err); }
         if(!user) { return res.send(404); }
         return Study.find({
-            assistant_radiologist: user.userId
+            assistant_radiologist: parseInt(user.userId)
         }, 'word_count', function (err, studies) {
             var minnies = 0;
             for (var i=0; i<studies.length; i++) {
-                minnies += studies[i].word_count / 50;
+                minnies += studies[i].word_count / 10;
             }
             minnies = Math.round(minnies);
             if (user.minnies !== minnies) {

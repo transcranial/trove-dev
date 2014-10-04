@@ -9,7 +9,8 @@ angular.module('troveApp', [
   'ui.bootstrap',
   'ngTouch',
   'bardo.directives',
-  'ngTable'
+  'ngTable',
+  'diff'
 ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider

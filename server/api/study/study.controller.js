@@ -13,6 +13,15 @@ function getTodayDateFormatted() {
     return (today.getMonth()+1) + '-' + today.getDate() + '-' + today.getFullYear();
 }
 
+function formatReports(studies) {
+    var studiesFormatted = studies;
+    for (var i = 0; i < studies.length; i++) {
+        studiesFormatted[i].report = JSON.stringify(studiesFormatted[i].report.replace(/(\|)|(\s+)/g, " ").trim()).replace(/^"?(.+?)"?$/g, '$1');
+        studiesFormatted[i].transcribed_report = JSON.stringify(studiesFormatted[i].transcribed_report.replace(/(\|)|(\s+)/g, " ").trim()).replace(/^"?(.+?)"?$/g, '$1');
+    }
+    return studiesFormatted;
+}
+
 // Get all studies on a single date, by currentUser
 exports.allStudiesOnDate = function(req, res) {
     var cache_string = req.params.user + '/ALL/' + req.params.date;
@@ -26,14 +35,14 @@ exports.allStudiesOnDate = function(req, res) {
                     $gte: (new Date(req.params.date).getTime()),
                     $lt: (new Date(req.params.date).getTime()) + 86400000
                 }
-            }, null, {sort: {transcribed_time: 1}}, function (err, studies) {
+            }, 'modality exam_name transcribed_time transcribed_report report', {sort: {transcribed_time: 1}}, function (err, studies) {
                 if(err) { return handleError(res, err); }
                 if(!studies) { return res.send(404); }
                 memcached.set(cache_string, studies, lifetime, function (err) { });
-                return res.json(studies);
+                return res.json(formatReports(studies));
             });
         } else {
-            return res.json(data);
+            return res.json(formatReports(data));
         }
     });
 };
@@ -55,10 +64,10 @@ exports.allStudiesBetweenDates = function(req, res) {
                 if(err) { return handleError(res, err); }
                 if(!studies) { return res.send(404); }
                 memcached.set(cache_string, studies, lifetime, function (err) { });
-                return res.json(studies);
+                return res.json(formatReports(studies));
             });
         } else {
-            return res.json(data);
+            return res.json(formatReports(data));
         }
     });
 };
@@ -81,10 +90,10 @@ exports.modalityStudiesOnDate = function(req, res) {
                 if(err) { return handleError(res, err); }
                 if(!studies) { return res.send(404); }
                 memcached.set(cache_string, studies, lifetime, function (err) { });
-                return res.json(studies);
+                return res.json(formatReports(studies));
             });
         } else {
-            return res.json(data);
+            return res.json(formatReports(data));
         }
     });
 };
@@ -107,10 +116,10 @@ exports.modalityStudiesBetweenDates = function(req, res) {
                 if(err) { return handleError(res, err); }
                 if(!studies) { return res.send(404); }
                 memcached.set(cache_string, studies, lifetime, function (err) { });
-                return res.json(studies);
+                return res.json(formatReports(studies));
             });
         } else {
-            return res.json(data);
+            return res.json(formatReports(data));
         }
     });
 };

@@ -225,9 +225,10 @@
     }
 
     .studiesListItem {
-        margin: 40px 0;
-        padding: 20px 0;
+        margin: 20px 0;
+        padding: 30px 0;
         font-size: 1.3em;
+        clear: both;
 
         .examDesc{
             font-family: $font-stack-slabserif;
@@ -237,6 +238,49 @@
         }
         .examTime {
             font-family: $font-stack-sansserif-2;
+        }
+        .diseaseLabels {
+            font-family: $font-stack-sansserif-2;
+        }
+        .showReportButton {
+            font-family: $font-stack-sansserif-2;
+            margin-top: 15px;
+
+            span {
+                padding: 8px;
+                color: $color-primary-tanwhite;
+                background: $color-transparent-blue;
+                text-decoration: none;
+                border: 1px solid $color-primary-tanwhite;
+                @include transition(all, 500ms, ease-out);
+            }
+            span:hover, span:focus, span:active {
+                cursor: pointer;
+                text-decoration: none;
+                color: $color-primary-tanwhite;
+                background: $color-primary-darkdarkblue;
+                border: 1px solid $color-primary-darkdarkblue;
+            }
+        }
+        .studyReport {
+            width: 50%;
+            margin: 0 auto;
+            padding: 25px;
+            font-family: $font-stack-sansserif-1;
+            color: $color-primary-darkdarkblue;
+            text-align: justify;
+            white-space: wrap;
+
+            ins {
+                background-color: $color-primary-darkgreen;
+                color: $color-primary-tanwhite;
+                text-decoration: none;
+            }
+            del {
+                background-color: $color-primary-red;
+                color: $color-primary-tanwhite;
+                text-decoration: line-through;
+            }
         }
     }
 }
