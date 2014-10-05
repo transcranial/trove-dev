@@ -10,13 +10,18 @@ angular.module('troveApp', [
   'ngTouch',
   'bardo.directives',
   'ngTable',
-  'diff'
+  'diff',
+  'ngIdle'
 ])
-  .config(function ($routeProvider, $locationProvider) {
+  .config(function ($routeProvider, $locationProvider, $keepaliveProvider, $idleProvider) {
     $routeProvider
       .otherwise({
         redirectTo: '/'
       });
 
     $locationProvider.html5Mode(true);
+
+    $idleProvider.idleDuration(600);
+    $idleProvider.warningDuration(0);
+    $keepaliveProvider.interval(10);
   });

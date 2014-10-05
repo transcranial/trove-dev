@@ -2,7 +2,7 @@
 
 var app = angular.module('troveApp');
 
-app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $window, $interval, $timeout) {
+app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $window, $interval, $timeout, $idle, $keepalive) {
 
     if (!$rootScope.currentUser) {
         $location.path('/');
@@ -177,6 +177,22 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
             $scope.$apply();
         }, 1000);
     };
+
+    // because studiesList displays PHI, we must implement a timeout feature when it is displayed
+    // idle duration set by $idleProvider in app.js
+    /*$scope.$on('$idleStart', function() {
+        console.log('logging out');
+    });*/
+    $scope.$on('$idleTimeout', function() {
+        $location.path('/');
+    });
+    $scope.$watch('studiesListShowBoolean', function (newValue) {
+        if (newValue) {
+            $idle.watch();
+        } else {
+            $idle.unwatch();
+        }
+    });
 
     // initializes popup/modal window for badges
     $scope.badgesListShowBoolean = false;
