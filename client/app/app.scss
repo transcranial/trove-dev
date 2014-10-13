@@ -16,6 +16,13 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
     transition: $transition-property $transition-time $method;
 }
 
+@mixin translate($X, $Y) {
+    -webkit-transform: translateX($X) translateY($Y);
+    -moz-transform: translateX($X) translateY($Y);
+    -ms-transform: translateX($X) translateY($Y);
+    transform: translateX($X) translateY($Y);
+}
+
 @mixin unselectable() {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -51,6 +58,118 @@ $color-transparent-orange: rgba(242, 120, 75, 0.92);
 
 .dashboard-content-wrapper {
     width: 100%;
+}
+
+/* modal window styles */
+.md-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    max-width: 630px;
+    min-width: 320px;
+    height: auto;
+    z-index: 2000;
+    visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    @include translate(-50%, -50%);
+}
+.md-show {
+    visibility: visible;
+}
+.md-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    opacity: 0;
+    background: rgba(180,180,180,0.6);
+    @include transition(all, 0.3s, ease-out);
+}
+.md-show ~ .md-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+.md-content {
+    color: white;
+    background: $color-primary-green;
+    position: relative;
+    border-radius: 3px;
+    margin: 0 auto;
+
+    h3 {
+        margin: 0;
+        padding: 16px;
+        text-align: center;
+        font-weight: 300;
+        opacity: 0.8;
+        background: rgba(0,0,0,0.1);
+        border-radius: 3px 3px 0 0;
+        font-size: 1.8em;
+        font-family: $font-stack-slabserif;
+    }
+
+    .md-content-item {
+        padding: 30px 50px;
+        font-size: 1.1em;
+        font-family: $font-stack-sansserif-1;
+    }
+
+    .inputfield {
+        background-color: $color-primary-tanwhite;
+        color: $color-primary-darkblue;
+        padding: 5px;
+        margin: 5px 0;
+        outline: none;
+        border: 3px solid $color-primary-green;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        font-size: 1.1em;
+        font-family: $font-stack-sansserif-1;
+        width: 100%;
+        @include transition(border-left, 0.3s, ease-out);
+    }
+    .inputfield:focus {
+        border-left: 3px solid $color-primary-gray;
+    }
+    textarea {
+        resize: none;
+    }
+
+    .button {
+        display: inline-block;
+        margin: 10px 0;
+        background: white;
+        color: $color-primary-darkblue;
+        border: 1px solid white;
+        padding: 10px 25px;
+        font-size: 1.1em;
+        font-family: $font-stack-sansserif-2;
+        @include transition(background, 0.3s, ease-out);
+    }
+    .button:hover {
+        background: $color-primary-green;
+        color: white;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}
+.md-content > .md-content-main {
+    font-size: 1.15em;
+}
+.md-effect .md-content {
+    @include translate(0, 20%);
+    opacity: 0;
+    @include transition(all, 0.3s, ease-out);
+}
+.md-show.md-effect .md-content {
+    @include translate(0, 0);
+    opacity: 1;
 }
 
 // Component styles are injected through grunt

@@ -28,6 +28,9 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
         }
     );
 
+    // feedback box control
+    $scope.feedbackBoxShow = false;
+
     // colors used for modality indicator (CT, XR, MRI, FLUORO, US, NM)
     // blue, yellow, green, red, purple, orange
     $scope.colors = {
@@ -141,7 +144,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
 
     // on load, scroll to the user's current rotation
     // timeout by 100 ms for the rotation carousel handles to be initialized
-    var scrollToCurrentRotation = $interval(function () {
+    var scrollToCurrentRotation = $interval(function() {
         if ($scope.slickHandle.hasOwnProperty('slickGoTo') && $scope.data.rotations) {
             $scope.rotationsLoaded = true;
             $scope.slickHandle.slickGoTo(Math.max(0, $scope.visibleRotationIndex - slidesToShow + 2));
@@ -151,7 +154,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
     }, 100);
 
     // make sure the graphical elements span the entire window height
-    var adjustElementHeights = $interval(function () {
+    var adjustElementHeights = $interval(function() {
         if ($scope.rotationsLoaded && $scope.modalityGoalLoaded && $scope.modalityPieChartLoaded && $scope.weeklyNumbersChartLoaded) {
             $('#rotation-summary').height($window.innerHeight - $('#dashboard-header').outerHeight() - $('#rotation-carousel').outerHeight() - $('#rotation-goals').outerHeight());
             $interval.cancel(adjustElementHeights);
@@ -169,9 +172,9 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
     // shown when a particular date is clicked
     $scope.studiesList = [];
     $scope.studiesListShowBoolean = false;
-    $scope.studiesListClose = function () {
+    $scope.studiesListClose = function() {
         $scope.studiesListFadeOutBoolean = true;
-        $timeout(function () {
+        $timeout(function() {
             $scope.studiesListShowBoolean = false;
             $scope.studiesListFadeOutBoolean = false;
             $scope.$apply();
@@ -196,20 +199,46 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
 
     // initializes popup/modal window for badges
     $scope.badgesListShowBoolean = false;
-    $scope.badgesListShow = function () {
+    $scope.badgesListShow = function() {
         $http.get('/api/users/' + $scope.currentUser.username + '/badges/get').success(function (badges) {
             $scope.badges = badges;
         });
         $scope.badgesListShowBoolean = true;
         $scope.$apply();
     };
-    $scope.badgesListClose = function () {
+    $scope.badgesListClose = function() {
         $scope.badgesListFadeOutBoolean = true;
-        $timeout(function () {
+        $timeout(function() {
             $scope.badgesListShowBoolean = false;
             $scope.badgesListFadeOutBoolean = false;
             $scope.$apply();
         }, 1000);
+    };
+
+    // send feedback message to slack using webhooks
+    $scope.sendFeedback = function() {
+        var text = "";
+        if ($scope.fmsg) {
+            text = $scope.fmsg;
+            if ($scope.fname) {
+                text = text + "\n-- " + $scope.fname;
+            }
+            $http({
+                method: 'POST',
+                url: 'https://trovedashboard.slack.com/services/hooks/incoming-webhook?token=gxdkEcqtMaHg9jP9ZV87uuV8',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                },
+                data: {payload: JSON.stringify({text: text, username: "feedback", channel: "#feedback"})}
+            }).success(function() {})
+            .error(function() {
+                console.log("error sending feedback message.");
+            });
+        }
     };
     
 });

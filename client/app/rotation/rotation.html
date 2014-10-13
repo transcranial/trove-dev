@@ -1,8 +1,10 @@
 <div class="container-fluid">
     <div id="dashboard-header" class="row">
         <div id="logo"><i class="fa fa-cubes"></i> TROVE</div>
-        <div id="badges" ng-click="badgesListShow()"><i class="fa fa-trophy"></i> Badges</div>
-        <div id="minnies" ng-model="minnies">{{minnies | number}} minnies</div>
+        <div class="toplink" id="badges" ng-click="badgesListShow()"><i class="fa fa-trophy"></i> Badges</div>
+        <div class="toplink" id="minnies" ng-model="minnies">{{minnies | number}} minnies</div>
+        <div class="toplink" id="diseaseview"><i class="fa fa-th"></i> Disease View</div>
+        <div class="toplink" id="feedback" ng-click="feedbackBoxShow = true"><i class="fa fa-comment-o"></i> Feedback</div>
         <div id="user">
             Welcome, <span id="name">{{ data.name }}</span> | <span id="logout">logout</span>
         </div>
@@ -58,3 +60,15 @@
         </div>
     </div>
 </div>
+
+<div class="md-modal md-effect" ng-class="{'md-show': feedbackBoxShow}">
+    <div class="md-content">
+        <h3>Feedback</h3>
+        <div class="md-content-item">
+            Name (optional):<br><input class="inputfield" type="text" name="fname" ng-model="fname" /><br><br>
+            Message:<br><textarea class="inputfield" type="textarea" name="fmsg" ng-model="fmsg"></textarea></div>
+        <div class="text-center"><span class="button" ng-click="feedbackBoxShow = false; sendFeedback();">Send</span></div> 
+    </div>
+</div>
+
+<div class="md-overlay" ng-click="feedbackBoxShow = false"></div>

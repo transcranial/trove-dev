@@ -11,7 +11,7 @@
         padding: 20px 10px 20px 60px;
     }
 
-    #badges {
+    .toplink {
         font-family: $font-stack-sansserif-2;
         background-color: white;
         color: $color-primary-orange;
@@ -20,24 +20,49 @@
         margin: 18px 12px;
         border: 1px solid $color-primary-orange;
         border-radius: 5px;
-        @include transition(all, 500ms, ease-out);
+        @include transition(background-color, 500ms, ease-out);
         @include unselectable();
     }
-    #badges:hover {
+    .toplink:hover {
         cursor: pointer;
         background-color: $color-primary-orange;
         color: white;
     }
 
-    #minnies {
-        font-family: $font-stack-sansserif-2;
-        background-color: white;
+    #badges {
         color: $color-primary-orange;
-        float: left;
-        padding: 5px 12px;
-        margin: 18px 12px;
-        border: 1px solid $color-primary-orange;
-        border-radius: 5px;
+        border-color: $color-primary-orange;
+    }
+    #badges:hover {
+        background-color: $color-primary-orange;
+        color: white;
+    }
+
+    #minnies {
+        color: $color-primary-orange;
+        border-color: $color-primary-orange;
+    }
+    #minnies:hover {
+        background-color: $color-primary-orange;
+        color: white;
+    }
+
+    #diseaseview {
+        color: $color-primary-blue;
+        border-color: $color-primary-blue;
+    }
+    #diseaseview:hover {
+        background-color: $color-primary-blue;
+        color: white;
+    }
+
+    #feedback {
+        color: $color-primary-green;
+        border-color: $color-primary-green;
+    }
+    #feedback:hover {
+        background-color: $color-primary-green;
+        color: white;
     }
 
     #user {
