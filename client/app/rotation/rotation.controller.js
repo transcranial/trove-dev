@@ -10,12 +10,17 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
     $scope.currentUser = $rootScope.currentUser;
 
     // get # minnies
-    $scope.minnies = 0;
-    $http.get('/api/users/' + $scope.currentUser.username + '/minnies').success(
-        function (minnies) {
-            $scope.minnies = minnies;
-        }
-    );
+    if ($rootScope.minnies > 0) {
+        $scope.minnies = $rootScope.minnies;
+    } else {
+        $scope.minnies = 0;
+        $http.get('/api/users/' + $scope.currentUser.username + '/minnies').success(
+            function (minnies) {
+                $scope.minnies = minnies;
+                $rootScope.minnies = minnies;
+            }
+        );
+    }
 
     // update badges
     $http.get('/api/users/' + $scope.currentUser.username + '/badges/update').success(
@@ -70,9 +75,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
         
     };
 
-    $scope.data = {
-
-    };
+    $scope.data = {};
 
     // get number of studies for rotation
     function getRotationNumStudies () {
@@ -239,6 +242,10 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
                 console.log("error sending feedback message.");
             });
         }
+    };
+
+    $scope.diseaseView = function() {
+        $location.path('/dashboard/disease');
     };
     
 });

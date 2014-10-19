@@ -1,0 +1,38 @@
+.bullet { font: 10px sans-serif; }
+.bullet .marker { stroke: #000; stroke-width: 2px; }
+.bullet .tick line { stroke: #666; stroke-width: .5px; }
+.bullet .range.s0 { fill: #eee; }
+.bullet .range.s1 { fill: #ddd; }
+.bullet .range.s2 { fill: #ccc; }
+.bullet .measure.s0 { fill: lightsteelblue; }
+.bullet .measure.s1 { fill: steelblue; }
+.bullet .title { font-size: 14px; font-weight: bold; }
+.bullet .subtitle { fill: #999; }
+
+
+#dashboard-header {
+    #rotationview {
+        color: $color-primary-blue;
+        border-color: $color-primary-blue;
+    }
+    #rotationview:hover {
+        background-color: $color-primary-blue;
+        color: white;
+    }
+}
+
+.panel {
+    padding: 8px;
+    color: $color-primary-darkblue;
+    font-family: $font-stack-slabserif;
+    border: 1px solid white;
+    border-radius: 0px;
+}
+.panel:hover {
+    cursor: pointer;
+    border-color: $color-primary-blue;
+}
+
+.selectedRotation {
+    background: #81CFE0
+}
