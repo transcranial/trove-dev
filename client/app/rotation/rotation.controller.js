@@ -4,6 +4,22 @@ var app = angular.module('troveApp');
 
 app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $window, $interval, $timeout, $idle, $keepalive) {
 
+    $scope.logout = function() {
+        $http({
+            method: 'POST',
+            url: '/auth/logout'
+        }).success(function (response) {
+            $scope.currentUser = null;
+            $rootScope.currentUser = null;
+            $location.path('/');
+        }).error(function (error) {
+            console.log('error logging out');
+            $scope.currentUser = null;
+            $rootScope.currentUser = null;
+            $location.path('/');
+        });
+    };
+
     if (!$rootScope.currentUser) {
         $location.path('/');
     }

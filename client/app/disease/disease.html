@@ -6,7 +6,7 @@
         <div class="toplink" id="rotationview" ng-click="rotationView()"><i class="fa fa-circle-o"></i> Rotation View</div>
         <div class="toplink" id="feedback" ng-click="feedbackBoxShow = true"><i class="fa fa-comment-o"></i> Feedback</div>
         <div id="user">
-            Welcome, <span id="name">{{ data.name }}</span> | <span id="logout">logout</span>
+            Welcome, <span id="name">{{ data.name }}</span> | <span id="logout" ng-click="logout()">logout</span>
         </div>
     </div>
     <div class="container-fluid">
