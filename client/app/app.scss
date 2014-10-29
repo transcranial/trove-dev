@@ -8,12 +8,12 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
  * App-wide Styles
  */
 
-@mixin transition($transition-property, $transition-time, $method) {
-    -webkit-transition: $transition-property $transition-time $method;
-    -moz-transition: $transition-property $transition-time $method;
-    -ms-transition: $transition-property $transition-time $method;
-    -o-transition: $transition-property $transition-time $method;
-    transition: $transition-property $transition-time $method;
+@mixin transition($transition-property, $transition-time, $transition-delay, $method) {
+    -webkit-transition: $transition-property $transition-time $transition-delay $method;
+    -moz-transition: $transition-property $transition-time $transition-delay $method;
+    -ms-transition: $transition-property $transition-time $transition-delay $method;
+    -o-transition: $transition-property $transition-time $transition-delay $method;
+    transition: $transition-property $transition-time $transition-delay $method;
 }
 
 @mixin translate($X, $Y) {
@@ -89,7 +89,7 @@ $color-transparent-orange: rgba(242, 120, 75, 0.92);
     z-index: 1000;
     opacity: 0;
     background: rgba(180,180,180,0.6);
-    @include transition(all, 0.3s, ease-out);
+    @include transition(all, 0.3s, 0s, ease-out);
 }
 .md-show ~ .md-overlay {
     opacity: 1;
@@ -132,7 +132,7 @@ $color-transparent-orange: rgba(242, 120, 75, 0.92);
         font-size: 1.1em;
         font-family: $font-stack-sansserif-1;
         width: 100%;
-        @include transition(border-left, 0.3s, ease-out);
+        @include transition(border-left, 0.3s, 0s, ease-out);
     }
     .inputfield:focus {
         border-left: 3px solid $color-primary-gray;
@@ -150,7 +150,7 @@ $color-transparent-orange: rgba(242, 120, 75, 0.92);
         padding: 10px 25px;
         font-size: 1.1em;
         font-family: $font-stack-sansserif-2;
-        @include transition(background, 0.3s, ease-out);
+        @include transition(background, 0.3s, 0s, ease-out);
     }
     .button:hover {
         background: $color-primary-green;
@@ -165,7 +165,7 @@ $color-transparent-orange: rgba(242, 120, 75, 0.92);
 .md-effect .md-content {
     @include translate(0, 20%);
     opacity: 0;
-    @include transition(all, 0.3s, ease-out);
+    @include transition(all, 0.3s, 0s, ease-out);
 }
 .md-show.md-effect .md-content {
     @include translate(0, 0);

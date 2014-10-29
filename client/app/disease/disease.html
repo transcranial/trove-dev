@@ -9,34 +9,75 @@
             Welcome, <span id="name">{{ data.name }}</span> | <span id="logout" ng-click="logout()">logout</span>
         </div>
     </div>
-    <div class="container-fluid">
-    	<div class="col-md-3 animated fadeInLeft">
-    		<div class="col-md-12 panel" ng-class="getSelected('BODY CT')" ng-click="updateChart('BODY CT')">
-	    		Body CT
-	    	</div>
-    		<div class="col-md-12 panel" ng-class="getSelected('GI')" ng-click="updateChart('GI')">
-	    		GI
-	    	</div>
-    		<div class="col-md-12 panel" ng-class="getSelected('NEURO')" ng-click="updateChart('NEURO')">
-	    		Neuro
-	    	</div>
-    		<div class="col-md-12 panel" ng-class="getSelected('PEDS')" ng-click="updateChart('PEDS')">
-	    		Peds
-	    	</div>
-    		<div class="col-md-12 panel" ng-class="getSelected('NUCS')" ng-click="updateChart('NUCS')">
-	    		Nucs
-	    	</div>
-    		<div class="col-md-12 panel" ng-class="getSelected('CHEST INPT')" ng-click="updateChart('CHEST INPT')">
-	    		Chest
-	    	</div>
-    		<div class="col-md-12 panel" ng-class="getSelected('BONE')" ng-click="updateChart('BONE')">
-	    		Bone
-	    	</div>
+	<div class="row animated fadeInRight" id="selectableGroup">
+        <div class="selectable" ng-class="getSelected('ALL')" ng-click="initChart('ALL')">
+            ALL
+        </div>
+		<div class="selectable" ng-class="getSelected('BODY CT')" ng-click="initChart('BODY CT')">
+    		Body CT
     	</div>
-    	<div class="col-md-9 well animated fadeInRight">
-			<bullet-Chart directive-data="diseaseData"></bullet-Chart>
-		</div>
+		<div class="selectable" ng-class="getSelected('GI/GU')" ng-click="initChart('GI/GU')">
+    		GI/GU
+    	</div>
+        <div class="selectable" ng-class="getSelected('US')" ng-click="initChart('US')">
+            US
+        </div>
+		<div class="selectable" ng-class="getSelected('NEURO')" ng-click="initChart('NEURO')">
+    		Neuro
+    	</div>
+		<div class="selectable" ng-class="getSelected('PEDS')" ng-click="initChart('PEDS')">
+    		Peds
+    	</div>
+		<div class="selectable" ng-class="getSelected('NUCS')" ng-click="initChart('NUCS')">
+    		Nucs
+    	</div>
+        <div class="selectable" ng-class="getSelected('ED')" ng-click="initChart('ED')">
+            ED
+        </div>
+        <div class="selectable" ng-class="getSelected('BONE')" ng-click="initChart('BONE')">
+            Bone
+        </div>
+		<div class="selectable" ng-class="getSelected('CHEST')" ng-click="initChart('CHEST')">
+    		Chest
+    	</div>
 	</div>
+    <div class="spinner" ng-show="chartLoading">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+	<div class="row" id="barChart">
+        <div id="diseaseSearch">
+            <input type="text" name="diseaseSearchInput" placeholder="search disease" ng-model="diseaseSearchInput" />
+            <span ng-click="clearSearch()" id="clearButton">clear</span>
+        </div>
+        <div class="bar-chart-item bar-chart-legend">
+            <div class="bar-chart-margin-left"></div>
+            <div class="bar-chart-legendkey">Legend: (width equals goal number) </div>
+            <div class="bar-chart-legend-goalMet"></div>
+            <div class="bar-chart-legendkey">goal met or exceeded</div>
+            <div class="bar-chart-legend-goalUnmet"></div>
+            <div class="bar-chart-legendkey">seen cases, goal unmet</div>
+            <div class="bar-chart-legend-goalZero"></div>
+            <div class="bar-chart-legendkey">no cases seen</div>
+        </div>
+		<div class="bar-chart-item" ng-repeat="item in diseaseNumbers | filter:{ disease: diseaseSearchInput }">
+            <div class="bar-chart-row">
+                <div class="bar-chart-margin-left"></div>
+                <div class="bar-chart-item-label">{{ item.disease }} <span class="animated fadeIn" ng-show="diseaseTooltipShow[$index]"> [ click on bar to show studies ]</span></div>
+            </div>
+            <div class="bar-chart-row">
+                <div class="bar-chart-margin-left"></div>
+                <div class="bar-chart-item-bar" ng-style="calcCSSWidth(item.user_number)" ng-mouseover="diseaseTooltipShow[$index] = true" ng-mouseleave="diseaseTooltipShow[$index] = false"></div>
+                <div class="bar-chart-item-number">{{ item.user_number }}</div>
+            </div>
+            <div class="bar-chart-row">
+                <div class="bar-chart-margin-left"></div>
+                <div class="bar-chart-item-goalbar" ng-style="calcCSSWidth(item.goal_number)" ng-class="{goalMet: item.user_number >= item.goal_number, goalUnmet: item.user_number < item.goal_number && item.user_number > 0, goalZero: item.user_number === 0}"></div>
+            </div>
+        </div>
+	</div>
+
     <div id="badgesList" class="row animated fadeInDown" ng-if="badgesListShowBoolean" ng-class="{'fadeOutUp': badgesListFadeOutBoolean}">
         <span id="badgesListClose" class="panelCloseButton" ng-click="badgesListClose()"></span>
         <div id="badgesListItems">        <div id="badgesListHeader">My Badges</div>

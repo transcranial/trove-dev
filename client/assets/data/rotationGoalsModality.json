@@ -64,29 +64,5 @@
         {"CT": 10, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 27, "NM": 0},
         {"CT": 10, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 27, "NM": 0},
         {"CT": 10, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 27, "NM": 0}
-    ],
-    "MSKCC Chest": [
-        {"CT": 0, "XR": "1", "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 0, "XR": "1", "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 0, "XR": "1", "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 0, "XR": "1", "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0}
-    ],
-    "MSKCC Body CT": [
-        {"CT": "1", "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": "1", "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": "1", "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": "1", "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0}
-    ],
-    "MSKCC GI-GU": [
-        {"CT": 0, "XR": "1", "MRI": 0, "FLUORO": "1", "US": 0, "NM": 0},
-        {"CT": 0, "XR": "1", "MRI": 0, "FLUORO": "1", "US": 0, "NM": 0},
-        {"CT": 0, "XR": "1", "MRI": 0, "FLUORO": "1", "US": 0, "NM": 0},
-        {"CT": 0, "XR": "1", "MRI": 0, "FLUORO": "1", "US": 0, "NM": 0}
-    ],
-    "Vacation": [
-        {"CT": 0, "XR": "1", "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 0, "XR": "1", "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 0, "XR": "1", "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 0, "XR": "1", "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0}
     ]
 }

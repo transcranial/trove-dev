@@ -5,7 +5,7 @@ angular.module('troveApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'btford.socket-io',
+  //'btford.socket-io',
   'ui.bootstrap',
   'ngTouch',
   'bardo.directives',

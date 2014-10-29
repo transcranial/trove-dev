@@ -14,6 +14,8 @@
     font-size: 32px;
     color: $color-primary-blue;
     margin: 70px 0 5px 0;
+    @include unselectable();
+    cursor: default;
 }
 
 .subheader {
@@ -59,7 +61,7 @@
         color: white;
         background-color: $color-primary-blue;
         cursor: default;
-        @include transition(background-color, 500ms, ease-out);
+        @include transition(background-color, 500ms, 0s, ease-out);
     }
     .submit:hover, .submit:focus, .submit:active {
         color: $color-primary-blue;
