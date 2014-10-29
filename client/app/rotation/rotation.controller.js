@@ -145,6 +145,14 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
         $scope.data.goals = data;
     });
 
+    // Boolean for determining if selected rotation has goals
+    $scope.isRotationWithoutGoals = false;
+
+    // Returns the rotation goals div height in pixels
+    $scope.rotationGoalsDivHeight = function () {
+        return $window.innerHeight / 4 + 44; // donut height + marginTop + marginBottom
+    }
+
     // Booleans for determining whether various parts of graphical interface is loaded
     $scope.rotationsLoaded = false;
     $scope.modalityGoalLoaded = false;

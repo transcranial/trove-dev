@@ -19,28 +19,36 @@ app.directive('modalityGoal', function ($window, $http, $interval) {
                 year = scope.data.rotations[scope.visibleRotationIndex].year;
                 rotation = scope.data.rotations[scope.visibleRotationIndex].rotationName;
                 if (scope.data.goals[rotation]) {
+
                     goal = scope.data.goals[rotation][year - 1][modality];
+                    scope.isRotationWithoutGoals = false;
+
+                    numGoals = _.without(_.values(scope.data.goals[rotation][year - 1]), 0).length;
+
+                    marginTop = 20;
+                    marginBottom = 20;
+                    marginLeft = $window.innerWidth / (10*numGoals);
+                    marginRight = $window.innerWidth / (10*numGoals);
+                    widthDonut = Math.min($window.innerHeight / 4, $window.innerWidth / numGoals - marginLeft - marginRight - 20);
+                    height = $window.innerHeight / 4;
+                    outerRadius = widthDonut / 2;
+                    innerRadius = 3 * outerRadius / 4;
+
                 } else {
+
                     goal = 0;
+                    scope.isRotationWithoutGoals = true;
+
                 }
 
-                numGoals = _.without(_.values(scope.data.goals[rotation][year - 1]), 0).length;
-
-                marginTop = 20;
-                marginBottom = 20;
-                marginLeft = $window.innerWidth / (10*numGoals);
-                marginRight = $window.innerWidth / (10*numGoals);
-                widthDonut = Math.min($window.innerHeight / 4, $window.innerWidth / numGoals - marginLeft - marginRight - 20);
-                height = $window.innerHeight / 4;
-                outerRadius = widthDonut / 2;
-                innerRadius = 3 * outerRadius / 4;
-
                 if (goal === 0) {
+
                     if (donutChart) {
                         d3.select(elem[0]).select('svg').remove();
                         donutChart = null;
                         donutGroup = null;
                     }
+                    
                 } else {
 
                     percentGoalMet = numStudiesWeeklyTotal / goal;

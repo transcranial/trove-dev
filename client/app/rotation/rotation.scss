@@ -163,6 +163,13 @@
 #rotation-goals {
     background-color: $color-primary-tanwhite;
 
+    .rotation-nogoals-msg {
+        vertical-align: middle;
+        font-family: $font-stack-sansserif-1;
+        color: $color-primary-darkblue;
+        font-size: 1.4em;
+    }
+
     /* donut chart styles */
     .donut-chart-label {
         font-family: $font-stack-slabserif;

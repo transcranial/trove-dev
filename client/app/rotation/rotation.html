@@ -19,6 +19,7 @@
             </slick>
         </div>
         <div id="rotation-goals" class="row">
+            <div class="rotation-nogoals-msg" ng-style="{'height': rotationGoalsDivHeight() + 'px', 'line-height': rotationGoalsDivHeight() + 'px'}" ng-if="isRotationWithoutGoals">No goals  available for this rotation.</div>
             <modality-goal modality="CT"></modality-goal>
             <modality-goal modality="XR"></modality-goal>
             <modality-goal modality="MRI"></modality-goal>
