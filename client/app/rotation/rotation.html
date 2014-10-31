@@ -36,7 +36,8 @@
         <span id="studiesListClose" class="panelCloseButton" ng-click="studiesListClose()"></span>
         <span id="studiesListMore" ng-show="studiesListMore"><i class="fa fa-4x fa-angle-double-down"></i></span>
         <div id="studiesListItems">
-            <div ng-repeat="study in studiesList" class="studiesListItem">
+            <div class="studies-sort"><span class="studies-sort-button" ng-class="{'studies-sort-selected': studiesSortBy==='transcribed_time'}" ng-click="studiesSortBy='transcribed_time'">Sort by time</span><span class="studies-sort-button" ng-class="{'studies-sort-selected': studiesSortBy==='-levenshtein_distance'}" ng-click="studiesSortBy='-levenshtein_distance'">Sort by most edits</span></div>
+            <div ng-repeat="study in studiesList | orderBy:studiesSortBy" class="studiesListItem">
                 <div class="examDesc">[ {{study.modality}} ] {{study.exam_name}}</div>
                 <div class="examTime">Transcribed Time: {{study.transcribed_time | date: 'short'}}</div>
                 <div class="diseaseLabels">Disease Labels: None</div>
@@ -44,8 +45,8 @@
                     <span ng-hide="showReportWithEditsBoolean[$index] || showReportBoolean[$index]" ng-click="showReportWithEditsBoolean[$index] = true">Show report with edits</span>
                     <span ng-hide="showReportWithEditsBoolean[$index] || showReportBoolean[$index]" ng-click="showReportBoolean[$index] = true">Show finalized report</span>
                     <span ng-show="showReportBoolean[$index] || showReportWithEditsBoolean[$index]" ng-click="showReportBoolean[$index] = false; showReportWithEditsBoolean[$index] = false;">Hide report</span></div>
-                <div class="studyReport" ng-show="showReportWithEditsBoolean[$index]" ng-bind-html="study.transcribed_report|diff:study.report"></div>
-                <div class="studyReport" ng-show="showReportBoolean[$index]" ng-bind-html="study.report"></div>
+                <div class="studyReport animated fadeIn" ng-show="showReportWithEditsBoolean[$index]" ng-bind-html="preprocessReport(study.transcribed_report, study.report) | diff: study.report"></div>
+                <div class="studyReport animated fadeIn" ng-show="showReportBoolean[$index]" ng-bind-html="study.report"></div>
             </div>
         </div>
     </div>

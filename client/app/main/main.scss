@@ -216,3 +216,20 @@
     -moz-animation-delay: 0.2s;
     -webkit-animation-delay: 0.2s;
 }
+
+
+
+
+
+.panelCloseButton {
+    width: 80px;
+    height: 80px;
+    right: 0;
+    position: absolute;
+    margin: 20px;
+    background: url(../assets/images/cross.png) no-repeat center center;
+}
+.panelCloseButton:hover {
+    border: 2px solid white;
+    cursor: pointer;
+}

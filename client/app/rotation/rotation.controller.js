@@ -199,6 +199,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
     // shown when a particular date is clicked
     $scope.studiesList = [];
     $scope.studiesListShowBoolean = false;
+    $scope.studiesSortBy = 'transcribed_time';
     $scope.studiesListClose = function() {
         $scope.studiesListFadeOutBoolean = true;
         $timeout(function() {
@@ -206,6 +207,15 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
             $scope.studiesListFadeOutBoolean = false;
             $scope.$apply();
         }, 1000);
+    };
+
+    // Preprocess transcribed report to fix the problem of the tail end of the report always
+    // appearing in the diff.
+    $scope.preprocessReport = function (transcribed_report, report) {
+        var footerIndexTranscribed = transcribed_report.toLowerCase().lastIndexOf("prepared by: ");
+        var footerIndexFinal = report.toLowerCase().lastIndexOf("prepared by: ");
+        var transcribed_report_processed = transcribed_report.substring(0, footerIndexTranscribed) + report.substring(footerIndexFinal);
+        return transcribed_report_processed;
     };
 
     // because studiesList displays PHI, we must implement a timeout feature when it is displayed

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "main": "server/app.js",
   "dependencies": {
+    "async": "^0.9.0",
     "body-parser": "~1.0.0",
     "composable-middleware": "^0.3.0",
     "compression": "~1.0.1",
@@ -13,8 +14,12 @@
     "errorhandler": "~1.0.0",
     "express": "~4.0.0",
     "express-session": "~1.0.2",
+    "fast-levenshtein": "^1.0.4",
+    "levenshtein": "^1.0.5",
     "lodash": "~2.4.1",
+    "memcached": "~2.0.0",
     "method-override": "~1.0.0",
+    "mongodb": "^1.4.19",
     "mongoose": "~3.8.8",
     "morgan": "~1.0.0",
     "passport": "^0.2.0",
@@ -22,8 +27,7 @@
     "request": "^2.40.0",
     "socket.io": "~1.0.6",
     "socketio-jwt": "^2.0.2",
-    "static-favicon": "~1.0.1",
-    "memcached": "~2.0.0"
+    "static-favicon": "~1.0.1"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

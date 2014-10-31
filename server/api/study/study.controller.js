@@ -35,7 +35,7 @@ exports.allStudiesOnDate = function(req, res) {
                     $gte: (new Date(req.params.date).getTime()),
                     $lt: (new Date(req.params.date).getTime()) + 86400000
                 }
-            }, 'modality exam_name transcribed_time transcribed_report report', {sort: {transcribed_time: 1}}, function (err, studies) {
+            }, 'modality exam_name transcribed_time transcribed_report report levenshtein_distance', {sort: {transcribed_time: 1}}, function (err, studies) {
                 if(err) { return handleError(res, err); }
                 if(!studies) { return res.send(404); }
                 memcached.set(cache_string, studies, lifetime, function (err) { });
