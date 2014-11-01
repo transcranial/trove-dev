@@ -99,6 +99,7 @@ app.controller('DiseaseCtrl', function ($rootScope, $scope, $http, $location, $t
     
     $scope.rotation = '';  
     $scope.xScaleMax = 0;
+    $scope.diseasesSortBy = 'disease';
 
     // returns boolean for selected rotation equivalency
     $scope.getSelected = function(rotation) {

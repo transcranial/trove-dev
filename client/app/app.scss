@@ -32,6 +32,14 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
     user-select: none;
 }
 
+@mixin background-gradient($color1, $color2) {
+    background: -webkit-linear-gradient(90deg, $color1 10%, $color2 90%); /* Chrome 10+, Saf5.1+ */
+    background:    -moz-linear-gradient(90deg, $color1 10%, $color2 90%); /* FF3.6+ */
+    background:     -ms-linear-gradient(90deg, $color1 10%, $color2 90%); /* IE10 */
+    background:      -o-linear-gradient(90deg, $color1 10%, $color2 90%); /* Opera 11.10+ */
+    background:         linear-gradient(90deg, $color1 10%, $color2 90%); /* W3C */
+}
+
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -45,6 +53,7 @@ $font-stack-sansserif-2: jura, sans-serif;
 
 $color-primary-blue: #81CFE0;
 $color-transparent-blue: rgba(129, 207, 224, 0.92);
+$color-primary-lightgray: #EEEEEE;
 $color-primary-gray: #95A5A6;
 $color-primary-yellow: #F5D76E;
 $color-primary-green: #68C3A3;

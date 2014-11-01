@@ -61,7 +61,13 @@
             <div class="bar-chart-legend-goalZero"></div>
             <div class="bar-chart-legendkey">no cases seen</div>
         </div>
-		<div class="bar-chart-item" ng-repeat="item in diseaseNumbers | filter:{ disease: diseaseSearchInput }">
+        <div class="studies-sort">
+            Sort: 
+            <span class="studies-sort-button" ng-class="{'studies-sort-selected': diseasesSortBy==='disease'}" ng-click="diseasesSortBy='disease'">alphabetical</span>
+            <span class="studies-sort-button" ng-class="{'studies-sort-selected': diseasesSortBy==='-goal_number'}" ng-click="diseasesSortBy='-goal_number'">by goal numbers</span>
+            <span class="studies-sort-button" ng-class="{'studies-sort-selected': diseasesSortBy==='-user_number'}" ng-click="diseasesSortBy='-user_number'">by your numbers</span>
+        </div>
+		<div class="bar-chart-item" ng-repeat="item in diseaseNumbers | orderBy:diseasesSortBy | filter:{ disease: diseaseSearchInput }">
             <div class="bar-chart-row">
                 <div class="bar-chart-margin-left"></div>
                 <div class="bar-chart-item-label">{{ item.disease }} <span class="animated fadeIn" ng-show="diseaseTooltipShow[$index]"> [ click on bar to show studies ]</span></div>

@@ -89,6 +89,31 @@
 }
 
 #barChart {
+    text-align: center;
+
+    .studies-sort {
+        font-family: $font-stack-sansserif-1;
+        font-size: 1em;
+        margin: 40px 0;
+        display: inline-block;
+
+        .studies-sort-button {
+            padding: 8px 0;
+            margin: 0 20px;
+            color: darken($color-primary-lightgray, 5);
+            cursor: default;
+            @include transition(color, 300ms, 0s, ease-out);
+            @include unselectable();
+        }
+        .studies-sort-button:hover {
+            color: $color-primary-blue;
+            cursor: pointer;
+        }
+        .studies-sort-selected {
+            color: $color-primary-blue;
+            border-bottom: 3px solid $color-primary-blue;
+        }
+    }
 
     .bar-chart-item {
         margin: 18px 0;
@@ -106,15 +131,16 @@
         }
 
         .bar-chart-item-bar {
-            background-color: #eeeeee;
+            background-color: $color-primary-lightgray;
             height: 25px;
             width: 0px;
             float: left;
             cursor: default;
-            @include transition(all, 0.6s, 0s, ease-in-out);
+            @include transition(all, 0.3s, 0s, ease-in-out);
         }
         .bar-chart-item-bar:hover {
-            background-color: #dddddd;
+            background-color: darken($color-primary-lightgray, 5);
+            height: 32px;
             cursor: pointer;
         }
 
