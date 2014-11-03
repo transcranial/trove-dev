@@ -1,0 +1,100 @@
+#dashboard-header {
+    background-color: white;
+    color: $color-primary-gray;
+
+    #logo {
+        font-family: $font-stack-slabserif;
+        font-weight: bold;
+        font-size: 20px;
+        color: $color-primary-blue;
+        float: left;
+        padding: 20px 10px 20px 60px;
+        @include unselectable();
+        cursor: default;
+    }
+
+    .toplink {
+        font-family: $font-stack-sansserif-2;
+        background-color: white;
+        color: $color-primary-orange;
+        float: left;
+        padding: 5px 12px;
+        margin: 18px 12px;
+        border: 1px solid $color-primary-orange;
+        border-radius: 5px;
+        @include transition(background-color, 500ms, 0s, ease-out);
+        @include unselectable();
+    }
+    .toplink:hover {
+        cursor: pointer;
+        background-color: $color-primary-orange;
+        color: white;
+    }
+
+    #badges {
+        color: $color-primary-orange;
+        border-color: $color-primary-orange;
+    }
+    #badges:hover {
+        background-color: $color-primary-orange;
+        color: white;
+    }
+
+    #rotationview {
+        color: $color-primary-blue;
+        border-color: $color-primary-blue;
+    }
+    #rotationview:hover {
+        background-color: $color-primary-blue;
+        color: white;
+    }
+
+    #diseaseview {
+        color: $color-primary-blue;
+        border-color: $color-primary-blue;
+    }
+    #diseaseview:hover {
+        background-color: $color-primary-blue;
+        color: white;
+    }
+
+    #acgmeview {
+        color: $color-primary-blue;
+        border-color: $color-primary-blue;
+    }
+    #acgmeview:hover {
+        background-color: $color-primary-blue;
+        color: white;
+    }
+
+    #feedback {
+        color: $color-primary-green;
+        border-color: $color-primary-green;
+    }
+    #feedback:hover {
+        background-color: $color-primary-green;
+        color: white;
+    }
+
+    #user {
+        font-family: $font-stack-sansserif-1;
+        float: right;
+        padding: 23px 40px 20px 10px;
+        
+        #name {
+            font-weight: bold;
+            color: $color-primary-orange;
+        }
+    }
+
+    #logout {
+        text-decoration: underline;
+        cursor: pointer;
+        @include transition(all, 500ms, 0s,  ease-out);
+    }
+
+    #logout:hover, #logout:active, #logout:focus {
+        text-decoration: none;
+        color: $color-primary-blue;
+    }
+}

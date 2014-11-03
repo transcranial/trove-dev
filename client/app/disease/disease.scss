@@ -1,13 +1,3 @@
-#dashboard-header {
-    #rotationview {
-        color: $color-primary-blue;
-        border-color: $color-primary-blue;
-    }
-    #rotationview:hover {
-        background-color: $color-primary-blue;
-        color: white;
-    }
-}
 
 #selectableGroup {
     padding: 0px 20px;
@@ -136,11 +126,11 @@
             width: 0px;
             float: left;
             cursor: default;
-            @include transition(all, 0.3s, 0s, ease-in-out);
+            @include transition(all, 0.4s, 0s, ease-in-out);
         }
         .bar-chart-item-bar:hover {
             background-color: darken($color-primary-lightgray, 5);
-            height: 32px;
+            height: 36px;
             cursor: pointer;
         }
 

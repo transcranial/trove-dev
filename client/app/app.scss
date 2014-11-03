@@ -183,8 +183,10 @@ $color-transparent-orange: rgba(242, 120, 75, 0.92);
 
 // Component styles are injected through grunt
 // injector
+@import 'acgme/acgme.scss';
 @import 'disease/disease.scss';
 @import 'main/badgesList.scss';
+@import 'main/dashboardHeader.scss';
 @import 'main/main.scss';
 @import 'main/studiesList.scss';
 @import 'rotation/rotation.scss';

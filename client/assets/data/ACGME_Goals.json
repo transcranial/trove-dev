@@ -1,0 +1,15 @@
+[
+
+    {"study": "Chest", "study_abbrv": "", "goal_number": 1900},
+    {"study": "CTA/MRA", "study_abbrv": "", "goal_number": 100},
+    {"study": "Mammography", "study_abbrv": "", "goal_number": 300},
+    {"study": "CT Abdominal/Pelvic", "study_abbrv": "", "goal_number": 600},
+    {"study": "US Abdominal/Pelvic", "study_abbrv": "", "goal_number": 350},
+    {"study": "Image Guided Biopsy", "study_abbrv": "", "goal_number": 25},
+    {"study": "MRI Lower Extremity Joints", "study_abbrv": "", "goal_number": 20},
+    {"study": "Brain MRI", "study_abbrv": "", "goal_number": 110},
+    {"study": "PET", "study_abbrv": "", "goal_number": 30},
+    {"study": "Body MRI", "study_abbrv": "", "goal_number": 20},
+    {"study": "Spine MRI", "study_abbrv": "", "goal_number": 60}
+
+]

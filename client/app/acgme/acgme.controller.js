@@ -2,7 +2,7 @@
 
 var app = angular.module('troveApp');
 
-app.controller('DiseaseCtrl', function ($rootScope, $scope, $http, $location, $timeout, $window, diseaseGoals) {
+app.controller('ACGMECtrl', function ($rootScope, $scope, $http, $location, $timeout, $window, ACGMEGoals) {
 
     $scope.logout = function() {
         $http({
@@ -94,74 +94,13 @@ app.controller('DiseaseCtrl', function ($rootScope, $scope, $http, $location, $t
     $scope.rotationView = function() {
         $location.path('/dashboard/rotation');
     };
-    $scope.ACGMEView = function() {
-        $location.path('/dashboard/ACGME');
+    $scope.diseaseView = function() {
+        $location.path('/dashboard/disease');
     };
 
 
-    
-    $scope.rotation = '';  
-    $scope.xScaleMax = 0;
-    $scope.diseasesSortBy = 'disease';
-
-    // returns boolean for selected rotation equivalency
-    $scope.getSelected = function(rotation) {
-        return (rotation == $scope.rotation) ? 'selectedRotation': '';
-    };
-
-    // updates chart with new data
-    $scope.updateChart = function(rotation) {
-        $scope.rotation = rotation;
-        $scope.chartLoading = true;
-
-        var diseaseNames = [];
-        for (var i = 0; i < $scope.diseaseNumbers.length; i++) {
-            diseaseNames.push($scope.diseaseNumbers[i].disease);
-        }
-        diseaseGoals.getDiseaseNumbers($scope.rotation, true).then(function(data) {
-            var diseaseIndex = -1;
-            var xScaleMax = 0;
-            for (var i = 0; i < data.length; i++) {
-                diseaseIndex = diseaseNames.indexOf(data[i].disease);
-                if (diseaseIndex > -1) {
-                    $scope.diseaseNumbers[diseaseIndex].user_number = data[i].user_number;
-                } else {
-                    $scope.diseaseNumbers.push(data[i]);
-                }
-                if (data[i].user_number > xScaleMax) {
-                    xScaleMax = data[i].user_number;
-                }
-            }
-            $scope.xScaleMax = xScaleMax;
-            $scope.chartLoading = false;
-        });
-    };
-
-    // init chart
-    $scope.initChart = function(rotation) {
-        $scope.rotation = rotation;
-        $scope.chartLoading = true;
-        diseaseGoals.getDiseaseNumbers($scope.rotation, false).then(function(data) {
-            $scope.diseaseNumbers = data;
-            $scope.diseaseTooltipShow = [];
-            for (var i = 0; i < data.length; ++i) { $scope.diseaseTooltipShow[i] = false; }
-            $timeout(function() {
-                $scope.updateChart($scope.rotation);
-            }, 300);
-        });
-    };
-
-    $scope.initChart('BODY CT');
-
-    // helper function to determine width of bar
-    $scope.calcCSSWidth = function(number) {
-        var xScale = ($window.innerWidth - 160) / Math.max(10, $scope.xScaleMax);
-        return {
-            width: number * xScale + 'px'
-        };
-    };
-
-    $scope.clearSearch = function() {
-        $scope.diseaseSearchInput = '';
-    };
+    // ACGME Goals
+    ACGMEGoals.getACGMEGoals().then(function (results) {
+        $scope.acgme_goal_array = results.data;
+    });
 });
