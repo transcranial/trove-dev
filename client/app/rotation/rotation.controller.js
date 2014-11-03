@@ -281,5 +281,8 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
     $scope.diseaseView = function() {
         $location.path('/dashboard/disease');
     };
+    $scope.ACGMEView = function() {
+        $location.path('/dashboard/ACGME');
+    };
     
 });

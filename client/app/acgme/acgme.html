@@ -1,0 +1,43 @@
+<div class="container-fluid">
+    <div id="dashboard-header" class="row">
+        <div id="logo"><i class="fa fa-cubes"></i> TROVE</div>
+        <div class="toplink" id="badges" ng-click="badgesListShow()"><i class="fa fa-trophy"></i> Badges ({{minnies | number}} minnies)</div>
+        <div class="toplink" id="rotationview" ng-click="rotationView()"><i class="fa fa-circle-o"></i> Rotation View</div>
+        <div class="toplink" id="diseaseview" ng-click="diseaseView()"><i class="fa fa-th"></i> Disease View</div>
+        <div class="toplink" id="feedback" ng-click="feedbackBoxShow = true"><i class="fa fa-comment-o"></i> Feedback</div>
+        <div id="user">
+            Welcome, <span id="name">{{ data.name }}</span> | <span id="logout" ng-click="logout()">logout</span>
+        </div>
+    </div>
+    <div class="row animated fadeInTop" id="acgme-goals">
+        <div ng-repeat="goal in acgme_goal_array">
+            {{goal.study}}  {{goal.goal_number}}
+        </div>
+    </div>
+
+</div>
+
+<div id="badgesList" class="row animated fadeInDown" ng-if="badgesListShowBoolean" ng-class="{'fadeOutUp': badgesListFadeOutBoolean}">
+    <span id="badgesListClose" class="panelCloseButton" ng-click="badgesListClose()"></span>
+    <div id="badgesListItems">        <div id="badgesListHeader">My Badges</div>
+        <div ng-repeat="badge in badges" class="badge">
+            <div class="badgeIcon"><img ng-src="{{badge.iconURL}}" /></div>
+            <div class="badgeDesc">{{badge.desc}}</div>
+            <div class="badgeDate">{{badge.dateAchieved | date: 'medium'}}</div>
+        </div>
+        <div></div>
+    </div>
+</div>
+
+<div class="md-modal md-effect" ng-class="{'md-show': feedbackBoxShow}">
+    <div class="md-content">
+        <h3>Feedback</h3>
+        <div class="md-content-item">
+            Name (optional):<br><input class="inputfield" type="text" name="fname" ng-model="fname" /><br><br>
+            Message:<br><textarea class="inputfield" type="textarea" name="fmsg" ng-model="fmsg"></textarea></div>
+        <div class="text-center"><span class="button" ng-click="feedbackBoxShow = false; sendFeedback();">Send</span> <span class="button" ng-click="feedbackBoxShow = false">Close</span></div> 
+    </div>
+</div>
+
+<div class="md-overlay" ng-click="feedbackBoxShow = false"></div>
+
