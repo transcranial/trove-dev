@@ -235,6 +235,32 @@ exports.processHL7JSON = function(req, res) {
         }
     }
 
+    // Leon's Method scripts/calculate_distances.js
+    function calcLevenshteinDist (report_1, report_2) {
+        var distance = levenshtein.get(report_1, report_2);
+        return distance;
+    }
+
+    // Leon's Method scripts/calculate_distances.js
+    function processReport (transcribed_report, report) {
+        var footerIndexTranscribed = transcribed_report.toLowerCase().lastIndexOf("prepared by: ");
+        var footerIndexFinal = report.toLowerCase().lastIndexOf("prepared by: ");
+        var transcribed_report_processed = transcribed_report.substring(0, footerIndexTranscribed) + report.substring(footerIndexFinal);
+        return transcribed_report_processed;
+    }
+
+    // Leon's Method scripts/calculate_distances.js
+    function formatReports(study) {
+        var studyFormatted = study;
+        var output_reports = {
+            'f_finalized_report':'',
+            'f_transcribed_report':''
+        };
+        output_reports['f_finalized_report'] = JSON.stringify(studyFormatted.finalized_report.replace(/(\|)|(\s+)/g, " ").trim()).replace(/^"?(.+?)"?$/g, '$1');
+        output_reports['f_transcribed_report'] = JSON.stringify(studyFormatted.transcribed_report.replace(/(\|)|(\s+)/g, " ").trim()).replace(/^"?(.+?)"?$/g, '$1');
+        return output_reports;
+    }
+
     function getRadiologist(name) {
         var raw_name = name.replace('MD','').trim();
         var raw_name_array = raw_name.split(',');
@@ -363,6 +389,13 @@ exports.processHL7JSON = function(req, res) {
                 current_study['finalized_date'] = finalized_date;
                 current_study['finalized_time'] = finalized_date.getTime();
                 current_study['finalized_word_count'] = current_study['word_count'];
+
+                /* TODO Levenshtein distance, need to talk with leon
+                var output_reports = formatReports(current_study);
+                var report_1 = output_reports['f_finalized_report'];
+                var report_2 = processReport(output_reports['f_transcribed_report'], output_reports['f_finalized_report']);
+                */
+                //current_study['levenshtein_distance'] = formatReports(current_study)
             }
 
             current_study.save();

@@ -71,9 +71,9 @@ var runupdates = function (db, ids, count, callback) {
                 if (err) {
                     console.log(err) ;
                 } 
+                return callback(null, true);
             });
 
-            return callback(null, true);
         });
     }
 
