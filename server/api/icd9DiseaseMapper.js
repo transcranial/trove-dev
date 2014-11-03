@@ -80,7 +80,7 @@ var icd9ToDiseaseTable = {
 "157": "Pancreas lesions",
 "158": "Peritoneal disease",
 "434.91": "Cerebral infarction",
-"162": "Lung cancer primary or metastatic ",
+"162": "Lung cancer primary or metastatic",
 "163": "Mesothelioma",
 "164.0": "Thymoma",
 "433.1": "Carotid stenosis",

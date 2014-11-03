@@ -1,8 +1,7 @@
-var accession_to_icd9_codes_table = require('./accession_to_icd9_codes');
-
 var async = require('async');
 var _ = require('lodash');
-var icd9ToDiseaseMapper = require('./icd9DiseaseMapper');
+var icd9ToDiseaseMapper = require('../api/icd9DiseaseMapper');
+var accession_to_icd9_codes_table = require('./accession_to_icd9_codes');
 
 var Db = require('mongodb').Db,
     MongoClient = require('mongodb').MongoClient,
