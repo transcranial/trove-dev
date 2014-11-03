@@ -258,5 +258,12 @@ var icd9ToDiseaseTable = {
 "682": "Abscess"};
 
 exports.map = function(icd9) {
-    return icd9ToDiseaseTable[icd9] || ""; 
+	for (var key in icd9ToDiseaseTable) {
+		if (icd9.indexOf(key) > -1) {
+			return icd9ToDiseaseTable[key];
+		}
+	}
+
+	return "";
+    //return icd9ToDiseaseTable[icd9] || ""; 
 };
