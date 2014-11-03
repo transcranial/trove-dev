@@ -32,6 +32,10 @@ var StudySchema = mongoose.Schema({
     transcribed_word_count : { type: Number, default: 0},
     finalized_word_count : { type: Number, default: 0},
 
+    icd9_codes : [String],
+    cpt_codes : [String],
+    disease_labels : [String],
+
     service_code: { type: String, default: null },
     exam_name : { type: String, default: null },
     modality: { type: String, default: null },
