@@ -28,8 +28,8 @@ module.exports = function(app) {
   app.use(cookieSession({
       keys: ['secret1', 'secret2']
   }));
-  //app.use(passport.initialize());
-  //app.use(passport.session());
+  app.use(passport.initialize());
+  app.use(passport.session());
   //app.use(require('../xsrf'));
   app.use(bodyParser.json());
   app.use(methodOverride());
