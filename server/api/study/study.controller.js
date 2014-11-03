@@ -242,9 +242,9 @@ exports.processHL7JSON = function(req, res) {
     }
 
     // Leon's Method scripts/calculate_distances.js
-    function processReport (transcribed_report, report) {
+    function processReport (transcribed_report, finalized_report) {
         var footerIndexTranscribed = transcribed_report.toLowerCase().lastIndexOf("prepared by: ");
-        var footerIndexFinal = report.toLowerCase().lastIndexOf("prepared by: ");
+        var footerIndexFinal = finalized_report.toLowerCase().lastIndexOf("prepared by: ");
         var transcribed_report_processed = transcribed_report.substring(0, footerIndexTranscribed) + report.substring(footerIndexFinal);
         return transcribed_report_processed;
     }
@@ -390,12 +390,14 @@ exports.processHL7JSON = function(req, res) {
                 current_study['finalized_time'] = finalized_date.getTime();
                 current_study['finalized_word_count'] = current_study['word_count'];
 
-                /* TODO Levenshtein distance, need to talk with leon
+                // TODO Levenshtein distance, need to talk with leon
                 var output_reports = formatReports(current_study);
-                var report_1 = output_reports['f_finalized_report'];
-                var report_2 = processReport(output_reports['f_transcribed_report'], output_reports['f_finalized_report']);
-                */
-                //current_study['levenshtein_distance'] = formatReports(current_study)
+                // f_ denotes 'formatted'
+                var f_finalized_report = output_reports['f_finalized_report'];
+                var processed_f_trascribed_report = processReport(output_reports['f_transcribed_report'], output_reports['f_finalized_report']);
+                var dist = calcLevenshteinDist(f_finalized_report, processed_f_trascribed_report);
+
+                current_study['levenshtein_distance'] = dist;
             }
 
             current_study.save();
