@@ -224,6 +224,7 @@ exports.modalityStudiesBetweenDatesCount = function(req, res) {
 };
 
 exports.processHL7JSON = function(req, res) {
+    // just keeping functions in here to reduce clutter for now
     function getWordCount(report) {
         if (report) {
             var temp_report_array = report.split('|').slice(8);
