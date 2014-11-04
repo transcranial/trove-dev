@@ -29,7 +29,7 @@ var getids = function (db, callback) {
     });
 };
 
-var undefined_count = 0;
+var found_count = 0;
 var	total_count = 0; 
 //console.log(study_icd9_codes);
 var regex = /(.*?)\{(.*?)\}/g;
@@ -51,7 +51,7 @@ var runupdates = function (db, ids, count, callback) {
 
         	if (study_icd9_codes_string != undefined) {
         		//parseCodes(study_icd9_codes);
-				console.log(study_icd9_codes_string);
+				//console.log(study_icd9_codes_string);
 				while (match = regex.exec(study_icd9_codes_string)) {
 					cpt_codes.push(match[1].trim())
 					icd9_codes = icd9_codes.concat(match[2].split(' '));
@@ -62,10 +62,14 @@ var runupdates = function (db, ids, count, callback) {
                     disease_labels.push(icd9ToDiseaseMapper.map(icd9_codes[i]));
                 }
                 disease_labels = _.uniq(disease_labels);
-				console.log(cpt_codes);
-				console.log(icd9_codes);
-                console.log(disease_labels);
+
+                found_count++;
+				//console.log(cpt_codes);
+				//console.log(icd9_codes);
+                //console.log(disease_labels);
         	}
+
+            total_count++;
 
 			db.collection('studies').update({'_id': new ObjectID(id._id.toString())}, {$set:{'icd9_codes' : icd9_codes,'cpt_codes':cpt_codes,'disease_labels':disease_labels}}, function (err, update) {
                 if (err) {
@@ -84,11 +88,9 @@ var runupdates = function (db, ids, count, callback) {
 };
 
 async.waterfall([openDB, getids, runupdates], function (err, results) {
-	/*
-	console.log('undefined_count: ' + String(undefined_count));
+	console.log('found_count: ' + String(found_count));
 	console.log('count: ' + String(total_count));
-	console.log('%: ' + String(undefined_count/total_count));
-	*/
+	console.log('%: ' + String(found_count/total_count));
     if (err) { 
         console.log(err); 
         process.exit(code=1);
