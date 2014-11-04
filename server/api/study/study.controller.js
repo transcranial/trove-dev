@@ -245,7 +245,7 @@ exports.processHL7JSON = function(req, res) {
     function processReport (transcribed_report, finalized_report) {
         var footerIndexTranscribed = transcribed_report.toLowerCase().lastIndexOf("prepared by: ");
         var footerIndexFinal = finalized_report.toLowerCase().lastIndexOf("prepared by: ");
-        var transcribed_report_processed = transcribed_report.substring(0, footerIndexTranscribed) + report.substring(footerIndexFinal);
+        var transcribed_report_processed = transcribed_report.substring(0, footerIndexTranscribed) + finalized_report.substring(footerIndexFinal);
         return transcribed_report_processed;
     }
 
