@@ -407,9 +407,9 @@ exports.processHL7JSON = function(req, res) {
                 var f_finalized_report = output_reports['f_finalized_report'];
                 var processed_f_trascribed_report = processReport(output_reports['f_transcribed_report'], output_reports['f_finalized_report']);
                 var dist = calcLevenshteinDist(f_finalized_report, processed_f_trascribed_report);
-                */
 
-                current_study['levenshtein_distance'] = dist;
+                //current_study['levenshtein_distance'] = dist;
+                */
             }
 
             current_study.save();
