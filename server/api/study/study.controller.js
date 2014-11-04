@@ -361,6 +361,10 @@ exports.processHL7JSON = function(req, res) {
                 }
             }    
 
+            if (req.body['report']) {
+                current_study['hl7_json_history'].push(JSON.stringify(req.body));
+            }
+
             if (req.body['scheduled_time']) {
                 var scheduled_date = convertHL7DateToJavascriptDate(req.body['scheduled_time']);
                 current_study['scheduled_date'] = scheduled_date;
