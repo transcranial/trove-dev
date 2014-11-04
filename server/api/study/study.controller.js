@@ -256,8 +256,14 @@ exports.processHL7JSON = function(req, res) {
             'f_finalized_report':'',
             'f_transcribed_report':''
         };
-        output_reports['f_finalized_report'] = JSON.stringify(studyFormatted.finalized_report.replace(/(\|)|(\s+)/g, " ").trim()).replace(/^"?(.+?)"?$/g, '$1');
-        output_reports['f_transcribed_report'] = JSON.stringify(studyFormatted.transcribed_report.replace(/(\|)|(\s+)/g, " ").trim()).replace(/^"?(.+?)"?$/g, '$1');
+        if (studyFormatted.finalized_report) {
+            output_reports['f_finalized_report'] = JSON.stringify(studyFormatted.finalized_report.replace(/(\|)|(\s+)/g, " ").trim()).replace(/^"?(.+?)"?$/g, '$1');
+        }
+
+        if (studyFormatted.transcribed_report) {
+            output_reports['f_transcribed_report'] = JSON.stringify(studyFormatted.transcribed_report.replace(/(\|)|(\s+)/g, " ").trim()).replace(/^"?(.+?)"?$/g, '$1');
+        }
+
         return output_reports;
     }
 
@@ -394,12 +400,14 @@ exports.processHL7JSON = function(req, res) {
                 current_study['finalized_time'] = finalized_date.getTime();
                 current_study['finalized_word_count'] = current_study['word_count'];
 
+                /*
                 // TODO Levenshtein distance, need to talk with leon
                 var output_reports = formatReports(current_study);
                 // f_ denotes 'formatted'
                 var f_finalized_report = output_reports['f_finalized_report'];
                 var processed_f_trascribed_report = processReport(output_reports['f_transcribed_report'], output_reports['f_finalized_report']);
                 var dist = calcLevenshteinDist(f_finalized_report, processed_f_trascribed_report);
+                */
 
                 current_study['levenshtein_distance'] = dist;
             }
