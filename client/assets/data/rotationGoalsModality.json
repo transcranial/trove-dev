@@ -54,10 +54,10 @@
         {"CT": 0, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 55, "NM": 0}
     ],
     "Neuro": [
-        {"CT": 35, "XR": 5, "MRI": 5, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 25, "XR": 5, "MRI": 25, "FLUORO": 0, "US": 0, "NM": 0},
-        {"CT": 25, "XR": 5, "MRI": 40, "FLUORO": 1, "US": 0, "NM": 0},
-        {"CT": 25, "XR": 0, "MRI": 40, "FLUORO": 1, "US": 0, "NM": 0}
+        {"CT": 35, "XR": 0, "MRI": 5, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 25, "XR": 0, "MRI": 25, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 25, "XR": 0, "MRI": 40, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 25, "XR": 0, "MRI": 40, "FLUORO": 0, "US": 0, "NM": 0}
     ],
     "NYP Body US-CT": [
         {"CT": 7, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 27, "NM": 0},
