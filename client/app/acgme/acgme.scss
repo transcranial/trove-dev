@@ -1,3 +1,55 @@
 #acgme-goals {
     text-align: center;
+
+    .goal-header {
+        margin: 50px 0;
+
+        .goal-header-title {
+            font-family: $font-stack-slabserif;
+            font-size: 1.5em;
+        }
+        
+        .goal-header-disclaimer {
+            font-family: $font-stack-sansserif-1;
+            font-size: 0.9em;
+        }
+    }
+
+    .goal-panel {
+        background-color: white;
+        border: 1px solid $color-primary-blue;
+        width: 250px;
+        height: 250px;
+        display: inline-block;
+        float: left;
+        padding: 25px;
+        margin: 30px;
+        border-radius: 0px;
+
+        .goal-study {
+            font-family: $font-stack-slabserif;
+            font-size: 1em;
+        }
+
+        .goal-number {
+            font-family: $font-stack-sansserif-2;
+            font-size: 1.4em;
+            padding: 20px 0;
+        }
+        .goal-bar {
+            height: 30px;
+            width: 100%;
+            margin-top: 50px;
+        }
+        .goal-bar-1 {
+            background-color: $color-primary-blue;
+            height: 30px;
+            float: left;
+        }
+        .goal-bar-2 {
+            background-color: $color-primary-gray;
+            height: 30px;
+            float: left;
+        }
+    }
 }

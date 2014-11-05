@@ -10,8 +10,19 @@
         </div>
     </div>
     <div class="row animated fadeInTop" id="acgme-goals">
-        <div ng-repeat="goal in acgme_goal_array">
-            {{goal.study}}  {{goal.goal_number}}
+        <div class="goal-header">
+            <div class="goal-header-title">ACGME goals</div>
+            <div class="goal-header-disclaimer">Note: only studies from NYP are included (no MSKCC or HSS).</div>
+        </div>
+        <div ng-repeat="goal in acgme_goals_array">
+            <div class="goal-panel">
+                <div class="goal-study">{{goal.study}}</div>
+                <div class="goal-number">{{goal.user_number}} / {{goal.goal_number}}</div>
+                <div class="goal-bar">
+                    <div class="goal-bar-1" ng-style="calcCSSWidth(goal.user_number, goal.goal_number, 1)"></div>
+                    <div class="goal-bar-2" ng-style="calcCSSWidth(goal.user_number, goal.goal_number, 2)"></div>
+                </div>
+            </div>
         </div>
     </div>
 
