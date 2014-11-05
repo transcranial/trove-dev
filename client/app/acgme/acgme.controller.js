@@ -100,7 +100,9 @@ app.controller('ACGMECtrl', function ($rootScope, $scope, $http, $location, $tim
 
 
     // ACGME Goals
+    $scope.goalsLoadedBoolean = false;
     ACGMEGoals.getACGMEGoals($scope.currentUser.userId).then(function (results) {
+        $scope.goalsLoadedBoolean = true;
         $scope.acgme_goals_array = results;
     });
 

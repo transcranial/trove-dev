@@ -14,6 +14,13 @@
             <div class="goal-header-title">ACGME goals</div>
             <div class="goal-header-disclaimer">Note: only studies from NYP are included (no MSKCC or HSS).</div>
         </div>
+       <div id="preloader_1" ng-if="!goalsLoadedBoolean">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         <div ng-repeat="goal in acgme_goals_array">
             <div class="goal-panel">
                 <div class="goal-study">{{goal.study}}</div>
