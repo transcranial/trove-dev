@@ -6,8 +6,12 @@ var User = require('./../user/user.model');
 var Memcached = require('memcached');
 var memcached = new Memcached('localhost:11211');
 var fs = require('fs');
-var path = require('path');
-var os = require('os');
+
+//var serialized_study_data_path = __dirname + "/study_data/";
+var SERIALIZED_STUDY_DATA_PATH = __dirname + "/study_data/";
+if (!fs.existsSync(SERIALIZED_STUDY_DATA_PATH)) {
+    fs.mkdirSync(SERIALIZED_STUDY_DATA_PATH);
+}
 
 var modalityMapper = require('./../modalityMapper');
 
@@ -373,20 +377,17 @@ exports.processHL7JSON = function(req, res) {
                 var current_result_date = convertHL7DateToJavascriptDate(req.body['result_time']);
                 var current_result_time = current_result_date.getTime();
 
-                var serialized_study_data_path = __dirname + "/study_data/";
-
                 var hl7_filename_date = convertHL7DateToJavascriptDate(req.body['result_time']);
-                var hl7_filename = hl7_filename_date.toISOString() + ".txt";
-                var full_hl7_filename = serialized_study_data_path + hl7_filename;
+                var hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".txt";
+                var full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_filename;
                 var file_exists = fs.existsSync(full_hl7_filename);
-
                 //console.log(path.resolve());
                 //console.log(__dirname);
 
                 while (file_exists) {
                     hl7_filename_date.setSeconds(hl7_filename_date.getSeconds() + 1);
-                    hl7_filename = hl7_filename_date.toISOString() + ".txt";
-                    full_hl7_filename = serialized_study_data_path + hl7_filename;
+                    hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".txt";
+                    full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_filename;
                     file_exists = fs.existsSync(full_hl7_filename)
                     //console.log('in while loop');
                     //console.log(file_exists);
