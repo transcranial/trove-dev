@@ -2,6 +2,7 @@
 
 var Study = require('./study.model');
 var User = require('./../user/user.model');
+var levenshtein = require('fast-levenshtein');
 
 var Memcached = require('memcached');
 var memcached = new Memcached('localhost:11211');
@@ -263,6 +264,7 @@ exports.processHL7JSON = function(req, res) {
             'f_finalized_report':'',
             'f_transcribed_report':''
         };
+
         if (studyFormatted.finalized_report) {
             output_reports['f_finalized_report'] = JSON.stringify(studyFormatted.finalized_report.replace(/(\|)|(\s+)/g, " ").trim()).replace(/^"?(.+?)"?$/g, '$1');
         }
@@ -388,7 +390,7 @@ exports.processHL7JSON = function(req, res) {
                     hl7_filename_date.setMilliseconds(hl7_filename_date.getMilliseconds() + 1);
                     hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".json";
                     full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_filename;
-                    file_exists = fs.existsSync(full_hl7_filename)
+                    file_exists = fs.existsSync(full_hl7_filename);
                     //console.log('in while loop');
                     //console.log(file_exists);
                     //console.log('----');
@@ -435,6 +437,7 @@ exports.processHL7JSON = function(req, res) {
             if (result_status == 'P' && parseRadiologistFromReport(req.body['report']) == 'undefined') {
                 var transcribed_date = convertHL7DateToJavascriptDate(req.body['result_time']);
                 current_study['transcribed_report'] = req.body['report'];
+                console.log(req.body['report']);
                 current_study['transcribed_date'] = transcribed_date;
                 current_study['transcribed_time'] = transcribed_date.getTime();
                 current_study['transcribed_word_count'] = current_study['word_count'];
@@ -447,24 +450,25 @@ exports.processHL7JSON = function(req, res) {
                 current_study['finalized_time'] = finalized_date.getTime();
                 current_study['finalized_word_count'] = current_study['word_count'];
 
-                /*
                 // TODO Levenshtein distance, need to talk with leon
                 var output_reports = formatReports(current_study);
                 // f_ denotes 'formatted'
                 var f_finalized_report = output_reports['f_finalized_report'];
                 var processed_f_trascribed_report = processReport(output_reports['f_transcribed_report'], output_reports['f_finalized_report']);
-                var dist = calcLevenshteinDist(f_finalized_report, processed_f_trascribed_report);
-
-                //current_study['levenshtein_distance'] = dist;
-                */
+                //console.log(f_finalized_report);
+                //console.log(processed_f_trascribed_report);
+                var dist = calcLevenshteinDist(output_reports['f_finalized_report'], processed_f_trascribed_report);
+                //console.log(dist);
+                //console.log(dist);
+                current_study['levenshtein_distance'] = dist;
             }
 
             current_study.save();
+            res.json(req.body);
         });
     });
 
     // just to send something back to numeria-mirth 
-    res.json(req.body);
 }
 
 function handleError(res, err) {
