@@ -378,7 +378,7 @@ exports.processHL7JSON = function(req, res) {
                 var current_result_time = current_result_date.getTime();
 
                 var hl7_filename_date = convertHL7DateToJavascriptDate(req.body['result_time']);
-                var hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".txt";
+                var hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".json";
                 var full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_filename;
                 var file_exists = fs.existsSync(full_hl7_filename);
                 //console.log(path.resolve());
@@ -386,7 +386,7 @@ exports.processHL7JSON = function(req, res) {
 
                 while (file_exists) {
                     hl7_filename_date.setSeconds(hl7_filename_date.getSeconds() + 1);
-                    hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".txt";
+                    hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".json";
                     full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_filename;
                     file_exists = fs.existsSync(full_hl7_filename)
                     //console.log('in while loop');
