@@ -100,7 +100,27 @@ app.controller('ACGMECtrl', function ($rootScope, $scope, $http, $location, $tim
 
 
     // ACGME Goals
-    ACGMEGoals.getACGMEGoals().then(function (results) {
-        $scope.acgme_goal_array = results.data;
+    $scope.goalsLoadedBoolean = false;
+    ACGMEGoals.getACGMEGoals($scope.currentUser.userId).then(function (results) {
+        $scope.goalsLoadedBoolean = true;
+        $scope.acgme_goals_array = results;
     });
+
+    // helper function to determine width of bar
+    $scope.calcCSSWidth = function(numerator, denominator, index) {
+        if (index === 1) {
+            return {
+                width: Math.round(numerator*100/denominator) + '%'
+            };
+        } else if (index === 2) {
+            return {
+                width: Math.round(100 - numerator*100/denominator) + '%'
+            };
+        } else {
+            return {
+                width: 0
+            };
+        }
+    };
+
 });

@@ -23,7 +23,7 @@ exports.getMinnies = function(req, res) {
     
     return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
-        if (!data) {
+        if (typeof data === "undefined") {
             User.findOne({ 
                 username: req.params.username
             }, 'userId minnies', function (err, user) {
@@ -77,6 +77,91 @@ exports.getBadges = function(req, res) {
         if(!user) { return res.send(404); }
 
         return res.json(user.badges);
+    });
+};
+
+// Get count of all studies on a single date, by currentUser
+exports.getNumberForACGME = function(req, res) {
+    var cache_string = req.params.user + '/ACGME/' + req.params.study_index;
+    var lifetime = 86400; 
+
+    //hard-coded ACGME goals by study_index
+    var exam_name_contains = '';
+    var modalities = [];
+    switch (parseInt(req.params.study_index)) {
+        case 0:
+            exam_name_contains = /CHEST/;
+            modalities = [];
+            break;
+        case 1:
+            exam_name_contains = /(CTA)|(MRA)|(ANGIO)/;
+            modalities = ['CT', 'MRI'];
+            break;
+        case 2:
+            exam_name_contains = /MAMMO/;
+            modalities = [];
+            break;
+        case 3:
+            exam_name_contains = /(ABD)|(PELVIS)/;
+            modalities = ['CT'];
+            break;
+        case 4:
+            exam_name_contains = /(ABD)|(PEL)/;
+            modalities = ['US'];
+            break;
+        case 5:
+            exam_name_contains = /BIOPSY/;
+            modalities = [];
+            break;
+        case 6:
+            exam_name_contains = /(FOOT)|(ANKLE)|(KNEE)|(HIP)/;
+            modalities = ['MRI'];
+            break;
+        case 7:
+            exam_name_contains = /BRAIN/;
+            modalities = ['MRI'];
+            break;
+        case 8:
+            exam_name_contains = /PET/;
+            modalities = [];
+            break;
+        case 9:
+            exam_name_contains = /(ABD)|(PEL)|(LIVER)|(MRCP)|(THIGH)|(LEG)|(ARM)|(HAND)|(EXT)/;
+            modalities = ['MRI'];
+            break;
+        case 10:
+            exam_name_contains = /SPINE/;
+            modalities = ['MRI'];
+            break;
+    }
+
+    return memcached.get(cache_string, function (err, data) {
+        var criteria = {};
+        if (err) { return handleError(res, err); }
+        if (typeof data === "undefined") {
+
+            if (modalities.length === 0) {
+                criteria = {
+                    assistant_radiologist: req.params.user,
+                    exam_name: exam_name_contains
+                };
+            } else {
+                criteria = {
+                    assistant_radiologist: req.params.user,
+                    exam_name: exam_name_contains,
+                    modality: {$in: modalities}
+                };
+            }
+
+            Study.count(criteria, function (err, count) {
+                if (err) { return handleError(res, err); }
+                if (typeof count === "undefined") { count = 0; }
+                memcached.set(cache_string, count, lifetime, function (err) { });
+                return res.json(count);
+            });
+        } else {
+            return res.json(data);
+        }
     });
 };
 
