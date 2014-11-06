@@ -385,7 +385,7 @@ exports.processHL7JSON = function(req, res) {
                 //console.log(__dirname);
 
                 while (file_exists) {
-                    hl7_filename_date.setSeconds(hl7_filename_date.getSeconds() + 1);
+                    hl7_filename_date.setMilliseconds(hl7_filename_date.getMilliseconds() + 1);
                     hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".json";
                     full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_filename;
                     file_exists = fs.existsSync(full_hl7_filename)
