@@ -24,7 +24,7 @@ var StudySchema = mongoose.Schema({
 
     report : { type: String, default: null },
     transcribed_report : { type: String, default: null },
-    finalzied_report : { type: String, default: null },
+    finalized_report : { type: String, default: null },
 
     levenshtein_distance : { type: Number, default: 0 },
 

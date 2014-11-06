@@ -5,6 +5,9 @@ var User = require('./../user/user.model');
 
 var Memcached = require('memcached');
 var memcached = new Memcached('localhost:11211');
+var fs = require('fs');
+var path = require('path');
+var os = require('os');
 
 var modalityMapper = require('./../modalityMapper');
 
@@ -295,6 +298,13 @@ exports.processHL7JSON = function(req, res) {
         return radiologist || '';
     }
 
+    function parseRadiologistFromReport(report) {
+        var regex = /.*Study\sinterpreted\sand\sreport\sapproved\sby:(.*?)\|/;
+        var match = regex.exec(report);
+        var radiologist = getRadiologist(match[1])
+        return radiologist || '';
+    }
+
     function populateStudy(study,request_body) {
         study['modality']            = request_body['modality'].trim();
         study['service_description'] = request_body['service_description'].trim();
@@ -310,6 +320,14 @@ exports.processHL7JSON = function(req, res) {
     var result_status = req.body['result_status'];
 
     var current_study = null;
+
+
+    /*
+    fs.writeFile('message.txt', 'Hello Node', function (err) {
+        if (err) throw err;
+        console.log('It\'s saved!');
+    });
+    */
 
     Study.findOne({
         accession:req.body.accession.replace(/-\d+/,""),
@@ -354,16 +372,44 @@ exports.processHL7JSON = function(req, res) {
             if (req.body['result_time']) {
                 var current_result_date = convertHL7DateToJavascriptDate(req.body['result_time']);
                 var current_result_time = current_result_date.getTime();
+
+                var serialized_study_data_path = __dirname + "/study_data/";
+
+                var hl7_filename_date = convertHL7DateToJavascriptDate(req.body['result_time']);
+                var hl7_filename = hl7_filename_date.toISOString() + ".txt";
+                var full_hl7_filename = serialized_study_data_path + hl7_filename;
+                var file_exists = fs.existsSync(full_hl7_filename);
+
+                //console.log(path.resolve());
+                //console.log(__dirname);
+
+                while (file_exists) {
+                    hl7_filename_date.setSeconds(hl7_filename_date.getSeconds() + 1);
+                    hl7_filename = hl7_filename_date.toISOString() + ".txt";
+                    full_hl7_filename = serialized_study_data_path + hl7_filename;
+                    file_exists = fs.existsSync(full_hl7_filename)
+                    //console.log('in while loop');
+                    //console.log(file_exists);
+                    //console.log('----');
+                }
+
+                // now serializing messages as they take forever to reprocess via the mirth listener
+                fs.writeFile(full_hl7_filename, JSON.stringify(req.body), function (err) {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    }
+                    //console.log('It\'s saved!');
+                });
+
+
                 if ((current_study['last_result_time'] || 0) < current_result_time) {
                     current_study['last_result_date'] = current_result_date;
                     current_study['last_result_time'] = current_result_time;
-                    console.log('update all values?');
                     // overwrite old values since the message is newer than the last stored update
                     // this method will most likely never be called more than once each time this route is fired,
                     // although it is shown to be called to populate a newly created study
                     populateStudy(current_study, req.body);
-
-                   
                 }
             }    
 
@@ -385,7 +431,7 @@ exports.processHL7JSON = function(req, res) {
 
             // TODO: Workout better logic regarding how these get updated. As it is, a finalized json could come in before
             // a transcribed json
-            if (result_status == 'P') {
+            if (result_status == 'P' && parseRadiologistFromReport(req.body['report']) == 'undefined') {
                 var transcribed_date = convertHL7DateToJavascriptDate(req.body['result_time']);
                 current_study['transcribed_report'] = req.body['report'];
                 current_study['transcribed_date'] = transcribed_date;
