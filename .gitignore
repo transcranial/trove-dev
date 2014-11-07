@@ -8,4 +8,5 @@ dist
 server/config/local.env.js
 *.sublime*
 temp
+server/api/study/study_data
 client/assets/images/iconset_original

@@ -2,9 +2,17 @@
 
 var Study = require('./study.model');
 var User = require('./../user/user.model');
+var levenshtein = require('fast-levenshtein');
 
 var Memcached = require('memcached');
 var memcached = new Memcached('localhost:11211');
+var fs = require('fs');
+
+//var serialized_study_data_path = __dirname + "/study_data/";
+var SERIALIZED_STUDY_DATA_PATH = __dirname + "/study_data/";
+if (!fs.existsSync(SERIALIZED_STUDY_DATA_PATH)) {
+    fs.mkdirSync(SERIALIZED_STUDY_DATA_PATH);
+}
 
 var modalityMapper = require('./../modalityMapper');
 
@@ -256,6 +264,7 @@ exports.processHL7JSON = function(req, res) {
             'f_finalized_report':'',
             'f_transcribed_report':''
         };
+
         if (studyFormatted.finalized_report) {
             output_reports['f_finalized_report'] = JSON.stringify(studyFormatted.finalized_report.replace(/(\|)|(\s+)/g, " ").trim()).replace(/^"?(.+?)"?$/g, '$1');
         }
@@ -295,6 +304,13 @@ exports.processHL7JSON = function(req, res) {
         return radiologist || '';
     }
 
+    function parseRadiologistFromReport(report) {
+        var regex = /.*Study\sinterpreted\sand\sreport\sapproved\sby:(.*?)\|/;
+        var match = regex.exec(report);
+        var radiologist = getRadiologist(match[1])
+        return radiologist || '';
+    }
+
     function populateStudy(study,request_body) {
         study['modality']            = request_body['modality'].trim();
         study['service_description'] = request_body['service_description'].trim();
@@ -310,6 +326,14 @@ exports.processHL7JSON = function(req, res) {
     var result_status = req.body['result_status'];
 
     var current_study = null;
+
+
+    /*
+    fs.writeFile('message.txt', 'Hello Node', function (err) {
+        if (err) throw err;
+        console.log('It\'s saved!');
+    });
+    */
 
     Study.findOne({
         accession:req.body.accession.replace(/-\d+/,""),
@@ -354,16 +378,41 @@ exports.processHL7JSON = function(req, res) {
             if (req.body['result_time']) {
                 var current_result_date = convertHL7DateToJavascriptDate(req.body['result_time']);
                 var current_result_time = current_result_date.getTime();
+
+                var hl7_filename_date = convertHL7DateToJavascriptDate(req.body['result_time']);
+                var hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".json";
+                var full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_filename;
+                var file_exists = fs.existsSync(full_hl7_filename);
+                //console.log(path.resolve());
+                //console.log(__dirname);
+
+                while (file_exists) {
+                    hl7_filename_date.setMilliseconds(hl7_filename_date.getMilliseconds() + 1);
+                    hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".json";
+                    full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_filename;
+                    file_exists = fs.existsSync(full_hl7_filename);
+                    //console.log('in while loop');
+                    //console.log(file_exists);
+                    //console.log('----');
+                }
+
+                // now serializing messages as they take forever to reprocess via the mirth listener
+                fs.writeFile(full_hl7_filename, JSON.stringify(req.body), function (err) {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    }
+                    //console.log('It\'s saved!');
+                });
+
+
                 if ((current_study['last_result_time'] || 0) < current_result_time) {
                     current_study['last_result_date'] = current_result_date;
                     current_study['last_result_time'] = current_result_time;
-                    console.log('update all values?');
                     // overwrite old values since the message is newer than the last stored update
                     // this method will most likely never be called more than once each time this route is fired,
                     // although it is shown to be called to populate a newly created study
                     populateStudy(current_study, req.body);
-
-                   
                 }
             }    
 
@@ -385,9 +434,10 @@ exports.processHL7JSON = function(req, res) {
 
             // TODO: Workout better logic regarding how these get updated. As it is, a finalized json could come in before
             // a transcribed json
-            if (result_status == 'P') {
+            if (result_status == 'P' && parseRadiologistFromReport(req.body['report']) == 'undefined') {
                 var transcribed_date = convertHL7DateToJavascriptDate(req.body['result_time']);
                 current_study['transcribed_report'] = req.body['report'];
+                console.log(req.body['report']);
                 current_study['transcribed_date'] = transcribed_date;
                 current_study['transcribed_time'] = transcribed_date.getTime();
                 current_study['transcribed_word_count'] = current_study['word_count'];
@@ -400,24 +450,25 @@ exports.processHL7JSON = function(req, res) {
                 current_study['finalized_time'] = finalized_date.getTime();
                 current_study['finalized_word_count'] = current_study['word_count'];
 
-                /*
                 // TODO Levenshtein distance, need to talk with leon
                 var output_reports = formatReports(current_study);
                 // f_ denotes 'formatted'
                 var f_finalized_report = output_reports['f_finalized_report'];
                 var processed_f_trascribed_report = processReport(output_reports['f_transcribed_report'], output_reports['f_finalized_report']);
-                var dist = calcLevenshteinDist(f_finalized_report, processed_f_trascribed_report);
-
-                //current_study['levenshtein_distance'] = dist;
-                */
+                //console.log(f_finalized_report);
+                //console.log(processed_f_trascribed_report);
+                var dist = calcLevenshteinDist(output_reports['f_finalized_report'], processed_f_trascribed_report);
+                //console.log(dist);
+                //console.log(dist);
+                current_study['levenshtein_distance'] = dist;
             }
 
             current_study.save();
+            res.json(req.body);
         });
     });
 
     // just to send something back to numeria-mirth 
-    res.json(req.body);
 }
 
 function handleError(res, err) {
