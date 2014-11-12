@@ -327,7 +327,6 @@ exports.processHL7JSON = function(req, res) {
 
     var current_study = null;
 
-
     /*
     fs.writeFile('message.txt', 'Hello Node', function (err) {
         if (err) throw err;
@@ -381,19 +380,20 @@ exports.processHL7JSON = function(req, res) {
 
                 var hl7_filename_date = convertHL7DateToJavascriptDate(req.body['result_time']);
                 var hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".json";
-                var full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_filename;
+                var hl7_foldername = hl7_filename_date.toISOString().split('T')[0];
+                var folder_exists = fs.existsSync(SERIALIZED_STUDY_DATA_PATH + hl7_foldername);
+                var full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_foldername + '/' + hl7_filename;
                 var file_exists = fs.existsSync(full_hl7_filename);
-                //console.log(path.resolve());
-                //console.log(__dirname);
+
+                if (!folder_exists) {
+                    fs.mkdirSync(SERIALIZED_STUDY_DATA_PATH + hl7_foldername);
+                }
 
                 while (file_exists) {
                     hl7_filename_date.setMilliseconds(hl7_filename_date.getMilliseconds() + 1);
                     hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".json";
-                    full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_filename;
+                    full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_foldername + '/' + hl7_filename;
                     file_exists = fs.existsSync(full_hl7_filename);
-                    //console.log('in while loop');
-                    //console.log(file_exists);
-                    //console.log('----');
                 }
 
                 // now serializing messages as they take forever to reprocess via the mirth listener
@@ -402,7 +402,6 @@ exports.processHL7JSON = function(req, res) {
                         console.log(err);
                         throw err;
                     }
-                    //console.log('It\'s saved!');
                 });
 
 
@@ -437,7 +436,7 @@ exports.processHL7JSON = function(req, res) {
             if (result_status == 'P' && parseRadiologistFromReport(req.body['report']) == 'undefined') {
                 var transcribed_date = convertHL7DateToJavascriptDate(req.body['result_time']);
                 current_study['transcribed_report'] = req.body['report'];
-                console.log(req.body['report']);
+                //console.log(req.body['report']);
                 current_study['transcribed_date'] = transcribed_date;
                 current_study['transcribed_time'] = transcribed_date.getTime();
                 current_study['transcribed_word_count'] = current_study['word_count'];
@@ -458,6 +457,11 @@ exports.processHL7JSON = function(req, res) {
                 //console.log(f_finalized_report);
                 //console.log(processed_f_trascribed_report);
                 var dist = calcLevenshteinDist(output_reports['f_finalized_report'], processed_f_trascribed_report);
+                if (dist > 0) {
+                    console.log(dist);
+                    console.log(output_reports['f_finalized_report']);
+                    console.log(processed_f_trascribed_report);
+                }
                 //console.log(dist);
                 //console.log(dist);
                 current_study['levenshtein_distance'] = dist;
