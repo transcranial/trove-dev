@@ -8,6 +8,7 @@ var Memcached = require('memcached');
 var memcached = new Memcached('localhost:11211');
 var fs = require('fs');
 
+
 //var serialized_study_data_path = __dirname + "/study_data/";
 var SERIALIZED_STUDY_DATA_PATH = __dirname + "/study_data/";
 if (!fs.existsSync(SERIALIZED_STUDY_DATA_PATH)) {
@@ -323,6 +324,8 @@ exports.processHL7JSON = function(req, res) {
 
     var temp_radiologist_string = getRadiologist(req.body['radiologist']);
     var temp_assistant_radiologist_string = getRadiologist(req.body['assistant_radiologist']);
+
+
     var result_status = req.body['result_status'];
 
     var current_study = null;
@@ -346,9 +349,13 @@ exports.processHL7JSON = function(req, res) {
         }
 
         // need to check if these match -- the report rad name and the name stored in the hl7_json
-        if (!temp_assistant_radiologist_string && req.body['report']) { 
+        if (temp_assistant_radiologist_string.strip == undefined && req.body['report']) { 
             temp_assistant_radiologist_string = parseAssistantRadiologistFromReport(req.body['report']);
         }
+
+
+        console.log(req.body['report']);
+        console.log(temp_assistant_radiologist_string);
 
         // Adding this to retroactively populate studies for users who have not been yet added to the db
         current_study['retro_assistant_radiologist'] = temp_assistant_radiologist_string;
@@ -385,6 +392,7 @@ exports.processHL7JSON = function(req, res) {
                 var full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_foldername + '/' + hl7_filename;
                 var file_exists = fs.existsSync(full_hl7_filename);
 
+                /*
                 if (!folder_exists) {
                     fs.mkdirSync(SERIALIZED_STUDY_DATA_PATH + hl7_foldername);
                 }
@@ -403,6 +411,7 @@ exports.processHL7JSON = function(req, res) {
                         throw err;
                     }
                 });
+                */
 
 
                 if ((current_study['last_result_time'] || 0) < current_result_time) {
