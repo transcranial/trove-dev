@@ -301,14 +301,20 @@ exports.processHL7JSON = function(req, res) {
     function parseAssistantRadiologistFromReport(report) {
         var regex = /.*Prepared\sBy:(.*?)\|/;
         var match = regex.exec(report);
-        var radiologist = getRadiologist(match[1])
+        var radiologist = null;
+        if (match) {
+            radiologist = getRadiologist(match[1])
+        }
         return radiologist || '';
     }
 
     function parseRadiologistFromReport(report) {
         var regex = /.*Study\sinterpreted\sand\sreport\sapproved\sby:(.*?)\|/;
         var match = regex.exec(report);
-        var radiologist = getRadiologist(match[1])
+        var radiologist = null;
+        if (match) {
+            radiologist = getRadiologist(match[1])
+        }
         return radiologist || '';
     }
 
