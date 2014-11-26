@@ -6,16 +6,16 @@ var modalityMapper = require('./../modalityMapper');
 
 var modalities = ['CT', 'XR', 'MRI', 'FLUORO', 'US', 'NM'];
 var modalitiesIconURL = [
-    'assets/images/modality-CT.png',
-    'assets/images/modality-XR.png',
-    'assets/images/modality-MRI.png',
-    'assets/images/modality-FLUORO.png',
-    'assets/images/modality-US.png',
-    'assets/images/modality-NM.png'
+    'assets/images/icons/icon-modality-CT.svg',
+    'assets/images/icons/icon-modality-XR.svg',
+    'assets/images/icons/icon-modality-MRI.svg',
+    'assets/images/icons/icon-modality-angio.svg',
+    'assets/images/icons/icon-modality-US.svg',
+    'assets/images/icons/icon-modality-NM.svg'
 ];
 
 exports.modalityNumberBadges = function (user) {
-    var modalityNumberBadgesCutoffs = [100, 250, 500, 750, 1000];
+    var modalityNumberBadgesCutoffs = [100, 250, 500, 1000];
     try {
         for (var i = 0; i < modalities.length; i++) {
             (function (index) {

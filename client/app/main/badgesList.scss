@@ -47,11 +47,13 @@
         .badgeIcon img {
             width: 50%;
             height: 50%;
+            margin: 30px;
         }
 
         .badgeDesc {
             font-family: $font-stack-sansserif-1;
             font-size: 1.5em;
+            margin-bottom: 15px;
         }
 
         .badgeDate {
