@@ -7,12 +7,6 @@
 
   <div class="container-hex">
     
-
-    <div class="hex hex-1 hex-gap animated fadeIn anim-delay-1"> 
-      <div class="corner-1"></div>
-      <div class="corner-2"></div>    
-    </div>
-    
     <div class="login animated zoomIn anim-delay-1">   
       <form ng-submit="login()">
         <input type="text" name="username" placeholder="username" ng-model="username" />&nbsp;
@@ -20,6 +14,28 @@
         <span class="submit" ng-click="login()">Log In</span>
         <input type="submit" hidden>
       </form>
+    </div>
+
+    <div class="hexagons animated fadeIn anim-delay-1">
+        <div class="hex-row">
+            <div class="hexagon-1"><div class="hex"><div class="top"></div><div class="middle"></div><div class="bottom"></div></div></div>
+            <div class="hexagon-2"><div class="hex"><div class="top"></div><div class="middle"></div><div class="bottom"></div></div></div>
+        </div>
+        <div class="hex-row even">
+            <div class="hexagon-1"><div class="hex"><div class="top"></div><div class="middle"></div><div class="bottom"></div></div></div>
+            <div class="hexagon-3"><div class="hex"><div class="top"></div><div class="middle"></div><div class="bottom"></div></div></div>
+        </div>
+        <div class="hex-row">
+            <div class="hexagon-1"><div class="hex"><div class="top"></div><div class="middle"></div><div class="bottom"></div></div></div>
+            <div class="hexagon-1"><div class="hex"><div class="top"></div><div class="middle"></div><div class="bottom"></div></div></div>
+            <div class="hexagon-4"><div class="hex"><div class="top"></div><div class="middle"></div><div class="bottom"></div></div></div>
+        </div>
+    </div>
+    
+
+    <!--<div class="hex hex-1 hex-gap animated fadeIn anim-delay-1"> 
+      <div class="corner-1"></div>
+      <div class="corner-2"></div>    
     </div>
     
     <div class="hex hex-blank"> 
@@ -42,7 +58,7 @@
       <a href="#"></a>    
       <div class="corner-1"></div>
       <div class="corner-2"></div>    
-    </div>
+    </div>-->
 
   </div>
 

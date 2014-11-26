@@ -35,11 +35,9 @@
 }
 
 .login {
-    width:400px;
-    height:86px;
     background-color: $color-primary-darkdarkblue;                       
     position: relative;
-    float:left;
+    float:right;
     margin:25px 5px;
     padding: 0 20px;
     text-align:left;
@@ -79,7 +77,62 @@
     margin-top: 100px;
 }
 
-/* HEXAGON STARTS HERE */
+.hexagons {
+    -webkit-transform: perspective(500px) rotateX(68deg);
+    -moz-transform: perspective(500px) rotateX(68deg);
+    -ms-transform: perspective(500px) rotateX(68deg);
+    -o-transform: perspective(500px) rotateX(68deg);
+    transform: perspective(500px) rotateX(68deg);
+}
+
+@mixin hexagon($color) {
+    .hex {
+        float: left;
+        margin-left: 3px;
+        margin-bottom: -26px;
+    }
+    .hex .top {
+        width: 0;
+        border-bottom: 30px solid $color;
+        border-left: 52px solid transparent;
+        border-right: 52px solid transparent;
+    }
+    .hex .middle {
+        width: 104px;
+        height: 60px;
+        background: $color;
+    }
+    .hex .bottom {
+        width: 0;
+        border-top: 30px solid $color;
+        border-left: 52px solid transparent;
+        border-right: 52px solid transparent;
+    }
+}
+
+.hexagon-1 {
+    @include hexagon($color-primary-blue);
+}
+.hexagon-2 {
+    @include hexagon(darken(desaturate($color-primary-blue,5),5));
+}
+.hexagon-3 {
+    @include hexagon(darken(desaturate($color-primary-blue,15),15));
+}
+.hexagon-4 {
+    @include hexagon(darken(desaturate($color-primary-blue,25),25));
+}
+
+.hex-row {
+    clear: left;
+}
+.hex-row.even {
+    margin-left: 53px;
+}
+
+/* HEXAGON STARTS HERE 
+
+
 .hex {
     width:150px;
     height:86px;
@@ -179,7 +232,6 @@
         bottom:0;
     }       
 
-    /* Custom styles*/
     .inner {       
         color: $color-primary-tanwhite;
         margin-top: 30px;
@@ -208,7 +260,7 @@
 }
 .hex.hex-blank {
     background: $color-primary-darkdarkblue;
-}
+}*/
 
 /* animations */
 .anim-delay-1 {

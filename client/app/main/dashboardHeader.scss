@@ -9,6 +9,9 @@
         color: $color-primary-blue;
         float: left;
         padding: 20px 10px 20px 60px;
+        @media (max-width: 1024px) {
+            padding: 20px 10px 20px 20px;
+        }
         @include unselectable();
         cursor: default;
     }
@@ -20,6 +23,10 @@
         float: left;
         padding: 5px 12px;
         margin: 18px 12px;
+        @media (max-width: 1024px) {
+            padding: 5px 5px;
+            margin: 18px 5px;
+        }
         border: 1px solid $color-primary-orange;
         border-radius: 5px;
         @include transition(background-color, 500ms, 0s, ease-out);

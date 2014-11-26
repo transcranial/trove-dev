@@ -11,6 +11,7 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
             var marginNumbersChart, widthNumbersChart, heightNumbersChart, weeklyNumbers, weeklyNumbersZero, weeklyNumbersTotal, dateRange, startDate, tempDate, x, xAxis, numbersChart; 
 
             var parseDate = d3.time.format('%a %b %d %Y').parse;
+            var MILLISECONDS_IN_DAY = 86400000;
 
             var numbersChartLoadDelay = $interval(function () {
                 if (scope.modalityPieChartLoaded) {
@@ -26,7 +27,7 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
                     startDate, tempDate;
                     for (var i=0; i<7; i++) {
                         startDate = new Date(dateRange.split('-')[0]);
-                        tempDate = parseDate(new Date(startDate.setDate(startDate.getDate() + i)).toDateString());
+                        tempDate = parseDate(new Date(startDate.getTime() + i * MILLISECONDS_IN_DAY).toDateString());
 
                         weeklyNumbersZero.push({
                             'date': tempDate,
@@ -122,7 +123,7 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
                     dateRange = scope.data.rotations[scope.visibleRotationIndex].rotationDates;
                     for (var i=0; i<7; i++) {
                         startDate = new Date(dateRange.split('-')[0]);
-                        tempDate = parseDate(new Date(startDate.setDate(startDate.getDate() + i)).toDateString());
+                        tempDate = parseDate(new Date(startDate.getTime() + i * MILLISECONDS_IN_DAY).toDateString());
                         weeklyNumbersZero.push({
                             'date': tempDate,
                             'number': 0
@@ -182,7 +183,7 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
                         var dates = [];
                         for (var i=0; i<7; i++) {
                             startDate = new Date(dateRange.split('-')[0]);
-                            tempDate = parseDate(new Date(startDate.setDate(startDate.getDate() + i)).toDateString());
+                            tempDate = parseDate(new Date(startDate.getTime() + i * MILLISECONDS_IN_DAY).toDateString());
                             dates.push(d3.time.format('%m-%d-%Y')(tempDate));
                         }
 
@@ -192,7 +193,7 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
                             weeklyNumbers = [];
                             for (var i=0; i<results.length; i++) {
                                 weeklyNumbers.push({
-                                    'date': new Date(dates[i]),
+                                    'date': new Date(dates[i].replace(/-/g, '/')),
                                     'number': parseInt(results[i].data)
                                 });
                             }
@@ -214,7 +215,7 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
                         var dates = [];
                         for (var i=0; i<7; i++) {
                             startDate = new Date(dateRange.split('-')[0]);
-                            tempDate = parseDate(new Date(startDate.setDate(startDate.getDate() + i)).toDateString());
+                            tempDate = parseDate(new Date(startDate.getTime() + i * MILLISECONDS_IN_DAY).toDateString());
                             dates.push(d3.time.format('%m-%d-%Y')(tempDate));
                         }
 
@@ -224,7 +225,7 @@ app.directive('weeklyNumbersChart', function ($window, $http, $interval, $q, $ti
                             weeklyNumbers = [];
                             for (var i=0; i<results.length; i++) {
                                 weeklyNumbers.push({
-                                    'date': new Date(dates[i]),
+                                    'date': new Date(dates[i].replace(/-/g, '/')),
                                     'number': parseInt(results[i].data)
                                 });
                             }

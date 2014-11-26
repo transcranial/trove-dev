@@ -80,7 +80,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
         infinite: false,
         speed: 400,
         slidesToShow: slidesToShow,
-        slidesToScroll: 1,
+        slidesToScroll: 4,
         cssEase: 'ease-in-out',
         prevArrow: '<span class="navButton prevButton"><i class="fa fa-chevron-left"></i></span>',
         nextArrow: '<span class="navButton nextButton"><i class="fa fa-chevron-right"></i></span>'
