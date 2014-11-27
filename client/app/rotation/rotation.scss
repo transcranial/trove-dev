@@ -1,5 +1,13 @@
 #rotation-view {
     text-align: center;
+
+    .section-label {
+        position: absolute;
+        right: 0;
+        color: $color-primary-gray;
+        padding: 5px;
+        font-family: $font-stack-sansserif-1;
+    }
 }
 
 #rotation-carousel {

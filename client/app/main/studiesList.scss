@@ -61,19 +61,25 @@
         .diseaseLabels {
             font-family: $font-stack-sansserif-2;
         }
+        .hasEditsIndicator {
+            font-family: $font-stack-sansserif-2;
+            color: $color-primary-red;
+            margin-top: 15px;
+        }
         .showReportButton {
             font-family: $font-stack-sansserif-2;
             margin-top: 15px;
 
-            span {
+            .button {
                 padding: 8px;
                 color: $color-primary-tanwhite;
                 background: $color-transparent-blue;
                 text-decoration: none;
                 border: 1px solid $color-primary-tanwhite;
                 @include transition(all, 500ms, 0s, ease-out);
+                @include unselectable();
             }
-            span:hover, span:focus, span:active {
+            .button:hover, .button:focus, .button:active {
                 cursor: pointer;
                 text-decoration: none;
                 color: $color-primary-tanwhite;
