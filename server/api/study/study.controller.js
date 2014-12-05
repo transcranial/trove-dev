@@ -336,13 +336,6 @@ exports.processHL7JSON = function(req, res) {
 
     var current_study = null;
 
-    /*
-    fs.writeFile('message.txt', 'Hello Node', function (err) {
-        if (err) throw err;
-        console.log('It\'s saved!');
-    });
-    */
-
     Study.findOne({
         accession:req.body.accession.replace(/-\d+/,""),
     },function (err, study) {
@@ -355,18 +348,17 @@ exports.processHL7JSON = function(req, res) {
         }
 
         // need to check if these match -- the report rad name and the name stored in the hl7_json
-        if (temp_assistant_radiologist_string.strip == undefined && req.body['report']) { 
+        if (temp_assistant_radiologist_string.strip() == undefined && req.body['report']) { 
             temp_assistant_radiologist_string = parseAssistantRadiologistFromReport(req.body['report']);
         }
 
-
-        console.log(req.body['report']);
-        console.log(temp_assistant_radiologist_string);
+        console.log(req.body);
 
         // Adding this to retroactively populate studies for users who have not been yet added to the db
         current_study['retro_assistant_radiologist'] = temp_assistant_radiologist_string;
         current_study['retro_radiologist'] = temp_radiologist_string;
         current_study['word_count'] = getWordCount(req.body['report']);
+
 
         User.findOne({ 
             full_name : temp_assistant_radiologist_string 
@@ -390,35 +382,6 @@ exports.processHL7JSON = function(req, res) {
             if (req.body['result_time']) {
                 var current_result_date = convertHL7DateToJavascriptDate(req.body['result_time']);
                 var current_result_time = current_result_date.getTime();
-
-                var hl7_filename_date = convertHL7DateToJavascriptDate(req.body['result_time']);
-                var hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".json";
-                var hl7_foldername = hl7_filename_date.toISOString().split('T')[0];
-                var folder_exists = fs.existsSync(SERIALIZED_STUDY_DATA_PATH + hl7_foldername);
-                var full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_foldername + '/' + hl7_filename;
-                var file_exists = fs.existsSync(full_hl7_filename);
-
-                /*
-                if (!folder_exists) {
-                    fs.mkdirSync(SERIALIZED_STUDY_DATA_PATH + hl7_foldername);
-                }
-
-                while (file_exists) {
-                    hl7_filename_date.setMilliseconds(hl7_filename_date.getMilliseconds() + 1);
-                    hl7_filename = hl7_filename_date.toISOString().replace(/:/g,'-') + ".json";
-                    full_hl7_filename = SERIALIZED_STUDY_DATA_PATH + hl7_foldername + '/' + hl7_filename;
-                    file_exists = fs.existsSync(full_hl7_filename);
-                }
-
-                // now serializing messages as they take forever to reprocess via the mirth listener
-                fs.writeFile(full_hl7_filename, JSON.stringify(req.body), function (err) {
-                    if (err) {
-                        console.log(err);
-                        throw err;
-                    }
-                });
-                */
-
 
                 if ((current_study['last_result_time'] || 0) < current_result_time) {
                     current_study['last_result_date'] = current_result_date;
@@ -448,7 +411,7 @@ exports.processHL7JSON = function(req, res) {
 
             // TODO: Workout better logic regarding how these get updated. As it is, a finalized json could come in before
             // a transcribed json
-            if (result_status == 'P' && parseRadiologistFromReport(req.body['report']) == 'undefined') {
+            if (result_status == 'P' && parseRadiologistFromReport(req.body['report']) == 'undefined' && req.body['result_time']) {
                 var transcribed_date = convertHL7DateToJavascriptDate(req.body['result_time']);
                 current_study['transcribed_report'] = req.body['report'];
                 //console.log(req.body['report']);
@@ -457,7 +420,7 @@ exports.processHL7JSON = function(req, res) {
                 current_study['transcribed_word_count'] = current_study['word_count'];
             }
 
-            if (result_status == 'F') {
+            if (result_status == 'F' && req.body['result_time']) {
                 var finalized_date = convertHL7DateToJavascriptDate(req.body['result_time']);
                 current_study['finalized_report'] = req.body['report'];
                 current_study['finalized_date'] = finalized_date;
