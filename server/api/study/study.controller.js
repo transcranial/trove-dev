@@ -328,8 +328,8 @@ exports.processHL7JSON = function(req, res) {
         study['exam_name']           = request_body['service_description'].trim();
     }
 
-    var temp_radiologist_string = getRadiologist(req.body['radiologist']);
-    var temp_assistant_radiologist_string = getRadiologist(req.body['assistant_radiologist']);
+    var temp_radiologist_string = getRadiologist(req.body['radiologist']) || "";
+    var temp_assistant_radiologist_string = getRadiologist(req.body['assistant_radiologist']) || "";
 
 
     var result_status = req.body['result_status'];
