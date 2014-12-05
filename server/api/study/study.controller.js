@@ -348,7 +348,7 @@ exports.processHL7JSON = function(req, res) {
         }
 
         // need to check if these match -- the report rad name and the name stored in the hl7_json
-        if (temp_assistant_radiologist_string.strip() == undefined && req.body['report']) { 
+        if (temp_assistant_radiologist_string == undefined && req.body['report']) { 
             temp_assistant_radiologist_string = parseAssistantRadiologistFromReport(req.body['report']);
         }
 
