@@ -6,7 +6,5 @@ module.exports = {
   // MongoDB connection options
   mongo: {
     uri: 'mongodb://localhost/trove-dev'
-  },
-
-  seedDB: false
+  }
 };

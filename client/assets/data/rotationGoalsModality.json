@@ -35,7 +35,13 @@
         {"CT": 35, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
         {"CT": 35, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0}
     ],
-    "NYP Body CT": [
+    "NYP Chest out": [
+        {"CT": 35, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 35, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 35, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 35, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0}
+    ],
+    "CT Inpatient": [
         {"CT": 15, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
         {"CT": 20, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
         {"CT": 20, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
@@ -64,5 +70,11 @@
         {"CT": 10, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 27, "NM": 0},
         {"CT": 10, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 27, "NM": 0},
         {"CT": 10, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 27, "NM": 0}
+    ],
+    "NYP MRI": [
+        {"CT": 0, "XR": 0, "MRI": 0, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 0, "XR": 0, "MRI": 20, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 0, "XR": 0, "MRI": 20, "FLUORO": 0, "US": 0, "NM": 0},
+        {"CT": 0, "XR": 0, "MRI": 20, "FLUORO": 0, "US": 0, "NM": 0}
     ]
 }
