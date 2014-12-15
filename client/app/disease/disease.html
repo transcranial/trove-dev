@@ -9,7 +9,7 @@
             Welcome, <span id="name">{{ data.name }}</span> | <span id="logout" ng-click="logout()">logout</span>
         </div>
     </div>
-	<div class="row animated fadeInRight" id="selectableGroup">
+	<div class="row" id="selectableGroup">
         <div class="selectable" ng-class="getSelected('ALL')" ng-click="initChart('ALL')">
             ALL
         </div>
@@ -74,7 +74,7 @@
             </div>
             <div class="bar-chart-row">
                 <div class="bar-chart-margin-left"></div>
-                <div class="bar-chart-item-bar" ng-style="calcCSSWidth(item.user_number)" ng-mouseover="diseaseTooltipShow[$index] = true" ng-mouseleave="diseaseTooltipShow[$index] = false"></div>
+                <div class="bar-chart-item-bar" ng-style="calcCSSWidth(item.user_number)" ng-mouseover="diseaseTooltipShow[$index] = true" ng-mouseleave="diseaseTooltipShow[$index] = false" ng-click="retrieveDiseaseStudies(item.disease)"></div>
                 <div class="bar-chart-item-number">{{ item.user_number }}</div>
             </div>
             <div class="bar-chart-row">
@@ -83,6 +83,25 @@
             </div>
         </div>
 	</div>
+    <div id="studiesList" class="row animated fadeInUp" ng-if="studiesListShowBoolean" ng-class="{'fadeOutDown': studiesListFadeOutBoolean}">
+        <span id="studiesListClose" class="panelCloseButton" ng-click="studiesListClose()"></span>
+        <span id="studiesListMore" ng-show="studiesListMore"><i class="fa fa-4x fa-angle-double-down"></i></span>
+        <div id="studiesListItems">
+            <div class="studies-sort"><span class="studies-sort-button" ng-class="{'studies-sort-selected': studiesSortBy==='transcribed_time'}" ng-click="studiesSortBy='transcribed_time'">Sort by time</span><span class="studies-sort-button" ng-class="{'studies-sort-selected': studiesSortBy==='-levenshtein_distance'}" ng-click="studiesSortBy='-levenshtein_distance'">Sort by most edits</span></div>
+            <div ng-repeat="study in studiesList | orderBy:studiesSortBy" class="studiesListItem">
+                <div class="examDesc">[ {{study.modality}} ] {{study.exam_name}}</div>
+                <div class="examTime">Transcribed Time: {{study.transcribed_time | date: 'short'}}</div>
+                <!--<div class="diseaseLabels">Disease Labels: None</div>-->
+                <div class="hasEditsIndicator" ng-show="study.reportHasEdits"><i class="fa fa-pencil-square-o"></i> report contain edits</div>
+                <div class="showReportButton">
+                    <span class="button" ng-hide="!study.reportHasEdits || study.showReportWithEditsBoolean || study.showReportBoolean" ng-click="study.showReportWithEditsBoolean = true">Show report with edits</span>
+                    <span class="button" ng-hide="study.showReportWithEditsBoolean || study.showReportBoolean" ng-click="study.showReportBoolean = true">Show finalized report<span ng-hide="study.reportHasEdits"> (no edits)</span></span>
+                    <span class="button" ng-show="study.showReportBoolean || study.showReportWithEditsBoolean" ng-click="study.showReportBoolean = false; study.showReportWithEditsBoolean = false;">Hide report</span></div>
+                <div class="studyReport animated fadeIn" ng-show="study.showReportWithEditsBoolean" ng-bind-html="preprocessReport(study.transcribed_report, study.report) | diff: study.report"></div>
+                <div class="studyReport animated fadeIn" ng-show="study.showReportBoolean" ng-bind-html="study.report"></div>
+            </div>
+        </div>
+    </div>
 
 </div>
 

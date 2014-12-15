@@ -42,7 +42,7 @@
             <div ng-repeat="study in studiesList | orderBy:studiesSortBy" class="studiesListItem">
                 <div class="examDesc">[ {{study.modality}} ] {{study.exam_name}}</div>
                 <div class="examTime">Transcribed Time: {{study.transcribed_time | date: 'short'}}</div>
-                <div class="diseaseLabels">Disease Labels: None</div>
+                <!--<div class="diseaseLabels">Disease Labels: None</div>-->
                 <div class="hasEditsIndicator" ng-show="study.reportHasEdits"><i class="fa fa-pencil-square-o"></i> report contain edits</div>
                 <div class="showReportButton">
                     <span class="button" ng-hide="!study.reportHasEdits || study.showReportWithEditsBoolean || study.showReportBoolean" ng-click="study.showReportWithEditsBoolean = true">Show report with edits</span>

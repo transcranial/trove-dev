@@ -2,7 +2,7 @@
 
 var app = angular.module('troveApp');
 
-app.controller('DiseaseCtrl', function ($rootScope, $scope, $http, $location, $timeout, $window, diseaseGoals) {
+app.controller('DiseaseCtrl', function ($rootScope, $scope, $http, $location, $timeout, $window, diseaseGoals, $idle, $keepalive) {
 
     $scope.logout = function() {
         $http({
@@ -43,6 +43,62 @@ app.controller('DiseaseCtrl', function ($rootScope, $scope, $http, $location, $t
             }
         );
     }
+
+    // initializes popup/modal window for list of studies
+    // shown when a particular date is clicked
+    $scope.studiesList = [];
+    $scope.studiesListShowBoolean = false;
+    $scope.studiesSortBy = 'transcribed_time';
+    $scope.studiesListClose = function() {
+        $scope.studiesListFadeOutBoolean = true;
+        $timeout(function() {
+            $scope.studiesListShowBoolean = false;
+            $scope.studiesListFadeOutBoolean = false;
+            $scope.$apply();
+        }, 1000);
+    };
+
+    // Preprocess transcribed report to fix the problem of the tail end of the report always
+    // appearing in the diff.
+    $scope.preprocessReport = function (transcribed_report, report) {
+        var footerIndexTranscribed = transcribed_report.toLowerCase().lastIndexOf("prepared by: ");
+        var footerIndexFinal = report.toLowerCase().lastIndexOf("prepared by: ");
+        var transcribed_report_processed = transcribed_report.substring(0, footerIndexTranscribed) + report.substring(footerIndexFinal);
+        return transcribed_report_processed;
+    };
+
+    // because studiesList displays PHI, we must implement a timeout feature when it is displayed
+    // idle duration set by $idleProvider in app.js
+    /*$scope.$on('$idleStart', function() {
+        console.log('logging out');
+    });*/
+    $scope.$on('$idleTimeout', function() {
+        $location.path('/');
+    });
+    $scope.$watch('studiesListShowBoolean', function (newValue) {
+        if (newValue) {
+            $idle.watch();
+        } else {
+            $idle.unwatch();
+        }
+    });
+
+    // retrieves list of studies for disease
+    $scope.retrieveDiseaseStudies = function (disease) { 
+        $scope.studiesListShowBoolean = true;
+        $http.get('/api/studies/' + $scope.currentUser.userId + '/disease/' + encodeURIComponent(disease)).success(function (studiesList) {
+            for (var i = 0; i < studiesList.length; i++) {
+                studiesList[i].reportHasEdits = (studiesList[i].levenshtein_distance > 0);
+                studiesList[i].showReportBoolean = false;
+                studiesList[i].showReportWithEditsBoolean = false;
+            } 
+            $scope.studiesList = studiesList;
+            $timeout(function () {
+                $scope.studiesListMore = document.getElementById('studiesListItems').scrollHeight > $window.innerHeight;
+            }, 100);
+        });
+        //$scope.$apply();
+    };
 
     // feedback box control
     $scope.feedbackBoxShow = false;
@@ -118,7 +174,7 @@ app.controller('DiseaseCtrl', function ($rootScope, $scope, $http, $location, $t
         for (var i = 0; i < $scope.diseaseNumbers.length; i++) {
             diseaseNames.push($scope.diseaseNumbers[i].disease);
         }
-        diseaseGoals.getDiseaseNumbers($scope.rotation, true).then(function(data) {
+        diseaseGoals.getDiseaseNumbers($scope.currentUser.userId, $scope.rotation, true).then(function(data) {
             var diseaseIndex = -1;
             var xScaleMax = 0;
             for (var i = 0; i < data.length; i++) {
@@ -141,7 +197,7 @@ app.controller('DiseaseCtrl', function ($rootScope, $scope, $http, $location, $t
     $scope.initChart = function(rotation) {
         $scope.rotation = rotation;
         $scope.chartLoading = true;
-        diseaseGoals.getDiseaseNumbers($scope.rotation, false).then(function(data) {
+        diseaseGoals.getDiseaseNumbers($scope.currentUser.userId, $scope.rotation, false).then(function(data) {
             $scope.diseaseNumbers = data;
             $scope.diseaseTooltipShow = [];
             for (var i = 0; i < data.length; ++i) { $scope.diseaseTooltipShow[i] = false; }
@@ -151,7 +207,7 @@ app.controller('DiseaseCtrl', function ($rootScope, $scope, $http, $location, $t
         });
     };
 
-    $scope.initChart('BODY CT');
+    $scope.initChart('ALL');
 
     // helper function to determine width of bar
     $scope.calcCSSWidth = function(number) {
