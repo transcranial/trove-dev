@@ -179,3 +179,5 @@ var diseaseToICD9Table = {
 exports.map = function(disease) {
     return diseaseToICD9Table[disease] || [];
 };
+
+exports.keys = Object.keys(diseaseToICD9Table);

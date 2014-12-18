@@ -36,7 +36,7 @@ app.controller('ACGMECtrl', function ($rootScope, $scope, $http, $location, $tim
         $scope.minnies = $rootScope.minnies;
     } else {
         $scope.minnies = 0;
-        $http.get('/api/users/' + $scope.currentUser.username + '/minnies').success(
+        $http.get('/api/users/' + $scope.currentUser.username + '/minnies/get').success(
             function (minnies) {
                 $scope.minnies = minnies;
                 $rootScope.minnies = minnies;
@@ -114,7 +114,7 @@ app.controller('ACGMECtrl', function ($rootScope, $scope, $http, $location, $tim
             };
         } else if (index === 2) {
             return {
-                width: Math.round(100 - numerator*100/denominator) + '%'
+                width: 100 - Math.round(numerator*100/denominator) + '%'
             };
         } else {
             return {

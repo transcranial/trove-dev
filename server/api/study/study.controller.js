@@ -52,10 +52,12 @@ exports.allStudiesOnDate = function(req, res) {
             }, 'modality exam_name transcribed_time transcribed_report report levenshtein_distance', {sort: {transcribed_time: 1}}, function (err, studies) {
                 if(err) { return handleError(res, err); }
                 if(!studies) { return res.send(404); }
+                console.log('setting cache key: ' + cache_string);
                 memcached.set(cache_string, studies, lifetime, function (err) { });
                 return res.json(formatReports(studies));
             });
         } else {
+            console.log('getting cache key: ' + cache_string);
             return res.json(formatReports(data));
         }
     });
@@ -64,7 +66,7 @@ exports.allStudiesOnDate = function(req, res) {
 // Get all studies between two dates, by currentUser
 exports.allStudiesBetweenDates = function(req, res) {
     var cache_string = req.params.user + '/ALL/' + req.params.startDate + '/' + req.params.endDate;
-    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.startDate).getTime() || new Date(getTodayDateFormatted()).getTime() === new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() >= new Date(req.params.startDate).getTime() && new Date(getTodayDateFormatted()).getTime() <= new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
     return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
         if (!data) {
@@ -77,10 +79,12 @@ exports.allStudiesBetweenDates = function(req, res) {
             }, function (err, studies) {
                 if(err) { return handleError(res, err); }
                 if(!studies) { return res.send(404); }
+                console.log('setting cache key: ' + cache_string);
                 memcached.set(cache_string, studies, lifetime, function (err) { });
                 return res.json(formatReports(studies));
             });
         } else {
+            console.log('getting cache key: ' + cache_string);
             return res.json(formatReports(data));
         }
     });
@@ -103,10 +107,12 @@ exports.modalityStudiesOnDate = function(req, res) {
             }, null, {sort: {transcribed_time: 1}}, function (err, studies) {
                 if(err) { return handleError(res, err); }
                 if(!studies) { return res.send(404); }
+                console.log('setting cache key: ' + cache_string);
                 memcached.set(cache_string, studies, lifetime, function (err) { });
                 return res.json(formatReports(studies));
             });
         } else {
+            console.log('getting cache key: ' + cache_string);
             return res.json(formatReports(data));
         }
     });
@@ -115,7 +121,7 @@ exports.modalityStudiesOnDate = function(req, res) {
 // Get studies for specified modality between two dates, by currentUser
 exports.modalityStudiesBetweenDates = function(req, res) {
     var cache_string = req.params.user + '/' + req.params.modality + '/' + req.params.startDate + '/' + req.params.endDate;
-    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.startDate).getTime() || new Date(getTodayDateFormatted()).getTime() === new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() >= new Date(req.params.startDate).getTime() && new Date(getTodayDateFormatted()).getTime() <= new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
     return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
         if (!data) {
@@ -129,10 +135,12 @@ exports.modalityStudiesBetweenDates = function(req, res) {
             }, function (err, studies) {
                 if(err) { return handleError(res, err); }
                 if(!studies) { return res.send(404); }
+                console.log('setting cache key: ' + cache_string);
                 memcached.set(cache_string, studies, lifetime, function (err) { });
                 return res.json(formatReports(studies));
             });
         } else {
+            console.log('getting cache key: ' + cache_string);
             return res.json(formatReports(data));
         }
     });
@@ -154,10 +162,12 @@ exports.allStudiesOnDateCount = function(req, res) {
             }, function (err, count) {
                 if (err) { return handleError(res, err); }
                 if (typeof count === "undefined") { count = 0; }
+                console.log('setting cache key: ' + cache_string);
                 memcached.set(cache_string, count, lifetime, function (err) { });
                 return res.json(count);
             });
         } else {
+            console.log('getting cache key: ' + cache_string);
             return res.json(data);
         }
     });
@@ -166,7 +176,7 @@ exports.allStudiesOnDateCount = function(req, res) {
 // Get count of all studies between two dates, by currentUser
 exports.allStudiesBetweenDatesCount = function(req, res) {
     var cache_string = req.params.user + '/ALL/' + req.params.startDate + '/' + req.params.endDate + '/count';
-    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.startDate).getTime() || new Date(getTodayDateFormatted()).getTime() === new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() >= new Date(req.params.startDate).getTime() && new Date(getTodayDateFormatted()).getTime() <= new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
     return memcached.get(cache_string, function (err, data) {
         if (typeof data === "undefined") {
             Study.count({ 
@@ -178,10 +188,12 @@ exports.allStudiesBetweenDatesCount = function(req, res) {
             }, function (err, count) {
                 if(err) { return handleError(res, err); }
                 if (typeof count === "undefined") { count = 0; }
+                console.log('setting cache key: ' + cache_string);
                 memcached.set(cache_string, count, lifetime, function (err) { });
                 return res.json(count);
             });
         } else {
+            console.log('getting cache key: ' + cache_string);
             return res.json(data);
         }
     });
@@ -203,10 +215,12 @@ exports.modalityStudiesOnDateCount = function(req, res) {
             }, function (err, count) {
                 if(err) { return handleError(res, err); }
                 if (typeof count === "undefined") { count = 0; }
+                console.log('setting cache key: ' + cache_string);
                 memcached.set(cache_string, count, lifetime, function (err) { });
                 return res.json(count);
             });
         } else {
+            console.log('getting cache key: ' + cache_string);
             return res.json(data);
         }
     });
@@ -215,7 +229,7 @@ exports.modalityStudiesOnDateCount = function(req, res) {
 // Get count of studies for specified modality between two dates, by currentUser
 exports.modalityStudiesBetweenDatesCount = function(req, res) {
     var cache_string = req.params.user + '/' + req.params.modality + '/' + req.params.startDate + '/' + req.params.endDate + '/count';
-    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.startDate).getTime() || new Date(getTodayDateFormatted()).getTime() === new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() >= new Date(req.params.startDate).getTime() && new Date(getTodayDateFormatted()).getTime() <= new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
     return memcached.get(cache_string, function (err, data) {
         if (typeof data === "undefined") {
             Study.count({ 
@@ -228,10 +242,12 @@ exports.modalityStudiesBetweenDatesCount = function(req, res) {
             }, function (err, count) {
                 if(err) { return handleError(res, err); }
                 if (typeof count === "undefined") { count = 0; }
+                console.log('setting cache key: ' + cache_string);
                 memcached.set(cache_string, count, lifetime, function (err) { });
                 return res.json(count);
             });
         } else {
+            console.log('getting cache key: ' + cache_string);
             return res.json(data);
         }
     });
@@ -253,10 +269,12 @@ exports.diseaseStudies = function(req, res) {
             }, 'modality exam_name transcribed_time transcribed_report report levenshtein_distance', {sort: {transcribed_time: 1}}, function (err, studies) {
                 if(err) { return handleError(res, err); }
                 if(!studies) { return res.send(404); }
+                console.log('setting cache key: ' + cache_string);
                 memcached.set(cache_string, studies, lifetime, function (err) { });
                 return res.json(formatReports(studies));
             });
         } else {
+            console.log('getting cache key: ' + cache_string);
             return res.json(formatReports(data));
         }
     });
@@ -278,10 +296,12 @@ exports.diseaseStudiesCount = function(req, res) {
             }, function (err, count) {
                 if (err) { return handleError(res, err); }
                 if (typeof count === "undefined") { count = 0; }
+                console.log('setting cache key: ' + cache_string);
                 memcached.set(cache_string, count, lifetime, function (err) { });
                 return res.json(count);
             });
         } else {
+            console.log('getting cache key: ' + cache_string);
             return res.json(data);
         }
     });

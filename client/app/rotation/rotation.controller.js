@@ -30,7 +30,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
         $scope.minnies = $rootScope.minnies;
     } else {
         $scope.minnies = 0;
-        $http.get('/api/users/' + $scope.currentUser.username + '/minnies').success(
+        $http.get('/api/users/' + $scope.currentUser.username + '/minnies/get').success(
             function (minnies) {
                 $scope.minnies = minnies;
                 $rootScope.minnies = minnies;
@@ -39,7 +39,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
     }
 
     // update badges
-    $http.get('/api/users/' + $scope.currentUser.username + '/badges/update').success(
+    /*$http.get('/api/users/' + $scope.currentUser.username + '/badges/update').success(
         function (successBoolean) { 
             if (successBoolean) {
                 console.log("User badges updated successfully.");
@@ -47,7 +47,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
                 console.log("Error in updating user badges.");
             }
         }
-    );
+    );*/
 
     // feedback box control
     $scope.feedbackBoxShow = false;

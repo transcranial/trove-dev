@@ -90,7 +90,7 @@
         .studies-sort-button {
             padding: 8px 0;
             margin: 0 20px;
-            color: darken($color-primary-lightgray, 5);
+            color: darken($color-primary-gray, 5);
             cursor: default;
             @include transition(color, 300ms, 0s, ease-out);
             @include unselectable();
@@ -121,7 +121,7 @@
         }
 
         .bar-chart-item-bar {
-            background-color: $color-primary-lightgray;
+            background-color: lighten($color-primary-gray, 20);
             height: 25px;
             width: 0px;
             float: left;
@@ -129,7 +129,7 @@
             @include transition(all, 0.4s, 0s, ease-in-out);
         }
         .bar-chart-item-bar:hover {
-            background-color: darken($color-primary-lightgray, 5);
+            background-color: $color-primary-gray;
             height: 36px;
             cursor: pointer;
         }

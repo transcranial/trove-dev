@@ -36,7 +36,7 @@ app.controller('DiseaseCtrl', function ($rootScope, $scope, $http, $location, $t
         $scope.minnies = $rootScope.minnies;
     } else {
         $scope.minnies = 0;
-        $http.get('/api/users/' + $scope.currentUser.username + '/minnies').success(
+        $http.get('/api/users/' + $scope.currentUser.username + '/minnies/get').success(
             function (minnies) {
                 $scope.minnies = minnies;
                 $rootScope.minnies = minnies;
