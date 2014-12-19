@@ -43,7 +43,8 @@ new CronJob('00 30 02 * * *', function() {
                     params: { 
                         user: userIds[i],
                         disease: diseases[j]
-                    }
+                    },
+                    setCache: true
                 },
                 { 
                     send: function (statuscode, contents) {},
@@ -58,8 +59,8 @@ new CronJob('00 30 02 * * *', function() {
 * Caches modalityStudiesBetweenDatesCount
 */
 var CronJob = require('cron').CronJob;
-// runs jobs every day at 4:00 AM
-new CronJob('00 00 04 * * *', function() {
+// runs jobs every 6 hours
+new CronJob('00 00 */6 * * *', function() {
     var todayDate = getTodayDateFormatted();
     var weekDates = getWeekDatesFormatted();
 
@@ -70,7 +71,8 @@ new CronJob('00 00 04 * * *', function() {
                     params: { 
                         user: userIds[i],
                         date: weekDates[k]
-                    }
+                    },
+                    setCache: true
                 },
                 { 
                     send: function (statuscode, contents) {},
@@ -90,7 +92,8 @@ new CronJob('00 00 04 * * *', function() {
                             user: userIds[i],
                             modality: modalities[j],
                             date: weekDates[k]
-                        }
+                        },
+                        setCache: true
                     },
                     { 
                         send: function (statuscode, contents) {},
@@ -106,7 +109,8 @@ new CronJob('00 00 04 * * *', function() {
                         modality: modalities[j],
                         startDate: weekDates[0],
                         endDate: weekDates[6]
-                    }
+                    },
+                    setCache: true
                 },
                 { 
                     send: function (statuscode, contents) {},

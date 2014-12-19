@@ -39,10 +39,10 @@ function formatReports(studies) {
 // Get all studies on a single date, by currentUser
 exports.allStudiesOnDate = function(req, res) {
     var cache_string = req.params.user + '/ALL/' + req.params.date;
-    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.date).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.date).getTime()) ? 21600 : 0; // keep forever in cache if date already past
     return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
-        if (!data) {
+        if (!data || 'setCache' in req) {
             Study.find({ 
                 assistant_radiologist: req.params.user,
                 transcribed_time: { 
@@ -66,10 +66,10 @@ exports.allStudiesOnDate = function(req, res) {
 // Get all studies between two dates, by currentUser
 exports.allStudiesBetweenDates = function(req, res) {
     var cache_string = req.params.user + '/ALL/' + req.params.startDate + '/' + req.params.endDate;
-    var lifetime = (new Date(getTodayDateFormatted()).getTime() >= new Date(req.params.startDate).getTime() && new Date(getTodayDateFormatted()).getTime() <= new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() >= new Date(req.params.startDate).getTime() && new Date(getTodayDateFormatted()).getTime() <= new Date(req.params.endDate).getTime()) ? 21600 : 0; // keep forever in cache if date already past
     return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
-        if (!data) {
+        if (!data || 'setCache' in req) {
             Study.find({ 
                 assistant_radiologist: req.params.user,
                 transcribed_time: { 
@@ -93,10 +93,10 @@ exports.allStudiesBetweenDates = function(req, res) {
 // Get studies for specified modality on a single date, by currentUser
 exports.modalityStudiesOnDate = function(req, res) {
     var cache_string = req.params.user + '/' + req.params.modality + '/' + req.params.date;
-    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.date).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.date).getTime()) ? 21600 : 0; // keep forever in cache if date already past
     return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
-        if (!data) {
+        if (!data || 'setCache' in req) {
             Study.find({ 
                 assistant_radiologist: req.params.user,
                 transcribed_time: { 
@@ -121,10 +121,10 @@ exports.modalityStudiesOnDate = function(req, res) {
 // Get studies for specified modality between two dates, by currentUser
 exports.modalityStudiesBetweenDates = function(req, res) {
     var cache_string = req.params.user + '/' + req.params.modality + '/' + req.params.startDate + '/' + req.params.endDate;
-    var lifetime = (new Date(getTodayDateFormatted()).getTime() >= new Date(req.params.startDate).getTime() && new Date(getTodayDateFormatted()).getTime() <= new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() >= new Date(req.params.startDate).getTime() && new Date(getTodayDateFormatted()).getTime() <= new Date(req.params.endDate).getTime()) ? 21600 : 0; // keep forever in cache if date already past
     return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
-        if (!data) {
+        if (!data || 'setCache' in req) {
             Study.find({ 
                 assistant_radiologist: req.params.user,
                 transcribed_time: { 
@@ -149,10 +149,10 @@ exports.modalityStudiesBetweenDates = function(req, res) {
 // Get count of all studies on a single date, by currentUser
 exports.allStudiesOnDateCount = function(req, res) {
     var cache_string = req.params.user + '/ALL/' + req.params.date + '/count';
-    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.date).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.date).getTime()) ? 21600 : 0; // keep forever in cache if date already past
     return memcached.get(cache_string, function (err, data) {
         if (err) { return handleError(res, err); }
-        if (typeof data === "undefined") {
+        if (typeof data === "undefined" || 'setCache' in req) {
             Study.count({ 
                 assistant_radiologist: req.params.user,
                 transcribed_time: { 
@@ -176,9 +176,9 @@ exports.allStudiesOnDateCount = function(req, res) {
 // Get count of all studies between two dates, by currentUser
 exports.allStudiesBetweenDatesCount = function(req, res) {
     var cache_string = req.params.user + '/ALL/' + req.params.startDate + '/' + req.params.endDate + '/count';
-    var lifetime = (new Date(getTodayDateFormatted()).getTime() >= new Date(req.params.startDate).getTime() && new Date(getTodayDateFormatted()).getTime() <= new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() >= new Date(req.params.startDate).getTime() && new Date(getTodayDateFormatted()).getTime() <= new Date(req.params.endDate).getTime()) ? 21600 : 0; // keep forever in cache if date already past
     return memcached.get(cache_string, function (err, data) {
-        if (typeof data === "undefined") {
+        if (typeof data === "undefined" || 'setCache' in req) {
             Study.count({ 
                 assistant_radiologist: req.params.user,
                 transcribed_time: { 
@@ -202,9 +202,9 @@ exports.allStudiesBetweenDatesCount = function(req, res) {
 // Get count of studies for specified modality on a single date, by currentUser
 exports.modalityStudiesOnDateCount = function(req, res) {
     var cache_string = req.params.user + '/' + req.params.modality + '/' + req.params.date + '/count';
-    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.date).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() === new Date(req.params.date).getTime()) ? 21600 : 0; // keep forever in cache if date already past
     return memcached.get(cache_string, function (err, data) {
-        if (typeof data === "undefined") {
+        if (typeof data === "undefined" || 'setCache' in req) {
             Study.count({ 
                 assistant_radiologist: req.params.user,
                 transcribed_time: { 
@@ -229,9 +229,9 @@ exports.modalityStudiesOnDateCount = function(req, res) {
 // Get count of studies for specified modality between two dates, by currentUser
 exports.modalityStudiesBetweenDatesCount = function(req, res) {
     var cache_string = req.params.user + '/' + req.params.modality + '/' + req.params.startDate + '/' + req.params.endDate + '/count';
-    var lifetime = (new Date(getTodayDateFormatted()).getTime() >= new Date(req.params.startDate).getTime() && new Date(getTodayDateFormatted()).getTime() <= new Date(req.params.endDate).getTime()) ? 3600 : 0; // keep forever in cache if date already past
+    var lifetime = (new Date(getTodayDateFormatted()).getTime() >= new Date(req.params.startDate).getTime() && new Date(getTodayDateFormatted()).getTime() <= new Date(req.params.endDate).getTime()) ? 21600 : 0; // keep forever in cache if date already past
     return memcached.get(cache_string, function (err, data) {
-        if (typeof data === "undefined") {
+        if (typeof data === "undefined" || 'setCache' in req) {
             Study.count({ 
                 assistant_radiologist: req.params.user,
                 transcribed_time: { 
@@ -259,7 +259,7 @@ exports.diseaseStudies = function(req, res) {
     var lifetime = 86400;
     return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
-        if (!data) {
+        if (!data || 'setCache' in req) {
             var icd9code_array = icd9Mapper(req.params.disease);
             Study.find({ 
                 assistant_radiologist: req.params.user,
@@ -286,7 +286,7 @@ exports.diseaseStudiesCount = function(req, res) {
     var lifetime = 86400;
     return memcached.get(cache_string, function (err, data) {
         if (err) { return handleError(res, err); }
-        if (typeof data === "undefined") {
+        if (typeof data === "undefined" || 'setCache' in req) {
             var icd9code_array = icd9Mapper(req.params.disease);
             Study.count({ 
                 assistant_radiologist: req.params.user,

@@ -47,11 +47,11 @@ exports.updateMinnies = function (req, res) {
 
 exports.getMinnies = function (req, res) {
     var cache_string = req.params.username + '/minnies';
-    var lifetime = 7200;
+    var lifetime = 86340;
     
     return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
-        if (typeof data === "undefined") {
+        if (typeof data === "undefined" || 'setCache' in req) {
             User.findOne({ 
                 username: req.params.username
             }, 'minnies', function (err, user) {
@@ -87,11 +87,11 @@ exports.updateBadges = function (req, res) {
 
 exports.getBadges = function (req, res) {
     var cache_string = req.params.username + '/badges';
-    var lifetime = 86400;
+    var lifetime = 86340;
     
     return memcached.get(cache_string, function (err, data) {
         if(err) { return handleError(res, err); }
-        if (typeof data === "undefined") {
+        if (typeof data === "undefined" || 'setCache' in req) {
             User.findOne({ 
                 username: req.params.username
             }, 'badges', function (err, user) {
@@ -166,7 +166,7 @@ exports.getNumberForACGME = function (req, res) {
     return memcached.get(cache_string, function (err, data) {
         var criteria = {};
         if (err) { return handleError(res, err); }
-        if (typeof data === "undefined") {
+        if (typeof data === "undefined" || 'setCache' in req) {
 
             if (modalities.length === 0) {
                 criteria = {

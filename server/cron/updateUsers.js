@@ -58,7 +58,8 @@ new CronJob('00 00 02 * * *', function() {
                     params: { 
                         user: userIds[i],
                         study_index: j 
-                    }
+                    },
+                    setCache: true
                 },
                 { 
                     send: function (statuscode, contents) {},
