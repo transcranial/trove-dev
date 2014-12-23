@@ -117,9 +117,9 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
 
     $scope.data.rotations = null;
     $scope.currentRotationIndex = -1;
-    $http.get('/assets/data/residentSchedules.json').success(function(data) { 
+    $http.get('/assets/data/schedulesJSON/' + $scope.currentUser.username + '.json').success(function(schedule) { 
 
-        $scope.data.rotations = data[$scope.data.name];
+        $scope.data.rotations = schedule;
 
         // determine what the user's current rotation is based on current date
         $scope.data.rotations.some(function (rotation, index) {
