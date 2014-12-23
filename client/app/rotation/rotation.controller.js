@@ -120,6 +120,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
     $http.get('/assets/data/schedulesJSON/' + $scope.currentUser.username + '.json').success(function(schedule) { 
 
         $scope.data.rotations = schedule;
+        console.log($scope.data.rotations);
 
         // determine what the user's current rotation is based on current date
         $scope.data.rotations.some(function (rotation, index) {
@@ -173,6 +174,9 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
     // timeout by 100 ms for the rotation carousel handles to be initialized
     var scrollToCurrentRotation = $interval(function() {
         if ($scope.slickHandle.hasOwnProperty('slickGoTo') && $scope.data.rotations) {
+            console.log($scope.data.rotations);
+            console.log($scope.visibleRotationIndex);
+            console.log($scope.currentRotationIndex);
             $scope.rotationsLoaded = true;
             $scope.slickHandle.slickGoTo(Math.max(0, $scope.visibleRotationIndex - slidesToShow + 2));
             $interval.cancel(scrollToCurrentRotation);
