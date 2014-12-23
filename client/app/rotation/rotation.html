@@ -12,9 +12,9 @@
     <div id="rotation-view" class="dashboard-content-wrapper">
         <div id="rotation-carousel" class="row">
             <slick ng-transclude settings="slickConfig" control="slickHandle">
-                <div class="rotation-block" ng-click="setVisibleRotation($index)" ng-class="{'currentRotation': $index==visibleRotationIndex, 'rotation-block-selectable': $index<=currentRotationIndex}" ng-repeat="rot in ::data.rotations" ng-show="rotationsLoaded">
-                    <span class="rotation-block-name">{{rot.rotationName}}</span><br>
-                    <span class="rotation-block-date">{{rot.rotationDates}}</span>
+                <div class="rotation-block" ng-click="setVisibleRotation($index)" ng-class="{'currentRotation': $index==visibleRotationIndex, 'rotation-block-selectable': $index<=currentRotationIndex}" ng-repeat="::rot in data.rotations" ng-show="rotationsLoaded">
+                    <span class="rotation-block-name">{{::rot.rotationName}}</span><br>
+                    <span class="rotation-block-date">{{::rot.rotationDates}}</span>
                 </div>
             </slick>
         </div>
