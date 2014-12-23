@@ -207,7 +207,7 @@ app.controller('DiseaseCtrl', function ($rootScope, $scope, $http, $location, $t
         });
     };
 
-    $scope.initChart('ALL');
+    $scope.initChart('BODY CT');
 
     // helper function to determine width of bar
     $scope.calcCSSWidth = function(number) {

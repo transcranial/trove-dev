@@ -110,11 +110,11 @@ app.controller('ACGMECtrl', function ($rootScope, $scope, $http, $location, $tim
     $scope.calcCSSWidth = function(numerator, denominator, index) {
         if (index === 1) {
             return {
-                width: Math.round(numerator*100/denominator) + '%'
+                width: Math.max(100, Math.round(numerator*100/denominator)) + '%'
             };
         } else if (index === 2) {
             return {
-                width: 100 - Math.round(numerator*100/denominator) + '%'
+                width: 100 - Math.max(100, Math.round(numerator*100/denominator)) + '%'
             };
         } else {
             return {
