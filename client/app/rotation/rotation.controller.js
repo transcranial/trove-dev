@@ -119,8 +119,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
     $scope.currentRotationIndex = -1;
     $http.get('/assets/data/schedulesJSON/' + $scope.currentUser.username + '.json').success(function(schedule) { 
 
-        //$scope.data.rotations = schedule.slice(Math.max(schedule.length - 104, 0));
-        $scope.data.rotations = schedule;
+        $scope.data.rotations = schedule.slice(Math.max(schedule.length - 104, 0));
 
         // determine what the user's current rotation is based on current date
         $scope.data.rotations.some(function (rotation, index) {
@@ -171,7 +170,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
     };
 
     // on load, scroll to the user's current rotation
-    // timeout by 200 ms for the rotation carousel handles to be initialized
+    // timeout by 100 ms for the rotation carousel handles to be initialized
     var scrollToCurrentRotation = $interval(function() {
         if ($scope.slickHandle.hasOwnProperty('slickGoTo') && $scope.data.rotations) {
             $scope.rotationsLoaded = true;
@@ -179,7 +178,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
             $interval.cancel(scrollToCurrentRotation);
         }
         return;
-    }, 200);
+    }, 100);
 
     // make sure the graphical elements span the entire window height
     var adjustElementHeights = $interval(function() {
