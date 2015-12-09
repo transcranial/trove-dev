@@ -15,26 +15,23 @@ function ProxyStrategy(url) {
 		//console.log('in serializeUser');
 		//console.log(user);
 		// store/serialize the user._id in the session cookie
-		done(null, user._id);
+		console.log(user);
+		done(null, user.username);
 	});
 
 	// deserialize user from cookie
-	passport.deserializeUser(function(id, done) {
+	passport.deserializeUser(function(username, done) {
+		console.log('in deserializeUser');
+		console.log(username);
 		//console.log('in deserialize user');
 		//console.log(id);
+		/*
 		var options = {
-			uri: 'https://10.177.152.33/getUserById',
+			uri: 'https://wcmcradiology.org/getUserByUsername?username=' + username,
 			//hostname: '67.244.2.107',
 			method: 'GET',
-			key: fs.readFileSync('server/auth/keys/userA.key'),
-			cert: fs.readFileSync('server/auth/certs/userA.crt'),
-			ca: fs.readFileSync('server/auth/ca/numeriaMirth.crt'),
 			//strictSSL:false,
 			rejectUnauthorized:false,
-			json: {
-				_id: id,//'James',
-			},
-			headers: {}
 		};
 		//this.get.bind(this);
 		request(options, function(error,res,body){
@@ -44,11 +41,13 @@ function ProxyStrategy(url) {
 			if (res && res.statusCode == 401) {
 				//error = {error:401};
 			}
-			var user = res.body
-			done(error, user);
+			var user = JSON.parse(res.body);
+			console.log(user);
+			done(error, user.username);
 		}); 
+		*/
 
-		//done(null,id);
+		done(null,username);
 	});
 
 	this.name = 'proxy';
@@ -60,32 +59,32 @@ util.inherits(ProxyStrategy, LocalStrategy);
 
 ProxyStrategy.prototype.verifyUser = function(username, password, done) {
 	var options = {
-		uri: 'https://10.177.152.33/test',
+		uri: 'https://wcmcradiology.org/apps/legacy_api/test',
 		//hostname: '67.244.2.107',
 		method: 'POST',
-		key: fs.readFileSync('server/auth/keys/userA.key'),
-		cert: fs.readFileSync('server/auth/certs/userA.crt'),
-		ca: fs.readFileSync('server/auth/ca/numeriaMirth.crt'),
-		//strictSSL:false,
+		strictSSL:false,
 		rejectUnauthorized:false,
-		json: {
-			username: username,//'James',
-			password: password//'neptune'
+		form:{	
+			username:username,
+			password:password
 		},
-		headers: {}
+		headers: {
+	        'content-type' : 'application/x-www-form-urlencoded'
+	    }
 	};
-	
+
 	request(options, function(error,res,body){
 		// not currently using the 401 passed back from the central
 		// auth server. We now serve our own 401 if user is 'null' from the
 		// proxy
+
 		if (res.statusCode == 401) {
-			//console.log('401 luls');
+			console.log('401 luls');
 			//error = {error:401};
 		}
 
 		//console.log('in verifyUser');
-		var user = res.body
+		var user = JSON.parse(res.body);
 		//console.log(error);
 		//console.log(user);
 		done(error, user);
