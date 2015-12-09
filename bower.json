@@ -16,16 +16,19 @@
     "font-awesome": ">=4.1.0",
     "lodash": "~2.4.1",
     "angular-socket-io": "~0.6.0",
-    "animate.css": "~3.2.0",
     "d3": "~3.4.11",
     "angular-slick-carousel": "~1.0.1",
     "angular-touch": "~1.2.22",
     "ng-table": "~0.3.3",
     "angular-diff": "~1.0.0",
-    "ng-idle": "~0.3.5"
+    "ng-idle": "~0.3.5",
+    "animate-css": "~3.4.0"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
     "angular-scenario": ">=1.2.*"
+  },
+  "resolutions": {
+    "angular": ">=1.2.*"
   }
 }

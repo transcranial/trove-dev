@@ -7,7 +7,7 @@ var router = express.Router();
 
 
 // Security and authentication
-security.initialize('https://10.177.152.33/test');
+security.initialize('https://ravid.nyp.org/test');
 // this is a proxy to the login server
 router.post('/login', security.login);
 router.post('/logout', security.logout);

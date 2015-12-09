@@ -118,6 +118,7 @@ app.controller('RotationCtrl', function ($rootScope, $scope, $http, $location, $
     $scope.data.rotations = null;
     $scope.currentRotationIndex = -1;
     $http.get('/assets/data/schedulesJSON/' + $scope.currentUser.username + '.json').success(function(schedule) { 
+        console.log(schedule);
 
         $scope.data.rotations = schedule.slice(Math.max(schedule.length - 104, 0));
 

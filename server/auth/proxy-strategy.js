@@ -56,7 +56,7 @@ function ProxyStrategy(url) {
 
 util.inherits(ProxyStrategy, LocalStrategy);
 
-ProxyStrategy.name = 'proxy';
+//ProxyStrategy.name = 'proxy';
 
 ProxyStrategy.prototype.verifyUser = function(username, password, done) {
 	var options = {
