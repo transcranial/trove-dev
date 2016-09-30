@@ -1,3 +1,25 @@
+# Trove
+
+Radiology resident dashboard
+
+## Screenshots
+
+<p align="center"><img src="assets/screen00.png" /></p>
+<p align="center"><img src="assets/screen01.png" /></p>
+<p align="center"><img src="assets/screen02.png" /></p>
+<p align="center"><img src="assets/screen03.png" /></p>
+<p align="center"><img src="assets/screen04.png" /></p>
+<p align="center"><img src="assets/screen05.png" /></p>
+<p align="center"><img src="assets/screen06.png" /></p>
+<p align="center"><img src="assets/screen07.png" /></p>
+<p align="center"><img src="assets/screen08.png" /></p>
+<p align="center"><img src="assets/screen09.png" /></p>
+<p align="center"><img src="assets/screen10.png" /></p>
+<p align="center"><img src="assets/screen11.png" /></p>
+<p align="center"><img src="assets/screen12.png" /></p>
+
+## Notes
+
 Installation instructions:
     1.) unzip <Trove.src.zip> into desired folder
     2.) Modify <portNum> of trove-dev/server/config/environment/index.js -- port: process.env.PORT || <portNum> to desired serving port.
